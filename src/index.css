@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+* {
+  font-family: 'Poppins', sans-serif;
+  color: #1b1b1f;
+  box-sizing: border-box;
+}
+
+.customTransition {
+  transition-property: background-color, border, color;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+body.activeModal {
+  overflow-y: hidden;
+}
+
+/* filter.tsx */
+
+.filterItem:hover > .filterIcon > path,
+.filterItem:hover > .filterText {
+  stroke: #1b1b1f;
+  color: #1b1b1f;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+.filterIcon > path {
+  stroke: #a3a1ac;
+}
+.filterIconSelected > path {
+  stroke: #fff;
+}
+
+.filterText {
+  color: #a3a1ac;
+}
+.filterTextSelected {
+  color: #fff;
+}
+
+/* cardblock.tsx */
+.tableItem {
+  border-right: 1px solid #f0f0f0;
+}
+
+.tableItem:nth-child(3n) {
+  border-right: none;
+}
+
+.tableItemExpanded:nth-last-child(-n + 3) {
+  border-top: 1px solid #f0f0f0;
+}
+
+/* rating.tsx */
+.ratingStar > path,
+.ratingStar {
+  fill: black;
+}
+
+/* card.tsx */
+.consIcon > path {
+  stroke: #ff4539;
+}
