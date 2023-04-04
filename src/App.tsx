@@ -14,15 +14,19 @@ function App() {
   const filter = useContext(FilterContext);
 
   const [apiData, setApiData] = useState<Listing[]>(apiDataInitialState);
+  const [totalRecords, setTotalRecords] = useState<number>(1);
 
   useEffect(() => {
     fetchData();
-  }, [filter.activeFilter]);
+  }, [filter.activeCategory.field, filter.activeIssuer.field]);
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`${apiUrl}${filter.activeFilter}&xml_version=2&max=5`);
+      const response = await fetch(
+        `${apiUrl}${filter.activeCategory.field}&xml_version=2&max=5${filter.activeIssuer.field}`
+      );
       const data = await response.json();
+      await setTotalRecords(data.ResultSet.TotalRecords);
       setApiData(data.ResultSet.Listings.Listing);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -38,7 +42,7 @@ function App() {
             <div className="w-full">
               <Header></Header>
               <Routes>
-                <Route path="/" element={<Home apiData={apiData} />} />
+                <Route path="/" element={<Home apiData={apiData} totalRecords={totalRecords} />} />
                 <Route path="/cards/:cardId" element={<Card apiData={apiData} />} />
               </Routes>
             </div>

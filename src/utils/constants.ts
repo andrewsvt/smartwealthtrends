@@ -6,58 +6,168 @@ import { ReactComponent as BoxIcon } from '../assets/icons/box.svg';
 import { ReactComponent as AirplaneIcon } from '../assets/icons/airplane.svg';
 import { ReactComponent as BriefcaseIcon } from '../assets/icons/briefcase.svg';
 import { ReactComponent as CalendarIcon } from '../assets/icons/calendar.svg';
-
-import { FilterEnum } from '../contexts/FilterContext';
 import { Listing } from 'interfaces/Api';
 
-export const filterData = [
+export enum CategoriesEnum {
+  topCards = '&crd=25',
+  lowOngoingRate = '&crd=2',
+  balanceTransfer = '&crd=6',
+  cashBack = '&crd=3',
+  rewards = '&crd=5',
+  travel = '&crd=4',
+  business = '&crd=9',
+  noAnnualFee = '&crd=11',
+}
+
+export enum IssuersEnum {
+  allIssuers = '',
+  chase = '&ccis=188933',
+  citi = '&ccis=188934',
+  firstProgress = '&ccis=572111',
+  reliantHoldings = '&ccis=572914',
+  bankOfAmerica = '&ccis=574429',
+  theBankOfMissouri = '&ccis=606689',
+  genesisBankcard = '&ccis=607775',
+  celticBank = '&ccis=607790',
+  TDBank = '&ccis=607968',
+  merrickBank = '&ccis=608025',
+  wellsFargo = '&ccis=636744',
+}
+
+export const filterCategories = [
   {
     text: 'Top Cards',
     title: 'Top Offers Page Title',
     icon: AwardIcon,
-    field: FilterEnum.topCards,
+    field: CategoriesEnum.topCards,
   },
   {
     text: 'Low Ongoing Rate',
     title: 'Low Interest Page Title',
     icon: TrandingDownIcon,
-    field: FilterEnum.lowOngoingRate,
+    field: CategoriesEnum.lowOngoingRate,
   },
   {
     text: 'Balance transfer',
     title: 'Balance transfer Page Title',
     icon: RefreshIcon,
-    field: FilterEnum.balanceTransfer,
+    field: CategoriesEnum.balanceTransfer,
   },
   {
     text: 'Cash Back',
     title: 'Cash Back Page Title',
     icon: CoinIcon,
-    field: FilterEnum.cashBack,
+    field: CategoriesEnum.cashBack,
   },
   {
     text: 'Rewards',
     title: 'Rewards Page Title',
     icon: BoxIcon,
-    field: FilterEnum.rewards,
+    field: CategoriesEnum.rewards,
   },
   {
     text: 'Travel',
     title: 'Travel Page Title',
     icon: AirplaneIcon,
-    field: FilterEnum.travel,
+    field: CategoriesEnum.travel,
   },
   {
     text: 'Business',
     title: 'Business Page Title',
     icon: BriefcaseIcon,
-    field: FilterEnum.business,
+    field: CategoriesEnum.business,
   },
   {
     text: 'No annual fee',
     title: 'No annual fee Page Title',
     icon: CalendarIcon,
-    field: FilterEnum.noAnnualFee,
+    field: CategoriesEnum.noAnnualFee,
+  },
+];
+
+export const categories = [
+  {
+    text: 'Top Cards',
+    field: CategoriesEnum.topCards,
+  },
+  {
+    text: 'Low Ongoing Rate',
+    field: CategoriesEnum.lowOngoingRate,
+  },
+  {
+    text: 'Balance transfer',
+    field: CategoriesEnum.balanceTransfer,
+  },
+  {
+    text: 'Cash Back',
+    field: CategoriesEnum.cashBack,
+  },
+  {
+    text: 'Rewards',
+    field: CategoriesEnum.rewards,
+  },
+  {
+    text: 'Travel',
+    field: CategoriesEnum.travel,
+  },
+  {
+    text: 'Business',
+    field: CategoriesEnum.business,
+  },
+  {
+    text: 'No annual fee',
+    field: CategoriesEnum.noAnnualFee,
+  },
+];
+
+export const issuers = [
+  {
+    text: 'All Issuers',
+    field: IssuersEnum.allIssuers,
+  },
+  {
+    text: 'Chase',
+    field: IssuersEnum.chase,
+  },
+  {
+    text: 'Citi',
+    field: IssuersEnum.citi,
+  },
+  {
+    text: 'First Progress',
+    field: IssuersEnum.firstProgress,
+  },
+  {
+    text: 'Reliant Holdings',
+    field: IssuersEnum.reliantHoldings,
+  },
+  {
+    text: 'Bank of America',
+    field: IssuersEnum.bankOfAmerica,
+  },
+  {
+    text: 'The Bank of Missouri',
+    field: IssuersEnum.theBankOfMissouri,
+  },
+  {
+    text: 'Genesis Bankcard',
+    field: IssuersEnum.genesisBankcard,
+  },
+  {
+    text: 'Celtic Bank',
+    field: IssuersEnum.celticBank,
+  },
+  {
+    text: 'TD Bank',
+    field: IssuersEnum.TDBank,
+  },
+  {
+    text: 'Merrick Bank',
+    field: IssuersEnum.merrickBank,
+  },
+  {
+    text: 'Wells Fargo',
+    field: IssuersEnum.wellsFargo,
   },
 ];
 

@@ -24,24 +24,24 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
 
   const [tableItems, setTableItems] = useState<ITableItem[]>([
     {
-      title: 'BalanceTransferIntroAPR',
+      title: 'Balance Transfer Intro APR',
       description: selectedCard.BalanceTransferIntroAPR,
     },
     {
-      title: 'IntroAPRDuration',
+      title: 'Intro APRD uration',
       description: selectedCard.IntroAPRDuration,
     },
     {
-      title: 'IntroAPRRate',
+      title: 'Intro APR Rate',
       description: selectedCard.IntroAPRRate,
     },
     {
-      title: 'AnnualFees',
+      title: 'Annual Fees',
       description: selectedCard.AnnualFees,
     },
-    { title: 'CardBrand', description: selectedCard.CardProcessorTypeName },
+    { title: 'Card Brand', description: selectedCard.CardProcessorTypeName },
     {
-      title: 'CreditScoreNeeded',
+      title: 'Credit Score Needed',
       description: selectedCard.CreditScoreNeeded,
     },
   ]);

@@ -1,32 +1,35 @@
 import { createContext, useCallback, useState } from 'react';
-
-export enum FilterEnum {
-  topCards = '&crd=25',
-  lowOngoingRate = '&crd=2',
-  balanceTransfer = '&crd=6',
-  cashBack = '&crd=3',
-  rewards = '&crd=5',
-  travel = '&crd=4',
-  business = '&crd=9',
-  noAnnualFee = '&crd=11',
-}
+import { CategoriesEnum, IssuersEnum } from 'utils/constants';
 
 interface IFilterContext {
-  activeFilter: FilterEnum;
-  updateFilter: (newFilter: FilterEnum) => void;
+  activeCategory: { text: string; field: CategoriesEnum };
+  activeIssuer: { text: string; field: IssuersEnum };
+  updateCategory: (newCategory: { text: string; field: CategoriesEnum }) => void;
+  updateIssuer: (newIssuer: { text: string; field: IssuersEnum }) => void;
 }
 
 export const FilterContext = createContext<IFilterContext>(null as any);
 
 export const FilterContextProvider = ({ children }: any) => {
-  const [activeFilter, setActiveFilter] = useState(FilterEnum.topCards);
+  const [activeCategory, setActiveCategory] = useState({
+    text: 'Top Cards',
+    field: CategoriesEnum.topCards,
+  });
+  const [activeIssuer, setActiveIssuer] = useState({
+    text: 'All Issuers',
+    field: IssuersEnum.allIssuers,
+  });
 
-  const updateFilter = useCallback((newFilter: FilterEnum) => {
-    setActiveFilter(newFilter);
+  const updateCategory = useCallback((newCategory: { text: string; field: CategoriesEnum }) => {
+    setActiveCategory(newCategory);
+  }, []);
+
+  const updateIssuer = useCallback((newIssuer: { text: string; field: IssuersEnum }) => {
+    setActiveIssuer(newIssuer);
   }, []);
 
   return (
-    <FilterContext.Provider value={{ activeFilter, updateFilter }}>
+    <FilterContext.Provider value={{ activeCategory, activeIssuer, updateCategory, updateIssuer }}>
       {children}
     </FilterContext.Provider>
   );

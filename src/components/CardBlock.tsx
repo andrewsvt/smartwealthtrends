@@ -20,42 +20,38 @@ interface ICardBlockProps {
 }
 
 export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+
+  const { updateSelectedCard } = useContext(selectedCardContext);
+
   const [tableItems, setTableItems] = useState<ITableItem[]>([
     {
       icon: GiftIcon,
       title: 'Welcome Offer',
-      description:
-        'Earn a $200 cash rewards bonus after spending $1,000 in purchases in the first 3 months',
+      description: product.PointsPerDollar,
     },
     {
       icon: StarIcon,
       title: 'Rewards Rate',
-      description: 'Earn unlimited 2% cash rewards on purchases',
+      description: product.MilesPerDollar,
     },
     {
       icon: CopyIcon,
       title: 'Extra Perks',
-      description:
-        'No categories to track or remember and cash rewards dont expire as long as your account remains open',
+      description: product.BonusMiles,
     },
     {
       icon: '',
-      title: 'Welcome Offer',
-      description:
-        'Earn a $200 cash rewards bonus after spending $1,000 in purchases in the first 3 months',
+      title: 'Annual Fees',
+      description: product.AnnualFees,
     },
-    { icon: '', title: 'Rewards Rate', description: 'Earn unlimited 2% cash rewards on purchases' },
+    { icon: '', title: 'Card Brand', description: product.CardProcessorTypeName },
     {
       icon: '',
-      title: 'Extra Perks',
-      description:
-        'No categories to track or remember and cash rewards dont expire as long as your account remains open',
+      title: 'Credit Score Needed',
+      description: product.CreditScoreNeeded,
     },
   ]);
-
-  const [isExpanded, setIsExpanded] = useState<boolean>(false);
-
-  const { updateSelectedCard } = useContext(selectedCardContext);
 
   return (
     <motion.div
@@ -63,7 +59,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
       whileInView={{ opacity: 1, transition: { duration: 0.6 } }}
       viewport={{ once: true }}
       exit={{ opacity: 0, transition: { duration: 0.3 } }}
-      className="p-[20px] pb-[32px] bg-white rounded-[14px] space-y-[32px]"
+      className="p-[20px] bg-white rounded-[14px] space-y-[32px]"
     >
       <div className="flex flex-row h-[180px] space-x-[20px] ">
         <img className="h-full w-auto" src={product.Creative.RawLogoImageUrl} alt="card" />
