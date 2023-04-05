@@ -14,3 +14,7 @@ export { Disclosure } from './Disclosure';
 export { Rating } from './Rating';
 
 export { Dropdown } from './Dropdown';
+
+export { MenuPopups } from './MenuPopups';
+
+export { Comparison } from './Comparison';

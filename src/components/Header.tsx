@@ -1,31 +1,14 @@
-import { AnimatePresence } from 'framer-motion';
 import React, { FC, useContext, useState } from 'react';
-import { Disclosure } from './Disclosure';
 
-import { ReactComponent as ComparisonIcon } from '../assets/icons/comparison.svg';
-import { Dropdown } from './index';
+import { Dropdown, MenuPopups } from './index';
 
 import { categories, creditRating, issuers } from '../utils/constants';
 import { FilterContext } from 'contexts/FilterContext';
-import { ComparisonContext } from 'contexts/ComparisonContext';
 
 export const Header: FC = () => {
-  const [modal, setModal] = useState<boolean>(false);
   const [activeDropdown, setActiveDropdown] = useState<string>('');
 
   const filter = useContext(FilterContext);
-  const { products } = useContext(ComparisonContext);
-
-  const toggleModal = () => {
-    setModal(!modal);
-  };
-
-  //disable scroll
-  if (modal) {
-    document.body.classList.add('activeModal');
-  } else {
-    document.body.classList.remove('activeModal');
-  }
 
   return (
     <>
@@ -72,8 +55,8 @@ export const Header: FC = () => {
             ''
           )}
         </ul>
-
-        <div className="flex flex-row items-center">
+        <MenuPopups />
+        {/* <div className="flex flex-row items-center">
           <span onClick={toggleModal} className="text-sm underline font-medium m-5 cursor-pointer">
             Advertiser Disclosure
           </span>
@@ -89,11 +72,11 @@ export const Header: FC = () => {
               ''
             )}
           </div>
-        </div>
+        </div> */}
       </div>
-      <AnimatePresence>
+      {/* <AnimatePresence>
         {modal ? <Disclosure modal={modal} setModal={setModal} /> : ''}
-      </AnimatePresence>
+      </AnimatePresence> */}
     </>
   );
 };

@@ -2,7 +2,7 @@ import { FilterContext } from '../contexts/FilterContext';
 import React, { FC, useContext } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
-import { CardBlock } from '../components';
+import { CardBlock, Header } from '../components';
 import { Listing } from 'interfaces/Api';
 
 interface IHomeProps {
@@ -16,6 +16,7 @@ export const Home: FC<IHomeProps> = ({ apiData, totalRecords }) => {
   return (
     <>
       <div className="w-full">
+        <Header />
         <div className="h-[126px] w-full flex flex-row justify-between items-center">
           <div className="flex flex-col">
             <h1 className="text-xl font-semibold pb-[6px]">{`${filter.activeCategory.text} from ${filter.activeIssuer.text}`}</h1>

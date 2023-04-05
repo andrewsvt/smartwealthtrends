@@ -9,7 +9,7 @@ interface ICheckboxProps {
 
 export const CheckBox: FC<ICheckboxProps> = ({ text, state, onClick }) => {
   return (
-    <button className="flex flex-row items-center space-x-[12px]" onClick={onClick}>
+    <button className="flex flex-row items-center space-x-[12px] p-[12px]" onClick={onClick}>
       <div
         className={`${
           state ? 'border-primary' : ''

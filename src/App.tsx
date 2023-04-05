@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-import { Footer, Sidebar, Header } from './components';
+import { Footer, Sidebar } from './components';
 import { Home, Card } from './pages';
 import { Listing } from 'interfaces/Api';
 import { FilterContext } from 'contexts/FilterContext';
@@ -29,7 +29,7 @@ function App() {
   const fetchData = async () => {
     try {
       const response = await fetch(
-        `${apiUrl}${filter.activeCategory.field}${filter.activeIssuer.field}${filter.activeCreditRange.field}&xml_version=2&max=7`
+        `${apiUrl}${filter.activeCategory.field}${filter.activeIssuer.field}${filter.activeCreditRange.field}&xml_version=2&max=10`
       );
       const data = await response.json();
       await setTotalRecords(data.ResultSet.TotalRecords);
@@ -45,13 +45,10 @@ function App() {
         <div className="xl:max-w-[1400px] xl:m-auto lg:mx-4 w-full h-full pt-6">
           <div className="flex flex-row space-x-[54px]">
             <Sidebar />
-            <div className="w-full">
-              <Header></Header>
-              <Routes>
-                <Route path="/" element={<Home apiData={apiData} totalRecords={totalRecords} />} />
-                <Route path="/cards/:cardId" element={<Card apiData={apiData} />} />
-              </Routes>
-            </div>
+            <Routes>
+              <Route path="/" element={<Home apiData={apiData} totalRecords={totalRecords} />} />
+              <Route path="/cards/:cardId" element={<Card apiData={apiData} />} />
+            </Routes>
           </div>
           <Footer />
         </div>

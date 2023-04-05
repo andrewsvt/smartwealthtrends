@@ -58,8 +58,8 @@ export const Dropdown: FC<IDropdownProps> = ({
               }}
               className={
                 field.text === contextState.text
-                  ? 'cursor-default text-base text-primary font-medium'
-                  : 'cursor-pointer text-base text-secondary-text font-medium hover:text-black customTransition'
+                  ? 'cursor-default text-sm text-primary font-medium'
+                  : 'cursor-pointer text-sm text-secondary-text font-medium hover:text-black customTransition'
               }
             >
               {field.text}

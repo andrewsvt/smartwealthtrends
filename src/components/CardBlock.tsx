@@ -25,7 +25,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
   const { updateSelectedCard } = useContext(selectedCardContext);
   const { products, addProduct, removeProduct } = useContext(ComparisonContext);
 
-  const [isInComparison, setIsInComparison] = useState(false);
+  // const [isInComparison, setIsInComparison] = useState(false);
 
   const tableItems = useMemo<ITableItem[]>(
     () => [
@@ -61,23 +61,18 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
 
   const isInComparisonCheck = useMemo(() => products.includes(product), [products, product]);
 
-  useEffect(() => {
-    setIsInComparison(isInComparisonCheck);
-    console.log('useEffect');
-  }, [isInComparisonCheck]);
-
   const handleAddToComparison = useCallback(() => {
     addProduct(product);
-    if (products.length < 4) {
-      setIsInComparison(true);
-    } else {
-      setIsInComparison(false);
-    }
+    // if (products.length < 4) {
+    //   setIsInComparison(true);
+    // } else {
+    //   setIsInComparison(false);
+    // }
   }, [addProduct, product, products]);
 
   const handleRemoveFromComparison = useCallback(() => {
     removeProduct(product);
-    setIsInComparison(false);
+    // setIsInComparison(false);
   }, [removeProduct, product]);
 
   return (
@@ -89,7 +84,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
       className="p-[20px] bg-white rounded-[14px] space-y-[32px]"
     >
       <div className="flex flex-row h-[180px] space-x-[20px] ">
-        <img className="h-full w-auto" src={product.Creative.RawLogoImageUrl} alt="card" />
+        <img className="h-[180px] w-auto" src={product.Creative.RawLogoImageUrl} alt="card" />
         <div className="flex flex-col justify-between">
           <div className="space-y-[12px]">
             <h2
@@ -103,8 +98,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
             <Link to={`/cards/${product.ID}`} preventScrollReset={true}>
               <SecondaryButton onClick={() => updateSelectedCard(product)} text="Learn More" />
             </Link>
-            <div></div>
-            {isInComparison ? (
+            {products.includes(product) ? (
               <CheckBox
                 onClick={handleRemoveFromComparison}
                 text="Remove from compare"

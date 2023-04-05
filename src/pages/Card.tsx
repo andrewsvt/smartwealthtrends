@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState, useContext, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useParams } from 'react-router-dom';
 
-import { CardBlock, Rating } from 'components';
+import { CardBlock, MenuPopups, Rating } from 'components';
 import { CheckBox, PrimaryButton } from 'components/UI';
 
 import { ITableItem } from '../interfaces';
@@ -91,13 +91,14 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
               );
             })}
           </div>
+          <MenuPopups />
         </div>
         <div className="grid grid-cols-1 gap-4">
           {/* card details */}
           <div className="p-[20px] bg-white rounded-[14px] space-y-[32px]">
             <div className="flex flex-row h-[180px] space-x-[20px] ">
               <img
-                className="h-full w-auto"
+                className="h-[180px] w-auto"
                 src={selectedCard.Creative.RawLogoImageUrl}
                 alt="card"
               />
@@ -111,6 +112,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                 </div>
                 <div className="flex flex-row items-center justify-start space-x-[8px]">
                   <PrimaryButton text="Apply Now" />
+
                   {isInComparison ? (
                     <CheckBox
                       onClick={handleRemoveFromComparison}
