@@ -12,8 +12,8 @@ export const Header: FC = () => {
 
   return (
     <>
-      <div className="w-full h-[86px] border-b-[1px] border-[#EAE9EE] flex flex-row items-center justify-between">
-        <ul className="flex flex-row items-center space-x-[8px]">
+      <div className="relative w-full lg:h-[86px] border-b-[1px] border-[#EAE9EE] flex flex-col lg:flex-row items-start lg:items-center justify-start lg:justify-between">
+        <ul className="flex flex-col w-full md:w-auto md:flex-row items-center md:space-x-[8px]">
           <Dropdown
             filterName="Category"
             fields={categories}
@@ -56,27 +56,7 @@ export const Header: FC = () => {
           )}
         </ul>
         <MenuPopups />
-        {/* <div className="flex flex-row items-center">
-          <span onClick={toggleModal} className="text-sm underline font-medium m-5 cursor-pointer">
-            Advertiser Disclosure
-          </span>
-          <div className="relative cursor-pointer flex justify-center items-center bg-primary-light rounded-full h-[40px] w-[40px]">
-            <ComparisonIcon />
-            {products.length ? (
-              <div className="absolute top-[-2px] right-[-2px] rounded-full w-[14px] h-[14px] bg-primary border-[2px] border-bg box-content flex items-center justify-center">
-                <span className="pl-[1px] text-[10px] text-white font-semibold">
-                  {products.length}
-                </span>
-              </div>
-            ) : (
-              ''
-            )}
-          </div>
-        </div> */}
       </div>
-      {/* <AnimatePresence>
-        {modal ? <Disclosure modal={modal} setModal={setModal} /> : ''}
-      </AnimatePresence> */}
     </>
   );
 };

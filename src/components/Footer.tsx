@@ -12,8 +12,8 @@ import citigroupLogo from '../assets/icons/citigroup.svg';
 export const Footer: FC = () => {
   return (
     <div className="mt-[60px] space-y-[28px]">
-      <div className="flex flex-row justify-between items-start relative">
-        <div className="space-y-[28px] w-[312px]">
+      <div className="flex flex-col md:flex-row justify-between items-start relative space-y-[32px] md:space-y-0">
+        <div className="space-y-[28px] w-full md:w-[312px]">
           <Link to="/">
             <img className="w-[200px]" src={Logo} alt="logo"></img>
           </Link>
@@ -33,7 +33,7 @@ export const Footer: FC = () => {
             </li>
           </ul>
         </div>
-        <div className="flex flex-row items-center w-[830px] justify-between">
+        <div className="grid grid-cols-2 gap-6 md:flex md:flex-row md:items-center md:w-[830px] md:justify-between">
           <img src={boaLogo} alt="" />
           <img src={chaseLogo} alt="" />
           <img src={visaLogo} alt="" />
@@ -43,7 +43,7 @@ export const Footer: FC = () => {
         </div>
       </div>
       <div className="flex justify-center items-center w-full border-t-[1px] border-[#EAE9EE]">
-        <p className="text-xs font-medium text-[#626262] p-[28px]">
+        <p className="text-xs font-medium text-[#626262] p-[28px] text-center">
           Copyright ©️ 2020-2023 AdStride LLC. All rights reserved.
         </p>
       </div>

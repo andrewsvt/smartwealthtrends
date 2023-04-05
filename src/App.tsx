@@ -42,8 +42,8 @@ function App() {
   return (
     <Router>
       <div className="bg-bg">
-        <div className="xl:max-w-[1400px] xl:m-auto lg:mx-4 w-full h-full pt-6">
-          <div className="flex flex-row space-x-[54px]">
+        <div className="xl:max-w-[1400px] m-0 xl:m-auto px-4 xl:px-0 w-full h-full pt-6">
+          <div className="flex flex-row lg:space-x-[54px]">
             <Sidebar />
             <Routes>
               <Route path="/" element={<Home apiData={apiData} totalRecords={totalRecords} />} />

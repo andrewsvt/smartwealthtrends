@@ -20,7 +20,7 @@ export const Dropdown: FC<IDropdownProps> = ({
   activeDropdown,
 }) => {
   return (
-    <li>
+    <li className="relative w-full">
       <div
         onClick={() => {
           if (activeDropdown === filterName) {
@@ -29,13 +29,13 @@ export const Dropdown: FC<IDropdownProps> = ({
             setActiveDropdown(filterName);
           }
         }}
-        className="relative flex flex-row items-center cursor-pointer w-[200px] h-[60px] justify-between bg-white rounded-[10px] py-[10px] px-[20px]"
+        className="relative flex flex-row items-center cursor-pointer w-full md:w-[200px] h-[60px] justify-between bg-white rounded-t-[10px] md:rounded-[10px] py-[10px] px-[20px]"
       >
         <span className="text-sm font-medium pr-[8px] text-primary truncate">
           {contextState.text}
         </span>
         {activeDropdown === filterName ? <ShortArrowUpIcon /> : <ShortArrowDownIcon />}
-        <div className="bg-light-gray rounded-[10px] h-[18px] absolute top-[-9px] left-[12px] flex justify-center items-center">
+        <div className="absolute top-[-9px] left-[12px] bg-light-gray rounded-[10px] h-[18px] flex justify-center items-center">
           <span className="cursor-default text-[10px] text-secondary-text px-[8px]">
             {filterName}
           </span>
@@ -44,7 +44,7 @@ export const Dropdown: FC<IDropdownProps> = ({
       <div
         className={
           activeDropdown === filterName
-            ? 'bg-white absolute top-[110px] flex flex-col p-[20px] w-auto rounded-[10px] shadow-2xl z-20'
+            ? 'bg-white md:absolute md:top-[72px] flex flex-col p-[20px] w-full md:w-auto rounded-b-[10px] border-[1px] border-border md:border-none md:rounded-[10px] shadow-2xl z-20'
             : 'hidden'
         }
       >
@@ -67,14 +67,14 @@ export const Dropdown: FC<IDropdownProps> = ({
           ))}
         </ul>
       </div>
-      {/* <div
+      <div
         onClick={() => setActiveDropdown('')}
         className={
           activeDropdown === filterName
             ? 'absolute left-0 top-0 w-full h-[200%] bg-transparent'
             : 'hidden'
         }
-      ></div> */}
+      ></div>
     </li>
   );
 };

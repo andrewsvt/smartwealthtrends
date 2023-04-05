@@ -16,7 +16,7 @@ export const Disclosure: FC<DisclosureProps> = ({ modal, setModal }) => {
   return (
     <div className="w-screen h-screen fixed top-0 left-0 flex justify-center items-center">
       <motion.div
-        className="absolute z-10 flex flex-col justify-center items-center bg-white rounded-[14px] max-w-[786px] w-full h-auto p-[48px]"
+        className="absolute z-10 flex flex-col justify-center items-start md:items-center bg-white rounded-[14px] max-w-[90%] max-h-[80%] md:max-w-[786px] w-full h-auto p-[32px] md:p-[48px]"
         initial={{ opacity: 0, scale: 0.7 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{
@@ -33,7 +33,7 @@ export const Disclosure: FC<DisclosureProps> = ({ modal, setModal }) => {
           <CrossIcon />
         </motion.div>
         <h2 className="text-lg font-semibold pb-[48px]">Advertiser Disclosure</h2>
-        <p className="text-base font-light">
+        <p className="text-base font-light overflow-y-auto">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas
           vel sint commodi repudiandae consequuntur voluptatum laborum numquam blanditiis harum
           quisquam eius sed odit fugiat iusto fuga praesentium optio, eaque rerum! Provident

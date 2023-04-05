@@ -75,9 +75,13 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
       exit={{ opacity: 0, transition: { duration: 0.3 } }}
       className="p-[20px] bg-white rounded-[14px] space-y-[32px]"
     >
-      <div className="flex flex-row h-[180px] space-x-[20px] ">
-        <img className="h-[180px] w-auto" src={product.Creative.RawLogoImageUrl} alt="card" />
-        <div className="flex flex-col justify-between">
+      <div className="flex flex-col md:flex-row md:h-[180px] space-y-[20px] md:space-x-[20px] ">
+        <img
+          className="h-auto md:h-[180px] w-full md:w-auto"
+          src={product.Creative.RawLogoImageUrl}
+          alt="card"
+        />
+        <div className="flex flex-col space-y-[20px] md:justify-between">
           <div className="space-y-[12px]">
             <h2
               className="text-lg font-semibold"
@@ -85,11 +89,13 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
             />
             <Rating value={Number(product.EditorRating)} />
           </div>
-          <div className="flex flex-row items-center justify-start space-x-[8px]">
-            <PrimaryButton text="Apply Now" />
-            <Link to={`/cards/${product.ID}`} preventScrollReset={true}>
-              <SecondaryButton onClick={() => updateSelectedCard(product)} text="Learn More" />
-            </Link>
+          <div className="flex flex-col md:flex-row items-center justify-start space-y-[8px] md:space-x-[8px]">
+            <div className="flex flex-row items-center space-x-[8px]">
+              <PrimaryButton text="Apply Now" />
+              <Link to={`/cards/${product.ID}`} preventScrollReset={true}>
+                <SecondaryButton onClick={() => updateSelectedCard(product)} text="Learn More" />
+              </Link>
+            </div>
             {products.map((product) => product.ID).includes(product.ID) ? (
               <CheckBox
                 onClick={handleRemoveFromComparison}
@@ -102,12 +108,11 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
           </div>
         </div>
       </div>
-
-      <motion.div className="grid grid-cols-3 border-[1px] border-border rounded-[10px]">
+      <motion.div className="grid grid-cols-1 md:grid-cols-3 border-[1px] border-border rounded-[10px]">
         {tableItems.slice(0, 3).map((tableItem, index) => {
           const Icon = tableItem.icon;
           return (
-            <div key={index} className="p-[20px] space-y-[20px] tableItem">
+            <div key={index} className="p-[20px] space-y-[20px] md:tableItem">
               <div>
                 {/* @ts-ignore */}
                 <Icon />
@@ -126,7 +131,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 50 }}
                 exit={{ opacity: 0, y: -30 }}
-                className="p-[20px] space-y-[8px] tableItem tableItemExpanded"
+                className="p-[20px] space-y-[8px] md:tableItem md:tableItemExpanded"
               >
                 <h4 className="font-medium text-base">{tableItem.title}</h4>
                 <p className="font-light text-sm">{tableItem.description}</p>
@@ -134,7 +139,6 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
             ))
           : ''}
       </motion.div>
-
       <div className="w-full flex justify-center">
         <SecondaryButton
           onClick={() => setIsExpanded(!isExpanded)}

@@ -18,7 +18,7 @@ export const Comparison: FC<ComparisonProps> = ({ modal, setModal }) => {
   return (
     <div className="w-screen h-screen fixed top-0 left-0 flex justify-center items-center">
       <motion.div
-        className="absolute z-10 flex flex-row justify-center bg-bg rounded-[18px] max-w-[1400px] w-full h-[776px] p-[20px] space-x-[20px] overflow-x-hidden overflow-y-scroll"
+        className="absolute z-20 flex flex-row justify-center bg-bg rounded-[18px] max-w-[1400px] w-full h-[776px] p-[20px] space-x-[20px] overflow-x-hidden overflow-y-scroll"
         initial={{ opacity: 0, scale: 0.7 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{

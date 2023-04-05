@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 export const Sidebar: FC = () => {
   return (
-    <aside className="sticky bottom-[24px] min-h-screen min-w-[335px] w-[335px] self-end bg-white rounded-[14px] flex flex-col items-center">
+    <aside className="sticky self-start top-[24px] h-screen min-w-[260px] w-full max-w-[335px] bg-white rounded-[14px] lg:flex flex-col items-center md:hidden hidden">
       <div className="h-[86px] flex justify-center items-center">
         <Link to="/">
           <img src={Logo} alt="logo"></img>
