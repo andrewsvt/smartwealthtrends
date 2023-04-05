@@ -59,20 +59,12 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
     [product]
   );
 
-  const isInComparisonCheck = useMemo(() => products.includes(product), [products, product]);
-
   const handleAddToComparison = useCallback(() => {
     addProduct(product);
-    // if (products.length < 4) {
-    //   setIsInComparison(true);
-    // } else {
-    //   setIsInComparison(false);
-    // }
   }, [addProduct, product, products]);
 
   const handleRemoveFromComparison = useCallback(() => {
     removeProduct(product);
-    // setIsInComparison(false);
   }, [removeProduct, product]);
 
   return (
@@ -98,7 +90,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
             <Link to={`/cards/${product.ID}`} preventScrollReset={true}>
               <SecondaryButton onClick={() => updateSelectedCard(product)} text="Learn More" />
             </Link>
-            {products.includes(product) ? (
+            {products.map((product) => product.ID).includes(product.ID) ? (
               <CheckBox
                 onClick={handleRemoveFromComparison}
                 text="Remove from compare"

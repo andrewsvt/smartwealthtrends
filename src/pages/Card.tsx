@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState, useContext, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { CardBlock, MenuPopups, Rating } from 'components';
 import { CheckBox, PrimaryButton } from 'components/UI';
@@ -21,10 +21,9 @@ interface ICardpageProps {
 export const Card: FC<ICardpageProps> = ({ apiData }) => {
   const pathname = window.location.pathname.split('/');
 
+  //contexts
   const { selectedCard } = useContext(selectedCardContext);
   const { products, addProduct, removeProduct } = useContext(ComparisonContext);
-
-  const [isInComparison, setIsInComparison] = useState(false);
 
   const [tableItems, setTableItems] = useState<ITableItem[]>([
     {
@@ -50,28 +49,18 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
     },
   ]);
 
+  //scroll up when open new card page
   useEffect(() => {
     window.scrollTo(0, 0);
-
-    if (products.includes(selectedCard)) {
-      setIsInComparison(true);
-    } else {
-      setIsInComparison(false);
-    }
   }, [selectedCard]);
 
+  //add/remove compare function
   const handleAddToComparison = useCallback(() => {
     addProduct(selectedCard);
-    if (products.length < 4) {
-      setIsInComparison(true);
-    } else {
-      setIsInComparison(false);
-    }
   }, [addProduct, selectedCard, products]);
 
   const handleRemoveFromComparison = useCallback(() => {
     removeProduct(selectedCard);
-    setIsInComparison(false);
   }, [removeProduct, selectedCard]);
 
   return (
@@ -95,7 +84,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
         </div>
         <div className="grid grid-cols-1 gap-4">
           {/* card details */}
-          <div className="p-[20px] bg-white rounded-[14px] space-y-[32px]">
+          <div id="section1" className="p-[20px] bg-white rounded-[14px] space-y-[32px]">
             <div className="flex flex-row h-[180px] space-x-[20px] ">
               <img
                 className="h-[180px] w-auto"
@@ -113,7 +102,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                 <div className="flex flex-row items-center justify-start space-x-[8px]">
                   <PrimaryButton text="Apply Now" />
 
-                  {isInComparison ? (
+                  {products.map((product) => product.ID).includes(selectedCard.ID) ? (
                     <CheckBox
                       onClick={handleRemoveFromComparison}
                       text="Remove from compare"
@@ -147,7 +136,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
           </div>
           <div className="mt-[28px] grid grid-cols-1 gap-[60px]">
             {/* Pros and cons */}
-            <div className="px-[20px] space-y-[32px]">
+            <div id="section2" className="px-[20px] space-y-[32px]">
               <h2
                 className="text-lg font-semibold"
                 dangerouslySetInnerHTML={{
@@ -188,7 +177,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
               </div>
             </div>
             {/* Review */}
-            <div className="flex flex-row w-full space-x-[54px]">
+            <div id="section3" className="flex flex-row w-full space-x-[54px]">
               <div className="w-[328px] h-[300px] bg-white rounded-[14px]"></div>
               <div className="flex flex-col flex-1 space-y-[28px]">
                 <div className="space-y-[8px]">
@@ -218,7 +207,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
               </div>
             </div>
             {/* Related offers */}
-            <div className="space-y-[32px]">
+            <div id="section4" className="space-y-[32px]">
               <h2 className="text-lg font-semibold pl-[20px]">Related Card Offers</h2>
               <motion.div className="grid grid-cols-1 gap-4">
                 {apiData?.slice(0, 2).map((product, index) => (

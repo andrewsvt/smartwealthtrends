@@ -16,7 +16,12 @@ export const Sidebar: FC = () => {
       <div className="h-[1px] w-full bg-border"></div>
       <Routes>
         <Route path="/" element={<Filter />} />
-        <Route path="/cards/:id" element={<PageNavigation />} />
+        <Route
+          path="/cards/:id"
+          element={
+            <PageNavigation anchorLinks={['#section1', '#section2', '#section3', '#section4']} />
+          }
+        />
       </Routes>
     </aside>
   );
