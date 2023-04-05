@@ -34,6 +34,15 @@ export enum IssuersEnum {
   wellsFargo = '&ccis=636744',
 }
 
+export enum CreditRatingEnum {
+  allCreditRating = '',
+  excellent = '&cccrate=1',
+  good = '&cccrate=2',
+  averageFair = '&cccrate=3',
+  poor = '&cccrate=4',
+  noneLimitedHistory = '&cccrate=5',
+}
+
 export const filterCategories = [
   {
     text: 'Top Cards',
@@ -168,6 +177,33 @@ export const issuers = [
   {
     text: 'Wells Fargo',
     field: IssuersEnum.wellsFargo,
+  },
+];
+
+export const creditRating = [
+  {
+    text: 'All Credit Ranges',
+    field: CreditRatingEnum.allCreditRating,
+  },
+  {
+    text: 'Excellent',
+    field: CreditRatingEnum.excellent,
+  },
+  {
+    text: 'Good',
+    field: CreditRatingEnum.good,
+  },
+  {
+    text: 'Average/Fair',
+    field: CreditRatingEnum.averageFair,
+  },
+  {
+    text: 'Poor',
+    field: CreditRatingEnum.poor,
+  },
+  {
+    text: 'None/Limited History',
+    field: CreditRatingEnum.noneLimitedHistory,
   },
 ];
 

@@ -18,12 +18,12 @@ function App() {
 
   useEffect(() => {
     fetchData();
-  }, [filter.activeCategory.field, filter.activeIssuer.field]);
+  }, [filter.activeCategory.field, filter.activeIssuer.field, filter.activeCreditRange.field]);
 
   const fetchData = async () => {
     try {
       const response = await fetch(
-        `${apiUrl}${filter.activeCategory.field}&xml_version=2&max=5${filter.activeIssuer.field}`
+        `${apiUrl}${filter.activeCategory.field}${filter.activeIssuer.field}${filter.activeCreditRange.field}&xml_version=2&max=7`
       );
       const data = await response.json();
       await setTotalRecords(data.ResultSet.TotalRecords);

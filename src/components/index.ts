@@ -1,14 +1,16 @@
-export {Filter} from './Filter'
-export {PageNavigation} from './PageNavigation'
+export { Filter } from './Filter';
+export { PageNavigation } from './PageNavigation';
 
-export {Sidebar} from './Sidebar'
+export { Sidebar } from './Sidebar';
 
-export {Footer} from './Footer'
+export { Footer } from './Footer';
 
-export {Header} from './Header'
+export { Header } from './Header';
 
-export { CardBlock } from './CardBlock'
+export { CardBlock } from './CardBlock';
 
-export {Disclosure} from './Disclosure'
+export { Disclosure } from './Disclosure';
 
-export {Rating} from './Rating'
+export { Rating } from './Rating';
+
+export { Dropdown } from './Dropdown';

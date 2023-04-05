@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { ReactComponent as ShortArrowDownIcon } from '../assets/icons/arrowShortDown.svg';
 import { ReactComponent as ShortArrowUpIcon } from '../assets/icons/arrowShortUp.svg';
 
@@ -7,24 +7,44 @@ interface IDropdownProps {
   fields: any;
   updateState: any;
   contextState: any;
+  setActiveDropdown: React.Dispatch<React.SetStateAction<string>>;
+  activeDropdown: any;
 }
 
-export const Dropdown: FC<IDropdownProps> = ({ filterName, fields, updateState, contextState }) => {
-  const [isDropdownActive, setIsDropdownActive] = useState(false);
-
+export const Dropdown: FC<IDropdownProps> = ({
+  filterName,
+  fields,
+  updateState,
+  contextState,
+  setActiveDropdown,
+  activeDropdown,
+}) => {
   return (
     <li>
       <div
-        onClick={() => setIsDropdownActive(!isDropdownActive)}
-        className="flex flex-row items-center cursor-pointer w-[240px] justify-between bg-white rounded-[14px] py-[10px] px-[20px]"
+        onClick={() => {
+          if (activeDropdown === filterName) {
+            setActiveDropdown('');
+          } else {
+            setActiveDropdown(filterName);
+          }
+        }}
+        className="relative flex flex-row items-center cursor-pointer w-[200px] h-[60px] justify-between bg-white rounded-[10px] py-[10px] px-[20px]"
       >
-        <span className="text-base font-medium pr-[8px] text-primary">{contextState.text}</span>
-        {isDropdownActive ? <ShortArrowUpIcon /> : <ShortArrowDownIcon />}
+        <span className="text-sm font-medium pr-[8px] text-primary truncate">
+          {contextState.text}
+        </span>
+        {activeDropdown === filterName ? <ShortArrowUpIcon /> : <ShortArrowDownIcon />}
+        <div className="bg-light-gray rounded-[10px] h-[18px] absolute top-[-9px] left-[12px] flex justify-center items-center">
+          <span className="cursor-default text-[10px] text-secondary-text px-[8px]">
+            {filterName}
+          </span>
+        </div>
       </div>
       <div
         className={
-          isDropdownActive
-            ? 'bg-white absolute top-[110px] flex flex-col p-[20px] w-[240px] rounded-[14px] shadow-2xl z-20'
+          activeDropdown === filterName
+            ? 'bg-white absolute top-[110px] flex flex-col p-[20px] w-auto rounded-[10px] shadow-2xl z-20'
             : 'hidden'
         }
       >
@@ -34,7 +54,7 @@ export const Dropdown: FC<IDropdownProps> = ({ filterName, fields, updateState, 
               key={field.field}
               onClick={(e) => {
                 updateState(field);
-                setIsDropdownActive(!isDropdownActive);
+                setActiveDropdown('');
               }}
               className={
                 field.text === contextState.text
@@ -47,6 +67,14 @@ export const Dropdown: FC<IDropdownProps> = ({ filterName, fields, updateState, 
           ))}
         </ul>
       </div>
+      {/* <div
+        onClick={() => setActiveDropdown('')}
+        className={
+          activeDropdown === filterName
+            ? 'absolute left-0 top-0 w-full h-[200%] bg-transparent'
+            : 'hidden'
+        }
+      ></div> */}
     </li>
   );
 };

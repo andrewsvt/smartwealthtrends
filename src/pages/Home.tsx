@@ -18,7 +18,7 @@ export const Home: FC<IHomeProps> = ({ apiData, totalRecords }) => {
       <div className="w-full">
         <div className="h-[126px] w-full flex flex-row justify-between items-center">
           <div className="flex flex-col">
-            <h1 className="text-xl font-semibold pb-[6px]">{filter.activeCategory.text}</h1>
+            <h1 className="text-xl font-semibold pb-[6px]">{`${filter.activeCategory.text} from ${filter.activeIssuer.text}`}</h1>
             <p className="text-secondary-text text-base ">Description of the page</p>
           </div>
         </div>
