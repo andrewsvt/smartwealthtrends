@@ -7,11 +7,13 @@ import { Listing } from 'interfaces/Api';
 import { FilterContext } from 'contexts/FilterContext';
 
 import { apiDataInitialState } from 'utils/constants';
+import { ComparisonContext } from 'contexts/ComparisonContext';
 
 function App() {
   const apiUrl = process.env.REACT_APP_API_URL;
 
   const filter = useContext(FilterContext);
+  const comparison = useContext(ComparisonContext);
 
   const [apiData, setApiData] = useState<Listing[]>(apiDataInitialState);
   const [totalRecords, setTotalRecords] = useState<number>(1);
@@ -19,6 +21,10 @@ function App() {
   useEffect(() => {
     fetchData();
   }, [filter.activeCategory.field, filter.activeIssuer.field, filter.activeCreditRange.field]);
+
+  useEffect(() => {
+    console.log(comparison.products);
+  }, [comparison.products]);
 
   const fetchData = async () => {
     try {

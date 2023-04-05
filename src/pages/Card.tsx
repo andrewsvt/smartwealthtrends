@@ -1,9 +1,9 @@
-import React, { FC, useEffect, useState, useContext } from 'react';
+import React, { FC, useEffect, useState, useContext, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useParams } from 'react-router-dom';
 
 import { CardBlock, Rating } from 'components';
-import { PrimaryButton } from 'components/UI';
+import { CheckBox, PrimaryButton } from 'components/UI';
 
 import { ITableItem } from '../interfaces';
 
@@ -12,6 +12,7 @@ import { ReactComponent as CrossIcon } from '../assets/icons/cross.svg';
 import { Listing } from 'interfaces/Api';
 
 import { selectedCardContext } from 'contexts/SelectedCardContext';
+import { ComparisonContext } from 'contexts/ComparisonContext';
 
 interface ICardpageProps {
   apiData: Listing[];
@@ -21,6 +22,9 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
   const pathname = window.location.pathname.split('/');
 
   const { selectedCard } = useContext(selectedCardContext);
+  const { products, addProduct, removeProduct } = useContext(ComparisonContext);
+
+  const [isInComparison, setIsInComparison] = useState(false);
 
   const [tableItems, setTableItems] = useState<ITableItem[]>([
     {
@@ -48,7 +52,27 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+
+    if (products.includes(selectedCard)) {
+      setIsInComparison(true);
+    } else {
+      setIsInComparison(false);
+    }
   }, [selectedCard]);
+
+  const handleAddToComparison = useCallback(() => {
+    addProduct(selectedCard);
+    if (products.length < 4) {
+      setIsInComparison(true);
+    } else {
+      setIsInComparison(false);
+    }
+  }, [addProduct, selectedCard, products]);
+
+  const handleRemoveFromComparison = useCallback(() => {
+    removeProduct(selectedCard);
+    setIsInComparison(false);
+  }, [removeProduct, selectedCard]);
 
   return (
     <>
@@ -59,10 +83,9 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
               Home
             </Link>
             {pathname.slice(1).map((path, i) => {
-              console.log(path, i);
               return (
-                <div className="flex flex-row space-x-[8px]">
-                  <symbol className="text-medium-gray">/</symbol>
+                <div key={i} className="flex flex-row space-x-[8px]">
+                  <div className="text-medium-gray">/</div>
                   <span className="text-secondary-text pr-[8px]">{path}</span>
                 </div>
               );
@@ -88,6 +111,15 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                 </div>
                 <div className="flex flex-row items-center justify-start space-x-[8px]">
                   <PrimaryButton text="Apply Now" />
+                  {isInComparison ? (
+                    <CheckBox
+                      onClick={handleRemoveFromComparison}
+                      text="Remove from compare"
+                      state={true}
+                    />
+                  ) : (
+                    <CheckBox onClick={handleAddToComparison} text="Add to compare" state={false} />
+                  )}
                 </div>
               </div>
             </div>

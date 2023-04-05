@@ -1,8 +1,8 @@
-import React, { FC, useState, useContext } from 'react';
+import React, { FC, useState, useContext, useEffect, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
-import { PrimaryButton, SecondaryButton } from './UI';
+import { CheckBox, PrimaryButton, SecondaryButton } from './UI';
 import { Rating } from 'components';
 import { ITableItem } from '../interfaces';
 import { Listing } from 'interfaces/Api';
@@ -10,9 +10,9 @@ import { Listing } from 'interfaces/Api';
 import { ReactComponent as GiftIcon } from '../assets/icons/gift.svg';
 import { ReactComponent as StarIcon } from '../assets/icons/star.svg';
 import { ReactComponent as CopyIcon } from '../assets/icons/copysuccess.svg';
-import { ReactComponent as ArrowDownIcon } from '../assets/icons/Arrow down.svg';
 
 import { selectedCardContext } from 'contexts/SelectedCardContext';
+import { ComparisonContext } from 'contexts/ComparisonContext';
 
 interface ICardBlockProps {
   product: Listing;
@@ -23,35 +23,62 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
   const { updateSelectedCard } = useContext(selectedCardContext);
+  const { products, addProduct, removeProduct } = useContext(ComparisonContext);
 
-  const [tableItems, setTableItems] = useState<ITableItem[]>([
-    {
-      icon: GiftIcon,
-      title: 'Welcome Offer',
-      description: product.PointsPerDollar,
-    },
-    {
-      icon: StarIcon,
-      title: 'Rewards Rate',
-      description: product.MilesPerDollar,
-    },
-    {
-      icon: CopyIcon,
-      title: 'Extra Perks',
-      description: product.BonusMiles,
-    },
-    {
-      icon: '',
-      title: 'Annual Fees',
-      description: product.AnnualFees,
-    },
-    { icon: '', title: 'Card Brand', description: product.CardProcessorTypeName },
-    {
-      icon: '',
-      title: 'Credit Score Needed',
-      description: product.CreditScoreNeeded,
-    },
-  ]);
+  const [isInComparison, setIsInComparison] = useState(false);
+
+  const tableItems = useMemo<ITableItem[]>(
+    () => [
+      {
+        icon: GiftIcon,
+        title: 'Welcome Offer',
+        description: product.PointsPerDollar,
+      },
+      {
+        icon: StarIcon,
+        title: 'Rewards Rate',
+        description: product.MilesPerDollar,
+      },
+      {
+        icon: CopyIcon,
+        title: 'Extra Perks',
+        description: product.BonusMiles,
+      },
+      {
+        icon: '',
+        title: 'Annual Fees',
+        description: product.AnnualFees,
+      },
+      { icon: '', title: 'Card Brand', description: product.CardProcessorTypeName },
+      {
+        icon: '',
+        title: 'Credit Score Needed',
+        description: product.CreditScoreNeeded,
+      },
+    ],
+    [product]
+  );
+
+  const isInComparisonCheck = useMemo(() => products.includes(product), [products, product]);
+
+  useEffect(() => {
+    setIsInComparison(isInComparisonCheck);
+    console.log('useEffect');
+  }, [isInComparisonCheck]);
+
+  const handleAddToComparison = useCallback(() => {
+    addProduct(product);
+    if (products.length < 4) {
+      setIsInComparison(true);
+    } else {
+      setIsInComparison(false);
+    }
+  }, [addProduct, product, products]);
+
+  const handleRemoveFromComparison = useCallback(() => {
+    removeProduct(product);
+    setIsInComparison(false);
+  }, [removeProduct, product]);
 
   return (
     <motion.div
@@ -76,6 +103,16 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
             <Link to={`/cards/${product.ID}`} preventScrollReset={true}>
               <SecondaryButton onClick={() => updateSelectedCard(product)} text="Learn More" />
             </Link>
+            <div></div>
+            {isInComparison ? (
+              <CheckBox
+                onClick={handleRemoveFromComparison}
+                text="Remove from compare"
+                state={true}
+              />
+            ) : (
+              <CheckBox onClick={handleAddToComparison} text="Add to compare" state={false} />
+            )}
           </div>
         </div>
       </div>

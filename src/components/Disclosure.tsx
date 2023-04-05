@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 import { ReactComponent as CrossIcon } from '../assets/icons/cross.svg';
 

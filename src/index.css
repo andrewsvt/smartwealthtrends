@@ -13,7 +13,7 @@
 .customTransition {
   transition-property: background-color, border, color;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 300ms;
+  transition-duration: 250ms;
 }
 
 body.activeModal {
@@ -28,7 +28,7 @@ body.activeModal {
   color: #1b1b1f;
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 300ms;
+  transition-duration: 250ms;
 }
 
 .filterIcon > path {

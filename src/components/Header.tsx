@@ -3,17 +3,18 @@ import React, { FC, useContext, useState } from 'react';
 import { Disclosure } from './Disclosure';
 
 import { ReactComponent as ComparisonIcon } from '../assets/icons/comparison.svg';
-import { ReactComponent as RefteshIcon } from '../assets/icons/refresh-ccw.svg';
 import { Dropdown } from './index';
 
-import { CategoriesEnum, IssuersEnum, categories, creditRating, issuers } from '../utils/constants';
+import { categories, creditRating, issuers } from '../utils/constants';
 import { FilterContext } from 'contexts/FilterContext';
+import { ComparisonContext } from 'contexts/ComparisonContext';
 
 export const Header: FC = () => {
   const [modal, setModal] = useState<boolean>(false);
   const [activeDropdown, setActiveDropdown] = useState<string>('');
 
   const filter = useContext(FilterContext);
+  const { products } = useContext(ComparisonContext);
 
   const toggleModal = () => {
     setModal(!modal);
@@ -76,8 +77,17 @@ export const Header: FC = () => {
           <span onClick={toggleModal} className="text-sm underline font-medium m-5 cursor-pointer">
             Advertiser Disclosure
           </span>
-          <div className="flex justify-center items-center bg-primary-light rounded-full h-[40px] w-[40px]">
+          <div className="relative cursor-pointer flex justify-center items-center bg-primary-light rounded-full h-[40px] w-[40px]">
             <ComparisonIcon />
+            {products.length ? (
+              <div className="absolute top-[-2px] right-[-2px] rounded-full w-[14px] h-[14px] bg-primary border-[2px] border-bg box-content flex items-center justify-center">
+                <span className="pl-[1px] text-[10px] text-white font-semibold">
+                  {products.length}
+                </span>
+              </div>
+            ) : (
+              ''
+            )}
           </div>
         </div>
       </div>
