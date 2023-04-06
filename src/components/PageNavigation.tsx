@@ -1,15 +1,11 @@
 import React, { FC } from 'react';
 import { Link as ScrollLink } from 'react-scroll';
 
-interface IPageNavigationProps {
-  anchorLinks: string[];
-}
-
-export const PageNavigation: FC<IPageNavigationProps> = () => {
+export const PageNavigation: FC = () => {
   return (
     <div className="p-[16px] w-full flex justify-start flex-col space-y-[24px]">
-      <span className="font-normal text-primary text-sm">CATEGORIES</span>
-      <ul className="flex flex-col space-y-[16px] cursor-pointer pl-[16px]">
+      <span className="font-normal text-primary text-sm">PAGE SECTIONS</span>
+      <ul className="flex flex-col space-y-[16px] cursor-pointer pl-0 md:pl-[16px]">
         <ScrollLink
           to="section1"
           smooth={true}

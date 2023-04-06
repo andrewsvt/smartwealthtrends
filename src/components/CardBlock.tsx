@@ -75,7 +75,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
       exit={{ opacity: 0, transition: { duration: 0.3 } }}
       className="p-[20px] bg-white rounded-[14px] space-y-[32px]"
     >
-      <div className="flex flex-col md:flex-row md:h-[180px] space-y-[20px] md:space-x-[20px] ">
+      <div className="flex flex-col md:flex-row md:h-[180px] space-y-[20px] md:space-x-[20px]">
         <img
           className="h-auto md:h-[180px] w-full md:w-auto"
           src={product.Creative.RawLogoImageUrl}

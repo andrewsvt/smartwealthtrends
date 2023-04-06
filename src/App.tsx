@@ -22,10 +22,6 @@ function App() {
     fetchData();
   }, [filter.activeCategory.field, filter.activeIssuer.field, filter.activeCreditRange.field]);
 
-  useEffect(() => {
-    console.log(comparison.products);
-  }, [comparison.products]);
-
   const fetchData = async () => {
     try {
       const response = await fetch(

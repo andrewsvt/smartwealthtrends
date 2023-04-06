@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState, useContext, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
-import { CardBlock, MenuPopups, Rating } from 'components';
+import { CardBlock, Header, MenuPopups, Rating } from 'components';
 import { CheckBox, PrimaryButton } from 'components/UI';
 
 import { ITableItem } from '../interfaces';
@@ -13,6 +13,7 @@ import { Listing } from 'interfaces/Api';
 
 import { selectedCardContext } from 'contexts/SelectedCardContext';
 import { ComparisonContext } from 'contexts/ComparisonContext';
+import { IUseWindowSize, useWindowSize } from 'hooks/useWindowSize';
 
 interface ICardpageProps {
   apiData: Listing[];
@@ -20,6 +21,8 @@ interface ICardpageProps {
 
 export const Card: FC<ICardpageProps> = ({ apiData }) => {
   const pathname = window.location.pathname.split('/');
+
+  const size: IUseWindowSize = useWindowSize();
 
   //contexts
   const { selectedCard } = useContext(selectedCardContext);
@@ -66,32 +69,52 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
   return (
     <>
       <div className="w-full">
-        <div className="h-[86px] w-full flex flex-row justify-between items-center">
-          <div className="flex flex-row">
-            <Link to={'/'} className="text-secondary-text pr-[8px]">
-              Home
-            </Link>
-            {pathname.slice(1).map((path, i) => {
-              return (
-                <div key={i} className="flex flex-row space-x-[8px]">
-                  <div className="text-medium-gray">/</div>
-                  <span className="text-secondary-text pr-[8px]">{path}</span>
-                </div>
-              );
-            })}
+        {size.width > 768 ? (
+          <div className="h-[86px] w-full flex flex-row justify-between items-center">
+            <div className="flex flex-row">
+              <Link to={'/'} className="text-secondary-text pr-[8px]">
+                Home
+              </Link>
+              {pathname.slice(1).map((path, i) => {
+                return (
+                  <div key={i} className="flex flex-row space-x-[8px]">
+                    <div className="text-medium-gray">/</div>
+                    <span className="text-secondary-text pr-[8px]">{path}</span>
+                  </div>
+                );
+              })}
+            </div>
+            <MenuPopups />
           </div>
-          <MenuPopups />
-        </div>
+        ) : (
+          <>
+            <Header innerPage={true} />
+            <div className="flex flex-row items-center py-[24px] md:py-0">
+              <Link to={'/'} className="text-secondary-text pr-[8px]">
+                Home
+              </Link>
+              {pathname.slice(1).map((path, i) => {
+                return (
+                  <div key={i} className="flex flex-row items-center space-x-[8px]">
+                    <div className="text-medium-gray">/</div>
+                    <span className="text-secondary-text pr-[8px]">{path}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        )}
+
         <div className="grid grid-cols-1 gap-4">
           {/* card details */}
           <div id="section1" className="p-[20px] bg-white rounded-[14px] space-y-[32px]">
-            <div className="flex flex-row h-[180px] space-x-[20px] ">
+            <div className="flex flex-col md:flex-row md:h-[180px] space-y-[20px] md:space-x-[20px]">
               <img
-                className="h-[180px] w-auto"
+                className="h-auto md:h-[180px] w-full md:w-auto"
                 src={selectedCard.Creative.RawLogoImageUrl}
                 alt="card"
               />
-              <div className="flex flex-col justify-between">
+              <div className="flex flex-col space-y-[20px] md:justify-between">
                 <div className="space-y-[12px]">
                   <h2
                     className="text-lg font-semibold"
@@ -99,7 +122,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                   />
                   <Rating value={Number(selectedCard.EditorRating)} />
                 </div>
-                <div className="flex flex-row items-center justify-start space-x-[8px]">
+                <div className="flex flex-col md:flex-row items-center justify-start space-y-[8px] md:space-x-[8px]">
                   <PrimaryButton text="Apply Now" />
 
                   {products.map((product) => product.ID).includes(selectedCard.ID) ? (
@@ -114,11 +137,11 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                 </div>
               </div>
             </div>
-            <div className="grid grid-cols-3 border-[1px] border-border rounded-[10px]">
+            <div className="grid grid-cols-1 md:grid-cols-3 border-[1px] border-border rounded-[10px]">
               {tableItems.slice(0, 3).map((tableItem, index) => {
                 const Icon = tableItem.icon;
                 return (
-                  <div key={index} className="p-[20px] space-y-[20px] tableItem">
+                  <div key={index} className="p-[20px] space-y-[20px] md:tableItem">
                     <div className="space-y-[8px]">
                       <h4 className="font-medium text-base">{tableItem.title}</h4>
                       <p className="font-light text-sm">{tableItem.description}</p>
@@ -127,7 +150,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                 );
               })}
               {tableItems.slice(3, 6).map((tableItem) => (
-                <div className="p-[20px] space-y-[8px] tableItem tableItemExpanded">
+                <div className="p-[20px] space-y-[8px] md:tableItem md:tableItemExpanded">
                   <h4 className="font-medium text-base">{tableItem.title}</h4>
                   <p className="font-light text-sm">{tableItem.description}</p>
                 </div>
@@ -143,7 +166,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                   __html: 'Pros and Cons of ' + selectedCard.CardName,
                 }}
               />
-              <div className="grid grid-cols-2 gap-[74px] ">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-[28px] md:gap-[74px] ">
                 <div className="space-y-[16px]">
                   <h3 className="text-basePlus font-medium text-secondary-text">Pros</h3>
                   <ul className="flex flex-col space-y-[24px] p-[12px]">
@@ -177,8 +200,11 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
               </div>
             </div>
             {/* Review */}
-            <div id="section3" className="flex flex-row w-full space-x-[54px]">
-              <div className="w-[328px] h-[300px] bg-white rounded-[14px]"></div>
+            <div
+              id="section3"
+              className="flex flex-col-reverse md:flex-row w-full md:space-x-[54px]"
+            >
+              <div className="w-[328px] h-[300px] bg-white rounded-[14px] mt-[28px] md:mt-0"></div>
               <div className="flex flex-col flex-1 space-y-[28px]">
                 <div className="space-y-[8px]">
                   <h2

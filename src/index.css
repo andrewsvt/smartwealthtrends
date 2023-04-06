@@ -23,10 +23,6 @@ img {
   transition-duration: 250ms;
 }
 
-body.activeModal {
-  overflow-y: hidden;
-}
-
 /* filter.tsx */
 
 .filterItem:hover > .filterIcon > path,

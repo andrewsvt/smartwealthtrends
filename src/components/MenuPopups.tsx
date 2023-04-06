@@ -21,14 +21,14 @@ export const MenuPopups: FC = () => {
 
   //disable scroll
   if (modalOne || modalTwo) {
-    document.body.classList.add('activeModal');
+    document.body.classList.add('overflow-hidden');
   } else {
-    document.body.classList.remove('activeModal');
+    document.body.classList.remove('overflow-hidden');
   }
 
   return (
     <>
-      <div className="flex flex-row items-center w-full lgPlus:w-auto justify-between lgPlus:justify-start h-[60px] lg:px-[24px] rounded-[10px]">
+      <div className="flex flex-row items-center w-full lgPlus:w-auto justify-between lgPlus:justify-start h-[80px] lg:h-[60px] lg:px-[24px] rounded-[10px]">
         <span
           onClick={toggleModalOne}
           className="text-sm underline font-medium md:mr-5 cursor-pointer"
