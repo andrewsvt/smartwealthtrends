@@ -90,9 +90,13 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
             <Rating value={Number(product.EditorRating)} />
           </div>
           <div className="flex flex-col md:flex-row items-center justify-start space-y-[8px] md:space-x-[8px]">
-            <div className="flex flex-row items-center space-x-[8px]">
+            <div className="flex flex-row items-center space-x-[8px] w-full md:w-auto">
               <PrimaryButton text="Apply Now" />
-              <Link to={`/cards/${product.ID}`} preventScrollReset={true}>
+              <Link
+                className="flex-1 md:flex-auto"
+                to={`/cards/${product.ID}`}
+                preventScrollReset={true}
+              >
                 <SecondaryButton onClick={() => updateSelectedCard(product)} text="Learn More" />
               </Link>
             </div>

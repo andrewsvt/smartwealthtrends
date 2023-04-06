@@ -28,7 +28,7 @@ export const MenuPopups: FC = () => {
 
   return (
     <>
-      <div className="flex flex-row items-center w-full lg:w-auto justify-between lg:justify-start h-[60px] lg:px-[24px] rounded-[10px]">
+      <div className="flex flex-row items-center w-full lgPlus:w-auto justify-between lgPlus:justify-start h-[60px] lg:px-[24px] rounded-[10px]">
         <span
           onClick={toggleModalOne}
           className="text-sm underline font-medium md:mr-5 cursor-pointer"

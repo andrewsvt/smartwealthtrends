@@ -67,14 +67,6 @@ export const Dropdown: FC<IDropdownProps> = ({
           ))}
         </ul>
       </div>
-      <div
-        onClick={() => setActiveDropdown('')}
-        className={
-          activeDropdown === filterName
-            ? 'absolute left-0 top-0 w-full h-[200%] bg-transparent'
-            : 'hidden'
-        }
-      ></div>
     </li>
   );
 };
