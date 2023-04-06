@@ -9,11 +9,14 @@ import { ITableItem } from '../interfaces';
 
 import { ReactComponent as CheckIcon } from '../assets/icons/check.svg';
 import { ReactComponent as CrossIcon } from '../assets/icons/cross.svg';
+import { ReactComponent as StarIcon } from '../assets/icons/RatingStarFull.svg';
+
 import { Listing } from 'interfaces/Api';
 
 import { selectedCardContext } from 'contexts/SelectedCardContext';
 import { ComparisonContext } from 'contexts/ComparisonContext';
 import { IUseWindowSize, useWindowSize } from 'hooks/useWindowSize';
+import ProgressBar from 'components/UI/ProgressBar';
 
 interface ICardpageProps {
   apiData: Listing[];
@@ -104,7 +107,6 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
             </div>
           </>
         )}
-
         <div className="grid grid-cols-1 gap-4">
           {/* card details */}
           <div id="section1" className="p-[20px] bg-white rounded-[14px] space-y-[32px]">
@@ -120,7 +122,12 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                     className="text-lg font-semibold"
                     dangerouslySetInnerHTML={{ __html: selectedCard.CardName }}
                   />
-                  <Rating value={Number(selectedCard.EditorRating)} />
+                  <div className="flex flex-row items-center">
+                    <span className="text-base font-medium mr-[14px]">
+                      {Number(selectedCard.EditorRating).toFixed(1)}
+                    </span>
+                    <Rating value={Number(selectedCard.EditorRating)} />
+                  </div>
                 </div>
                 <div className="flex flex-col md:flex-row items-center justify-start space-y-[8px] md:space-x-[8px]">
                   <PrimaryButton text="Apply Now" />
@@ -143,16 +150,31 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                 return (
                   <div key={index} className="p-[20px] space-y-[20px] md:tableItem">
                     <div className="space-y-[8px]">
-                      <h4 className="font-medium text-base">{tableItem.title}</h4>
-                      <p className="font-light text-sm">{tableItem.description}</p>
+                      <h4
+                        className="font-medium text-base"
+                        dangerouslySetInnerHTML={{ __html: tableItem.title }}
+                      />
+                      <p
+                        className="font-light text-sm"
+                        dangerouslySetInnerHTML={{ __html: tableItem.description }}
+                      />
                     </div>
                   </div>
                 );
               })}
-              {tableItems.slice(3, 6).map((tableItem) => (
-                <div className="p-[20px] space-y-[8px] md:tableItem md:tableItemExpanded">
-                  <h4 className="font-medium text-base">{tableItem.title}</h4>
-                  <p className="font-light text-sm">{tableItem.description}</p>
+              {tableItems.slice(3, 6).map((tableItem, index) => (
+                <div
+                  key={index}
+                  className="p-[20px] space-y-[8px] md:tableItem md:tableItemExpanded"
+                >
+                  <h4
+                    className="font-medium text-base"
+                    dangerouslySetInnerHTML={{ __html: tableItem.title }}
+                  />
+                  <p
+                    className="font-light text-sm"
+                    dangerouslySetInnerHTML={{ __html: tableItem.description }}
+                  />
                 </div>
               ))}
             </div>
@@ -204,7 +226,53 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
               id="section3"
               className="flex flex-col-reverse md:flex-row w-full md:space-x-[54px]"
             >
-              <div className="w-[328px] h-[300px] bg-white rounded-[14px] mt-[28px] md:mt-0"></div>
+              <div className="w-full md:w-[328px] h-auto bg-white rounded-[14px] space-y-[28px] p-[20px] mt-[28px] md:mt-0">
+                <div className="flex flex-row items-center space-x-[16px]">
+                  <div className="w-[64px] h-[64px] rounded-[12px] bg-bg flex items-center justify-center">
+                    <span className="text-[28px] leading-[36px] font-semibold text-secondary">
+                      {Number(selectedCard.EditorRating).toFixed(1)}
+                    </span>
+                  </div>
+                  <div className="flex flex-col space-y-[2px]">
+                    <div className="flex flex-row items-center">
+                      <Rating value={Number(selectedCard.EditorRating)} />
+                    </div>
+                    <p className="text-base font-medium">Expert Rating</p>
+                  </div>
+                </div>
+                <div className="flex flex-col space-y-[16px]">
+                  <div className="space-y-[8px]">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-secondary-text font-medium">Rewards</span>
+                      <div className="flex flex-row items-center space-x-[4px]">
+                        <span className="text-sm font-medium">{3.4}</span>
+                        <StarIcon style={{ width: '16px', height: '16px' }} />
+                      </div>
+                    </div>
+                    <ProgressBar value={3.4} />
+                  </div>
+                  <div className="space-y-[8px]">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-secondary-text font-medium">Fees</span>
+                      <div className="flex flex-row items-center space-x-[4px]">
+                        <span className="text-sm font-medium">{4.2}</span>
+                        <StarIcon style={{ width: '16px', height: '16px' }} />
+                      </div>
+                    </div>
+                    <ProgressBar value={4.2} />
+                  </div>
+                  <div className="space-y-[8px]">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-secondary-text font-medium">Support</span>
+                      <div className="flex flex-row items-center space-x-[4px]">
+                        <span className="text-sm font-medium">{5.0}</span>
+                        <StarIcon style={{ width: '16px', height: '16px' }} />
+                      </div>
+                    </div>
+                    <ProgressBar value={5.0} />
+                  </div>
+                </div>
+              </div>
               <div className="flex flex-col flex-1 space-y-[28px]">
                 <div className="space-y-[8px]">
                   <h2

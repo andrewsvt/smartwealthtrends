@@ -17,7 +17,7 @@ export const Footer: FC = () => {
           <Link to="/">
             <img className="w-[200px]" src={Logo} alt="logo"></img>
           </Link>
-          <p className="text-xs font-light text-secondary-text max-w-[90%] md:max-w-[50%] lg:max-w-none">
+          <p className="text-xs font-light text-secondary-text max-w-[90%] md:max-w-[50%] lg:max-w-none text-center lg:text-left">
             SmartWealthTrends is dedicated to bringing you the latest in finance. With in-depth
             reviews, comprehensive comparisons, and easy-to-follow guides, you’ll be prepared for
             whatever is thrown at you!

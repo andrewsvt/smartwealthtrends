@@ -20,10 +20,5 @@ export const Rating: FC<RatingProps> = ({ value }) => {
       );
     });
 
-  return (
-    <div className="flex flex-row items-center">
-      <span className="text-base font-medium mr-[14px]">{value.toFixed(1)}</span>
-      {stars}
-    </div>
-  );
+  return <div className="flex flex-row items-center">{stars}</div>;
 };

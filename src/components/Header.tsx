@@ -25,22 +25,29 @@ export const Header: FC<IHeader> = ({ innerPage }) => {
   const size: IUseWindowSize = useWindowSize();
 
   const dropdownRef = useRef<HTMLUListElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handler = (e: any) => {
+    const dropdownHandler = (e: any) => {
       if (!dropdownRef.current?.contains(e.target)) {
         setActiveDropdown('');
       }
     };
 
-    document.addEventListener('mousedown', handler);
+    const mobileMenuHandler = (e: any) => {
+      if (!mobileMenuRef.current?.contains(e.target)) {
+        setIsMobileMenuOpen(false);
+      }
+    };
 
-    return () => document.removeEventListener('mousedown', handler);
-  });
+    document.addEventListener('mousedown', dropdownHandler);
+    document.addEventListener('mousedown', mobileMenuHandler);
 
-  useEffect(() => {
-    console.log(isMobileMenuOpen);
-  }, [isMobileMenuOpen]);
+    return () => {
+      document.removeEventListener('mousedown', dropdownHandler);
+      document.removeEventListener('mousedown', mobileMenuHandler);
+    };
+  }, []);
 
   //disable scroll
   useEffect(() => {
@@ -133,6 +140,7 @@ export const Header: FC<IHeader> = ({ innerPage }) => {
           <AnimatePresence>
             {isMobileMenuOpen && (
               <motion.div
+                ref={mobileMenuRef}
                 className="fixed top-0 right-0 z-50 bg-white p-[20px] h-full space-y-[32px]"
                 initial={{ opacity: 0, x: '100%' }}
                 animate={{ opacity: 0.95, x: 0 }}

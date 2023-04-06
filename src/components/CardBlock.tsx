@@ -87,7 +87,12 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
               className="text-lg font-semibold"
               dangerouslySetInnerHTML={{ __html: product.CardName }}
             />
-            <Rating value={Number(product.EditorRating)} />
+            <div className="flex flex-row items-center">
+              <span className="text-base font-medium mr-[14px]">
+                {Number(product.EditorRating).toFixed(1)}
+              </span>
+              <Rating value={Number(product.EditorRating)} />
+            </div>
           </div>
           <div className="flex flex-col md:flex-row items-center justify-start space-y-[8px] md:space-x-[8px]">
             <div className="flex flex-row items-center space-x-[8px] w-full md:w-auto">
@@ -122,23 +127,36 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
                 <Icon />
               </div>
               <div className="space-y-[8px]">
-                <h4 className="font-medium text-base">{tableItem.title}</h4>
-                <p className="font-light text-sm">{tableItem.description}</p>
+                <h4
+                  className="font-medium text-base"
+                  dangerouslySetInnerHTML={{ __html: tableItem.title }}
+                />
+                <p
+                  className="font-light text-sm"
+                  dangerouslySetInnerHTML={{ __html: tableItem.description }}
+                />
               </div>
             </div>
           );
         })}
         {isExpanded
-          ? tableItems.slice(3, 6).map((tableItem) => (
+          ? tableItems.slice(3, 6).map((tableItem, index) => (
               <motion.div
                 initial={{ opacity: 0, y: -30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 50 }}
                 exit={{ opacity: 0, y: -30 }}
                 className="p-[20px] space-y-[8px] md:tableItem md:tableItemExpanded"
+                key={index}
               >
-                <h4 className="font-medium text-base">{tableItem.title}</h4>
-                <p className="font-light text-sm">{tableItem.description}</p>
+                <h4
+                  className="font-medium text-base"
+                  dangerouslySetInnerHTML={{ __html: tableItem.title }}
+                />
+                <p
+                  className="font-light text-sm"
+                  dangerouslySetInnerHTML={{ __html: tableItem.description }}
+                />
               </motion.div>
             ))
           : ''}
