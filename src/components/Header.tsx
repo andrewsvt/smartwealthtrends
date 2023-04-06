@@ -12,6 +12,7 @@ import Logo from '../assets/images/Logo.png';
 import LogoIcon from '../assets/images/LogoIcon.png';
 import { ReactComponent as BurgerOpenIcon } from '../assets/icons/Burger.svg';
 import { ReactComponent as BurgerCloseIcon } from '../assets/icons/BurgerCross.svg';
+import { HeaderFilters } from './HeaderFilters';
 
 interface IHeader {
   innerPage: boolean;
@@ -21,7 +22,6 @@ export const Header: FC<IHeader> = ({ innerPage }) => {
   const [activeDropdown, setActiveDropdown] = useState<string>('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
-  const filter = useContext(FilterContext);
   const size: IUseWindowSize = useWindowSize();
 
   const dropdownRef = useRef<HTMLUListElement>(null);
@@ -67,60 +67,15 @@ export const Header: FC<IHeader> = ({ innerPage }) => {
       {size.width > 768 ? (
         <div className="sticky bg-bg top-0 w-full h-auto pt-[24px] lg:pt-0 lgPlus:h-[86px] border-b-[1px] border-[#EAE9EE] flex flex-col lgPlus:flex-row items-start lgPlus:items-center justify-start lgPlus:justify-between z-10">
           <div className="flex items-center">
-            {size.width < 976 ? (
+            {size.width < 976 && (
               <div className="flex justify-center items-center mr-[16px]">
                 <Link to="/">
                   <img src={LogoIcon} alt="logo" className="h-[30px]"></img>
                 </Link>
               </div>
-            ) : (
-              ''
             )}
-            <ul
-              ref={dropdownRef}
-              className="flex flex-col w-full md:w-auto md:flex-row items-center md:space-x-[8px]"
-            >
-              <Dropdown
-                filterName="Category"
-                fields={categories}
-                updateState={filter.updateCategory}
-                contextState={filter.activeCategory}
-                setActiveDropdown={setActiveDropdown}
-                activeDropdown={activeDropdown}
-              />
-              <Dropdown
-                filterName="Issuer"
-                fields={issuers}
-                updateState={filter.updateIssuer}
-                contextState={filter.activeIssuer}
-                setActiveDropdown={setActiveDropdown}
-                activeDropdown={activeDropdown}
-              />
-              <Dropdown
-                filterName="Credit Range"
-                fields={creditRating}
-                updateState={filter.updateCreditRange}
-                contextState={filter.activeCreditRange}
-                setActiveDropdown={setActiveDropdown}
-                activeDropdown={activeDropdown}
-              />
-              {filter.activeCategory !== categories[0] ||
-              filter.activeIssuer !== issuers[0] ||
-              filter.activeCreditRange !== creditRating[0] ? (
-                <button
-                  onClick={() => {
-                    filter.updateCategory(categories[0]);
-                    filter.updateIssuer(issuers[0]);
-                    filter.updateCreditRange(creditRating[0]);
-                  }}
-                  className="bg-error hover:bg-rose-600 rounded-[14px] text-white text-xs px-[14px] h-[28px] customTransition"
-                >
-                  Reset
-                </button>
-              ) : (
-                ''
-              )}
-            </ul>
+
+            <HeaderFilters ref={dropdownRef} activeDropdown={activeDropdown} setActiveDropdown={setActiveDropdown} />
           </div>
           <MenuPopups />
         </div>
@@ -153,51 +108,7 @@ export const Header: FC<IHeader> = ({ innerPage }) => {
                 {innerPage ? (
                   <PageNavigation />
                 ) : (
-                  <ul
-                    ref={dropdownRef}
-                    className="flex flex-col justify-start items-center h-full space-y-[20px]"
-                  >
-                    <Dropdown
-                      filterName="Category"
-                      fields={categories}
-                      updateState={filter.updateCategory}
-                      contextState={filter.activeCategory}
-                      setActiveDropdown={setActiveDropdown}
-                      activeDropdown={activeDropdown}
-                    />
-                    <Dropdown
-                      filterName="Issuer"
-                      fields={issuers}
-                      updateState={filter.updateIssuer}
-                      contextState={filter.activeIssuer}
-                      setActiveDropdown={setActiveDropdown}
-                      activeDropdown={activeDropdown}
-                    />
-                    <Dropdown
-                      filterName="Credit Range"
-                      fields={creditRating}
-                      updateState={filter.updateCreditRange}
-                      contextState={filter.activeCreditRange}
-                      setActiveDropdown={setActiveDropdown}
-                      activeDropdown={activeDropdown}
-                    />
-                    {filter.activeCategory !== categories[0] ||
-                    filter.activeIssuer !== issuers[0] ||
-                    filter.activeCreditRange !== creditRating[0] ? (
-                      <button
-                        onClick={() => {
-                          filter.updateCategory(categories[0]);
-                          filter.updateIssuer(issuers[0]);
-                          filter.updateCreditRange(creditRating[0]);
-                        }}
-                        className="bg-error hover:bg-rose-600 rounded-[14px] text-white text-xs px-[14px] h-[28px] customTransition"
-                      >
-                        Reset
-                      </button>
-                    ) : (
-                      ''
-                    )}
-                  </ul>
+                  <HeaderFilters ref={dropdownRef} activeDropdown={activeDropdown} setActiveDropdown={setActiveDropdown} />
                 )}
               </motion.div>
             )}

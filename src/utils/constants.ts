@@ -7,6 +7,7 @@ import { ReactComponent as AirplaneIcon } from '../assets/icons/airplane.svg';
 import { ReactComponent as BriefcaseIcon } from '../assets/icons/briefcase.svg';
 import { ReactComponent as CalendarIcon } from '../assets/icons/calendar.svg';
 import { Listing } from 'interfaces/Api';
+import { ReactElement, SVGProps } from 'react';
 
 export enum CategoriesEnum {
   topCards = '&crd=25',
@@ -17,6 +18,17 @@ export enum CategoriesEnum {
   travel = '&crd=4',
   business = '&crd=9',
   noAnnualFee = '&crd=11',
+}
+
+export enum CategoriesSlugEnum {
+  topCards = 'top-cards',
+  lowOngoingRate = 'low-ongoing-rate',
+  balanceTransfer = 'balance-transfer',
+  cashBack = 'cash-back',
+  rewards = 'rewards',
+  travel = 'travel',
+  business = 'business',
+  noAnnualFee = 'no-annual-fee',
 }
 
 export enum IssuersEnum {
@@ -43,167 +55,184 @@ export enum CreditRatingEnum {
   noneLimitedHistory = '&cccrate=5',
 }
 
-export const filterCategories = [
+export interface ISelectValue {
+  text: string,
+  field: string | CategoriesEnum | IssuersEnum | CreditRatingEnum,
+  slug: string
+}
+
+export interface ICategorySelectValue extends ISelectValue {
+  icon: (props: SVGProps<SVGElement>) => ReactElement
+}
+
+export const categories: ICategorySelectValue[] = [
   {
     text: 'Top Cards',
-    title: 'Top Offers Page Title',
+    field: CategoriesEnum.topCards,
     icon: AwardIcon,
-    field: CategoriesEnum.topCards,
+    slug: CategoriesSlugEnum.topCards
   },
   {
     text: 'Low Ongoing Rate',
-    title: 'Low Interest Page Title',
+    field: CategoriesEnum.lowOngoingRate,
     icon: TrandingDownIcon,
-    field: CategoriesEnum.lowOngoingRate,
+    slug: CategoriesSlugEnum.lowOngoingRate
   },
   {
     text: 'Balance transfer',
-    title: 'Balance transfer Page Title',
+    field: CategoriesEnum.balanceTransfer,
     icon: RefreshIcon,
-    field: CategoriesEnum.balanceTransfer,
+    slug: CategoriesSlugEnum.balanceTransfer
   },
   {
     text: 'Cash Back',
-    title: 'Cash Back Page Title',
+    field: CategoriesEnum.cashBack,
     icon: CoinIcon,
-    field: CategoriesEnum.cashBack,
+    slug: CategoriesSlugEnum.cashBack
   },
   {
     text: 'Rewards',
-    title: 'Rewards Page Title',
+    field: CategoriesEnum.rewards,
     icon: BoxIcon,
-    field: CategoriesEnum.rewards,
+    slug: CategoriesSlugEnum.rewards
   },
   {
     text: 'Travel',
-    title: 'Travel Page Title',
+    field: CategoriesEnum.travel,
     icon: AirplaneIcon,
-    field: CategoriesEnum.travel,
+    slug: CategoriesSlugEnum.travel
   },
   {
     text: 'Business',
-    title: 'Business Page Title',
+    field: CategoriesEnum.business,
     icon: BriefcaseIcon,
-    field: CategoriesEnum.business,
+    slug: CategoriesSlugEnum.business
   },
   {
     text: 'No annual fee',
-    title: 'No annual fee Page Title',
+    field: CategoriesEnum.noAnnualFee,
     icon: CalendarIcon,
-    field: CategoriesEnum.noAnnualFee,
+    slug: CategoriesSlugEnum.noAnnualFee
   },
 ];
 
-export const categories = [
-  {
-    text: 'Top Cards',
-    field: CategoriesEnum.topCards,
-  },
-  {
-    text: 'Low Ongoing Rate',
-    field: CategoriesEnum.lowOngoingRate,
-  },
-  {
-    text: 'Balance transfer',
-    field: CategoriesEnum.balanceTransfer,
-  },
-  {
-    text: 'Cash Back',
-    field: CategoriesEnum.cashBack,
-  },
-  {
-    text: 'Rewards',
-    field: CategoriesEnum.rewards,
-  },
-  {
-    text: 'Travel',
-    field: CategoriesEnum.travel,
-  },
-  {
-    text: 'Business',
-    field: CategoriesEnum.business,
-  },
-  {
-    text: 'No annual fee',
-    field: CategoriesEnum.noAnnualFee,
-  },
-];
+export enum IssuersSlugEnum {
+  allIssuers = 'all-issuers',
+  chase = 'chase',
+  citi = 'citi',
+  firstProgress = 'first-progress',
+  reliantHoldings = 'reliant-holdings',
+  bankOfAmerica = 'bank-of-america',
+  theBankOfMissouri = 'the-bank-of-missouri',
+  genesisBankcard = 'genesis-bankcard',
+  celticBank = 'celtic-bank',
+  tdBank = 'td-bank',
+  merrickBank = 'merrick-bank',
+  wellsFargo = 'wellsFargo'
+}
 
-export const issuers = [
+export const issuers: ISelectValue[] = [
   {
     text: 'All Issuers',
     field: IssuersEnum.allIssuers,
+    slug: IssuersSlugEnum.allIssuers
   },
   {
     text: 'Chase',
     field: IssuersEnum.chase,
+    slug: IssuersSlugEnum.chase
   },
   {
     text: 'Citi',
     field: IssuersEnum.citi,
+    slug: IssuersSlugEnum.citi
   },
   {
     text: 'First Progress',
     field: IssuersEnum.firstProgress,
+    slug: IssuersSlugEnum.firstProgress
   },
   {
     text: 'Reliant Holdings',
     field: IssuersEnum.reliantHoldings,
+    slug: IssuersSlugEnum.reliantHoldings
   },
   {
     text: 'Bank of America',
     field: IssuersEnum.bankOfAmerica,
+    slug: IssuersSlugEnum.bankOfAmerica
   },
   {
     text: 'The Bank of Missouri',
     field: IssuersEnum.theBankOfMissouri,
+    slug: IssuersSlugEnum.theBankOfMissouri
   },
   {
     text: 'Genesis Bankcard',
     field: IssuersEnum.genesisBankcard,
+    slug: IssuersSlugEnum.genesisBankcard
   },
   {
     text: 'Celtic Bank',
     field: IssuersEnum.celticBank,
+    slug: IssuersSlugEnum.celticBank
   },
   {
     text: 'TD Bank',
     field: IssuersEnum.TDBank,
+    slug: IssuersSlugEnum.tdBank
   },
   {
     text: 'Merrick Bank',
     field: IssuersEnum.merrickBank,
+    slug: IssuersSlugEnum.merrickBank
   },
   {
     text: 'Wells Fargo',
     field: IssuersEnum.wellsFargo,
+    slug: IssuersSlugEnum.wellsFargo
   },
 ];
 
-export const creditRating = [
+export enum CreditRatingSlugEnum {
+  allCreditRating = 'all-credit-rating',
+  excellent = 'excellent',
+  good = 'good',
+  averageFair = 'average-fair',
+  poor = 'poor',
+  noneLimitedHistory = 'none-limited-history'
+}
+
+export const creditRating: ISelectValue[] = [
   {
     text: 'All Credit Ranges',
     field: CreditRatingEnum.allCreditRating,
+    slug: CreditRatingSlugEnum.allCreditRating
   },
   {
     text: 'Excellent',
     field: CreditRatingEnum.excellent,
+    slug: CreditRatingSlugEnum.excellent
   },
   {
     text: 'Good',
     field: CreditRatingEnum.good,
+    slug: CreditRatingSlugEnum.good
   },
   {
     text: 'Average/Fair',
     field: CreditRatingEnum.averageFair,
+    slug: CreditRatingSlugEnum.averageFair
   },
   {
     text: 'Poor',
     field: CreditRatingEnum.poor,
+    slug: CreditRatingSlugEnum.poor
   },
   {
     text: 'None/Limited History',
     field: CreditRatingEnum.noneLimitedHistory,
+    slug: CreditRatingSlugEnum.noneLimitedHistory
   },
 ];
 

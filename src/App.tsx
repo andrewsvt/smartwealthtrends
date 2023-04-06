@@ -1,61 +1,30 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
 
 import { Footer, Sidebar } from './components';
 import { Home, Card } from './pages';
-import { Listing } from 'interfaces/Api';
-import { FilterContext } from 'contexts/FilterContext';
 
-import { apiDataInitialState } from 'utils/constants';
+import { useGetApiData } from 'hooks/useGetApiData';
 
 function App() {
-  const apiUrl = process.env.REACT_APP_API_URL;
-
-  const filter = useContext(FilterContext);
-
-  const [apiData, setApiData] = useState<Listing[]>(apiDataInitialState);
-  const [totalRecords, setTotalRecords] = useState<number>(1);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  useEffect(() => {
-    fetchData();
-  }, [filter.activeCategory.field, filter.activeIssuer.field, filter.activeCreditRange.field]);
-
-  const fetchData = async () => {
-    try {
-      setIsLoading(true);
-      const response = await fetch(
-        `${apiUrl}${filter.activeCategory.field}${filter.activeIssuer.field}${filter.activeCreditRange.field}&xml_version=2&max=10`
-      );
-      const data = await response.json();
-      await setTotalRecords(data.ResultSet.TotalRecords);
-      setIsLoading(false);
-      setApiData(data.ResultSet.Listings.Listing);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
+  const {apiData, totalRecords, isLoading} = useGetApiData()
 
   return (
-    <Router>
-      <div className="bg-bg">
-        <div className="xl:max-w-[1400px] m-0 xl:m-auto px-4 xl:px-0 w-full h-full pt-0 lg:pt-6">
-          <div className="flex flex-row lg:space-x-[54px]">
-            <Sidebar />
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <Home apiData={apiData} totalRecords={totalRecords} isLoading={isLoading} />
-                }
-              />
-              <Route path="/cards/:cardId" element={<Card apiData={apiData} />} />
-            </Routes>
-          </div>
-          <Footer />
+    <div className="bg-bg">
+      <div className="xl:max-w-[1400px] m-0 xl:m-auto px-4 xl:px-0 w-full h-full pt-0 lg:pt-6">
+        <div className="flex flex-row lg:space-x-[54px]">
+          <Sidebar />
+          <Routes>
+            <Route
+              path="/"
+              element={<Home apiData={apiData} totalRecords={totalRecords} isLoading={isLoading} />}
+            />
+            <Route path="/cards/:cardId" element={<Card apiData={apiData} />} />
+          </Routes>
         </div>
+        <Footer />
       </div>
-    </Router>
+    </div>
   );
 }
 
