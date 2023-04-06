@@ -1,5 +1,5 @@
 import { FilterContext } from 'contexts/FilterContext';
-import React, { useContext, useState, forwardRef, Dispatch } from 'react';
+import React, { useContext, forwardRef, Dispatch } from 'react';
 import { Dropdown } from './Dropdown';
 import { categories, creditRating, issuers } from 'utils/constants';
 import { IUseWindowSize, useWindowSize } from 'hooks/useWindowSize';
