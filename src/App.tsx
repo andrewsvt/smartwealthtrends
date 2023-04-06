@@ -7,16 +7,15 @@ import { Listing } from 'interfaces/Api';
 import { FilterContext } from 'contexts/FilterContext';
 
 import { apiDataInitialState } from 'utils/constants';
-import { ComparisonContext } from 'contexts/ComparisonContext';
 
 function App() {
   const apiUrl = process.env.REACT_APP_API_URL;
 
   const filter = useContext(FilterContext);
-  const comparison = useContext(ComparisonContext);
 
   const [apiData, setApiData] = useState<Listing[]>(apiDataInitialState);
   const [totalRecords, setTotalRecords] = useState<number>(1);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     fetchData();
@@ -24,11 +23,13 @@ function App() {
 
   const fetchData = async () => {
     try {
+      setIsLoading(true);
       const response = await fetch(
         `${apiUrl}${filter.activeCategory.field}${filter.activeIssuer.field}${filter.activeCreditRange.field}&xml_version=2&max=10`
       );
       const data = await response.json();
       await setTotalRecords(data.ResultSet.TotalRecords);
+      setIsLoading(false);
       setApiData(data.ResultSet.Listings.Listing);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -42,7 +43,12 @@ function App() {
           <div className="flex flex-row lg:space-x-[54px]">
             <Sidebar />
             <Routes>
-              <Route path="/" element={<Home apiData={apiData} totalRecords={totalRecords} />} />
+              <Route
+                path="/"
+                element={
+                  <Home apiData={apiData} totalRecords={totalRecords} isLoading={isLoading} />
+                }
+              />
               <Route path="/cards/:cardId" element={<Card apiData={apiData} />} />
             </Routes>
           </div>

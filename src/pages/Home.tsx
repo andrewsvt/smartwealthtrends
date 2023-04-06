@@ -8,9 +8,10 @@ import { Listing } from 'interfaces/Api';
 interface IHomeProps {
   apiData: Listing[];
   totalRecords: number;
+  isLoading: boolean;
 }
 
-export const Home: FC<IHomeProps> = ({ apiData, totalRecords }) => {
+export const Home: FC<IHomeProps> = ({ apiData, totalRecords, isLoading }) => {
   const filter = useContext(FilterContext);
 
   return (
@@ -25,7 +26,21 @@ export const Home: FC<IHomeProps> = ({ apiData, totalRecords }) => {
         </div>
         <AnimatePresence>
           <motion.div className="grid grid-cols-1 gap-4">
-            {totalRecords > 0
+            {isLoading
+              ? Array(3)
+                  .fill(null)
+                  .map((element) => {
+                    return (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1, transition: { duration: 0.6 } }}
+                        viewport={{ once: true }}
+                        exit={{ opacity: 0, transition: { duration: 0.3 } }}
+                        className="bg-white rounded-[14px] w-full h-[490px]"
+                      ></motion.div>
+                    );
+                  })
+              : totalRecords > 0
               ? apiData.map((product, index) => (
                   <CardBlock key={product.ID} product={product} index={index} />
                 ))
