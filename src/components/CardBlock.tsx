@@ -31,13 +31,13 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
     () => [
       {
         icon: GiftIcon,
-        title: 'Welcome Offer',
-        description: product.PointsPerDollar,
+        title: `Welcome Offer - ${product.SignupReward}`,
+        description: product.SignupRequirement,
       },
       {
         icon: StarIcon,
         title: 'Rewards Rate',
-        description: product.MilesPerDollar,
+        description: product.PointsPerDollar,
       },
       {
         icon: CopyIcon,

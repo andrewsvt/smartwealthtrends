@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState, useContext, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import { CardBlock, Header, MenuPopups, Rating } from 'components';
 import { CheckBox, PrimaryButton } from 'components/UI';
@@ -23,26 +23,33 @@ interface ICardpageProps {
 }
 
 export const Card: FC<ICardpageProps> = ({ apiData }) => {
+  let { cardId } = useParams();
+
   const pathname = window.location.pathname.split('/');
 
   const size: IUseWindowSize = useWindowSize();
 
   //contexts
-  const { selectedCard } = useContext(selectedCardContext);
+  const { selectedCard, updateSelectedCard } = useContext(selectedCardContext);
   const { products, addProduct, removeProduct } = useContext(ComparisonContext);
+
+  useEffect(() => {
+    if (selectedCard.ID !== cardId) {
+    }
+  }, []);
 
   const [tableItems, setTableItems] = useState<ITableItem[]>([
     {
-      title: 'Balance Transfer Intro APR',
-      description: selectedCard.BalanceTransferIntroAPR,
+      title: 'Sign Up Bonus',
+      description: selectedCard.SignupRequirement,
     },
     {
-      title: 'Intro APRD uration',
-      description: selectedCard.IntroAPRDuration,
+      title: 'Rewards Rate',
+      description: selectedCard.PointsPerDollar,
     },
     {
       title: 'Intro APR Rate',
-      description: selectedCard.IntroAPRRate,
+      description: `${selectedCard.IntroAPRRate}<br/>${selectedCard.IntroAPRDuration}<br/>${selectedCard.RegAPR}<br/>${selectedCard.RegAPRType}`,
     },
     {
       title: 'Annual Fees',
@@ -263,7 +270,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                   </div>
                   <div className="space-y-[8px]">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-secondary-text font-medium">Support</span>
+                      <span className="text-sm text-secondary-text font-medium">Value</span>
                       <div className="flex flex-row items-center space-x-[4px]">
                         <span className="text-sm font-medium">{5.0}</span>
                         <StarIcon style={{ width: '16px', height: '16px' }} />
