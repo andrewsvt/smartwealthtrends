@@ -29,7 +29,7 @@ export const Home: FC<IHomeProps> = ({ apiData, totalRecords, isLoading }) => {
             {isLoading
               ? Array(3)
                   .fill(null)
-                  .map((element) => {
+                  .map((element, idx) => {
                     return (
                       <motion.div
                         initial={{ opacity: 0 }}
@@ -37,6 +37,7 @@ export const Home: FC<IHomeProps> = ({ apiData, totalRecords, isLoading }) => {
                         viewport={{ once: true }}
                         exit={{ opacity: 0, transition: { duration: 0.3 } }}
                         className="bg-white rounded-[14px] w-full h-[490px]"
+                        key={idx}
                       ></motion.div>
                     );
                   })

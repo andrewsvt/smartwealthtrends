@@ -1,13 +1,14 @@
 import React, { FC } from 'react';
 import { ReactComponent as ShortArrowDownIcon } from '../assets/icons/arrowShortDown.svg';
 import { ReactComponent as ShortArrowUpIcon } from '../assets/icons/arrowShortUp.svg';
+import { ISelectValue } from 'utils/constants';
 
 interface IDropdownProps {
   filterName: string;
-  fields: any;
+  fields: ISelectValue[];
   updateState: any;
   contextState: any;
-  setActiveDropdown: React.Dispatch<React.SetStateAction<string>>;
+  setActiveDropdown: React.Dispatch<string>;
   activeDropdown: any;
 }
 
@@ -49,11 +50,11 @@ export const Dropdown: FC<IDropdownProps> = ({
         }
       >
         <ul className="space-y-[20px]">
-          {fields.map((field: any) => (
+          {fields.map((field) => (
             <li
               key={field.field}
               onClick={(e) => {
-                updateState(field);
+                updateState(field.slug);
                 setActiveDropdown('');
               }}
               className={
