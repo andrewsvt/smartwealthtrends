@@ -3,8 +3,8 @@ import { Link as ScrollLink } from 'react-scroll';
 
 export const PageNavigation: FC = () => {
   return (
-    <div className="p-[16px] w-full flex justify-start flex-col space-y-[24px]">
-      <span className="font-normal text-primary text-sm">PAGE SECTIONS</span>
+    <div className="p-[16px] w-full flex justify-start flex-col space-y-[24px] bg-white rounded-[14px]">
+      <span className="font-normal text-primary text-sm">Page Sections</span>
       <ul className="flex flex-col space-y-[16px] cursor-pointer pl-0 md:pl-[16px]">
         <ScrollLink
           to="section1"

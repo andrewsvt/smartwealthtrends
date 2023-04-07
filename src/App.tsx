@@ -7,11 +7,11 @@ import { Home, Card } from './pages';
 import { useGetApiData } from 'hooks/useGetApiData';
 
 function App() {
-  const {apiData, totalRecords, isLoading} = useGetApiData()
+  const { apiData, totalRecords, isLoading } = useGetApiData();
 
   return (
     <div className="bg-bg">
-      <div className="xl:max-w-[1400px] m-0 xl:m-auto px-4 xl:px-0 w-full h-full pt-0 lg:pt-6">
+      <div className="xl:max-w-[1400px] m-0 xl:m-auto px-4 xl:px-0 w-full h-full pt-0">
         <div className="flex flex-row lg:space-x-[54px]">
           <Sidebar />
           <Routes>

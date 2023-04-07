@@ -65,8 +65,8 @@ export const Header: FC<IHeader> = ({ innerPage }) => {
   return (
     <>
       {size.width > 768 ? (
-        <div className="sticky bg-bg top-0 w-full h-auto pt-[24px] lg:pt-0 lgPlus:h-[86px] border-b-[1px] border-[#EAE9EE] flex flex-col lgPlus:flex-row items-start lgPlus:items-center justify-start lgPlus:justify-between z-10">
-          <div className="flex items-center">
+        <div className="sticky bg-bg top-0 w-full h-auto lg:pt-0 border-b-[1px] border-[#EAE9EE] flex flex-col lgPlus:flex-row items-start lgPlus:items-center justify-start lgPlus:justify-between z-10">
+          <div className="flex items-center h-[100px]">
             {size.width < 976 && (
               <div className="flex justify-center items-center mr-[16px]">
                 <Link to="/">
@@ -75,7 +75,11 @@ export const Header: FC<IHeader> = ({ innerPage }) => {
               </div>
             )}
 
-            <HeaderFilters ref={dropdownRef} activeDropdown={activeDropdown} setActiveDropdown={setActiveDropdown} />
+            <HeaderFilters
+              ref={dropdownRef}
+              activeDropdown={activeDropdown}
+              setActiveDropdown={setActiveDropdown}
+            />
           </div>
           <MenuPopups />
         </div>
@@ -108,7 +112,11 @@ export const Header: FC<IHeader> = ({ innerPage }) => {
                 {innerPage ? (
                   <PageNavigation />
                 ) : (
-                  <HeaderFilters ref={dropdownRef} activeDropdown={activeDropdown} setActiveDropdown={setActiveDropdown} />
+                  <HeaderFilters
+                    ref={dropdownRef}
+                    activeDropdown={activeDropdown}
+                    setActiveDropdown={setActiveDropdown}
+                  />
                 )}
               </motion.div>
             )}

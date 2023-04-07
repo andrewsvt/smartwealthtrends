@@ -7,9 +7,9 @@ export const Filter: FC = () => {
   const { activeCategory, updateCategory } = useContext(FilterContext);
 
   return (
-    <>
+    <aside className="w-full bg-white rounded-[14px] hidden lg:flex flex-col items-center">
       <div className="p-[16px] w-full flex justify-start flex-col">
-        <span className="font-normal text-primary text-sm">CATEGORIES</span>
+        <span className="font-normal text-primary text-sm">Categories</span>
         <div className="grid grid-cols-2 gap-[8px] mt-4">
           {categories.map((item) => {
             const Icon = item.icon;
@@ -39,6 +39,6 @@ export const Filter: FC = () => {
           })}
         </div>
       </div>
-    </>
+    </aside>
   );
 };

@@ -80,7 +80,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
     <>
       <div className="w-full">
         {size.width > 768 ? (
-          <div className="h-[86px] w-full flex flex-row justify-between items-center">
+          <div className="sticky top-0 bg-bg border-b-[1px] border-[#EAE9EE] h-[100px] w-full flex flex-row justify-between items-center">
             <div className="flex flex-row">
               <Link to={'/'} className="text-secondary-text pr-[8px]">
                 Home
@@ -99,7 +99,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
         ) : (
           <>
             <Header innerPage={true} />
-            <div className="flex flex-row items-center py-[24px] md:py-0">
+            <div className="flex flex-row items-center py-[24px] lg:py-0">
               <Link to={'/'} className="text-secondary-text pr-[8px]">
                 Home
               </Link>
