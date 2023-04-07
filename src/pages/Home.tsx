@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 import { CardBlock } from '../components';
 import { Listing } from 'interfaces/Api';
+import { useGetApiData } from 'hooks/useGetApiData';
 
 interface IHomeProps {
   apiData: Listing[];
@@ -11,8 +12,9 @@ interface IHomeProps {
   isLoading: boolean;
 }
 
-export const Home: FC<IHomeProps> = ({ apiData, totalRecords, isLoading }) => {
+export const Home: FC<IHomeProps> = () => {
   const filter = useContext(FilterContext);
+  const { apiData, totalRecords, isLoading } = useGetApiData();
 
   return (
     <>

@@ -81,7 +81,6 @@ export const Header: FC<IHeaderProps> = ({ queryParams }) => {
       .join('&');
 
     setCurrentParams(params);
-    console.log(currentParams);
   }, [filter]);
 
   return (
@@ -103,11 +102,18 @@ export const Header: FC<IHeaderProps> = ({ queryParams }) => {
                 </Link>
               </div>
             )}
-            <HeaderFilters
-              ref={dropdownRef}
-              activeDropdown={activeDropdown}
-              setActiveDropdown={setActiveDropdown}
-            />
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <HeaderFilters
+                    ref={dropdownRef}
+                    activeDropdown={activeDropdown}
+                    setActiveDropdown={setActiveDropdown}
+                  />
+                }
+              />
+            </Routes>
           </div>
           <MenuPopups />
         </div>
