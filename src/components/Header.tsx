@@ -1,5 +1,5 @@
 import React, { FC, useContext, useEffect, useRef, useState } from 'react';
-import { Link, Route, Routes, useNavigate, useLocation } from 'react-router-dom';
+import { Link, Route, Routes } from 'react-router-dom';
 import { IUseWindowSize, useWindowSize } from 'hooks/useWindowSize';
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -65,17 +65,6 @@ export const Header: FC<IHeaderProps> = ({ queryParams }) => {
     };
   }, [isMobileMenuOpen]);
 
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  function handleClick() {
-    const { pathname } = location;
-    const searchParams = queryParams ?? new URLSearchParams();
-    const search = searchParams.toString();
-    const url = `${pathname}?${search}`;
-    navigate(url);
-  }
-
   useEffect(() => {
     const paramsObj = {
       category: filter.activeCategory.slug,
@@ -102,14 +91,14 @@ export const Header: FC<IHeaderProps> = ({ queryParams }) => {
           <div className="flex items-center h-[100px]">
             {size.width < 976 && (
               <div className="flex justify-center items-center mr-[16px] cursor-pointer">
-                <Link to={`/?${currentParams}`}>
+                <Link to={`/?${currentParams}`} preventScrollReset={true}>
                   <img src={LogoIcon} alt="logo" className="h-[30px]" />
                 </Link>
               </div>
             )}
             {size.width > 976 && (
               <div className="flex justify-center items-center mr-[54px] cursor-pointer">
-                <Link to={`/?${currentParams}`}>
+                <Link to={`/?${currentParams}`} preventScrollReset={true}>
                   <img src={Logo} alt="logo" className="h-[30px]" />
                 </Link>
               </div>
