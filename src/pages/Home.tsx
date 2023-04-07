@@ -17,7 +17,6 @@ export const Home: FC<IHomeProps> = ({ apiData, totalRecords, isLoading }) => {
   return (
     <>
       <div className="w-full">
-        <Header innerPage={false} />
         <div className="my-[24px] md:my-0 md:h-[126px] w-full flex flex-row justify-between items-center">
           <div className="flex flex-col">
             <h1 className="text-xl font-semibold pb-[6px]">{`${filter.activeCategory.text} from ${filter.activeIssuer.text}`}</h1>

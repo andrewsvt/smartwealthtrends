@@ -80,11 +80,9 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
     <>
       <div className="w-full">
         {size.width > 768 ? (
-          <div className="sticky top-0 bg-bg border-b-[1px] border-[#EAE9EE] h-[100px] w-full flex flex-row justify-between items-center">
-            <div className="flex flex-row">
-              <Link to={'/'} className="text-secondary-text pr-[8px]">
-                Home
-              </Link>
+          <div className="sticky top-0 bg-bg border-b-[1px] border-[#EAE9EE] h-[72px] w-full flex flex-row justify-between items-center">
+            <div className="flex flex-row items-center py-[24px] lg:py-0">
+              <div className="text-secondary-text pr-[8px]">Home</div>
               {pathname.slice(1).map((path, i) => {
                 return (
                   <div key={i} className="flex flex-row space-x-[8px]">
@@ -94,15 +92,11 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                 );
               })}
             </div>
-            <MenuPopups />
           </div>
         ) : (
           <>
-            <Header innerPage={true} />
             <div className="flex flex-row items-center py-[24px] lg:py-0">
-              <Link to={'/'} className="text-secondary-text pr-[8px]">
-                Home
-              </Link>
+              <div className="text-secondary-text pr-[8px]">Home</div>
               {pathname.slice(1).map((path, i) => {
                 return (
                   <div key={i} className="flex flex-row items-center space-x-[8px]">

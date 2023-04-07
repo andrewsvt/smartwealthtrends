@@ -1,12 +1,9 @@
-import React, { FC, useContext, useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { FC, useEffect, useRef, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import { IUseWindowSize, useWindowSize } from 'hooks/useWindowSize';
 import { AnimatePresence, motion } from 'framer-motion';
 
-import { Dropdown, MenuPopups, PageNavigation } from './index';
-
-import { categories, creditRating, issuers } from '../utils/constants';
-import { FilterContext } from 'contexts/FilterContext';
+import { MenuPopups, PageNavigation } from './index';
 
 import Logo from '../assets/images/Logo.png';
 import LogoIcon from '../assets/images/LogoIcon.png';
@@ -14,13 +11,11 @@ import { ReactComponent as BurgerOpenIcon } from '../assets/icons/Burger.svg';
 import { ReactComponent as BurgerCloseIcon } from '../assets/icons/BurgerCross.svg';
 import { HeaderFilters } from './HeaderFilters';
 
-interface IHeader {
-  innerPage: boolean;
-}
-
-export const Header: FC<IHeader> = ({ innerPage }) => {
+export const Header: FC = () => {
   const [activeDropdown, setActiveDropdown] = useState<string>('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+
+  const { cardId } = useParams();
 
   const size: IUseWindowSize = useWindowSize();
 
@@ -65,16 +60,18 @@ export const Header: FC<IHeader> = ({ innerPage }) => {
   return (
     <>
       {size.width > 768 ? (
-        <div className="sticky bg-bg top-0 w-full h-auto lg:pt-0 border-b-[1px] border-[#EAE9EE] flex flex-col lgPlus:flex-row items-start lgPlus:items-center justify-start lgPlus:justify-between z-10">
+        <div className="max-w-[1400px] sticky top-0 bg-bg w-full h-auto lg:pt-0 border-b-[1px] border-[#EAE9EE] flex flex-col lgPlus:flex-row items-start lgPlus:items-center justify-start lgPlus:justify-between z-10">
           <div className="flex items-center h-[100px]">
             {size.width < 976 && (
               <div className="flex justify-center items-center mr-[16px]">
-                <Link to="/">
-                  <img src={LogoIcon} alt="logo" className="h-[30px]"></img>
-                </Link>
+                <img src={LogoIcon} alt="logo" className="h-[30px]"></img>
               </div>
             )}
-
+            {size.width > 976 && (
+              <div className="flex justify-center items-center mr-[54px]">
+                <img src={Logo} alt="logo" className="h-[30px]"></img>
+              </div>
+            )}
             <HeaderFilters
               ref={dropdownRef}
               activeDropdown={activeDropdown}
@@ -87,9 +84,7 @@ export const Header: FC<IHeader> = ({ innerPage }) => {
         <>
           <div className="sticky bg-bg top-0 pt-[20px] w-full border-b-[1px] border-[#EAE9EE] flex flex-col">
             <div className="flex justify-between items-center">
-              <Link to="/">
-                <img src={Logo} alt="logo"></img>
-              </Link>
+              <img src={Logo} alt="logo"></img>
               <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                 <BurgerOpenIcon />
               </button>
@@ -109,7 +104,7 @@ export const Header: FC<IHeader> = ({ innerPage }) => {
                 <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                   <BurgerCloseIcon />
                 </button>
-                {innerPage ? (
+                {cardId?.length ? (
                   <PageNavigation />
                 ) : (
                   <HeaderFilters

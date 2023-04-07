@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { Link } from 'react-router-dom';
 
 import Logo from '../assets/images/Logo.png';
 import boaLogo from '../assets/icons/bankofamerica.svg';
@@ -14,9 +13,7 @@ export const Footer: FC = () => {
     <div className="mt-[60px] space-y-[28px]">
       <div className="flex flex-col lg:flex-row justify-center lg:justify-between items:center lg:items-start relative space-y-[32px] lg:space-y-0">
         <div className="space-y-[28px] w-full lg:w-[312px] flex flex-col items-center lg:items-start">
-          <Link to="/">
-            <img className="w-[200px]" src={Logo} alt="logo"></img>
-          </Link>
+          <img className="w-[200px]" src={Logo} alt="logo"></img>
           <p className="text-xs font-light text-secondary-text max-w-[90%] md:max-w-[50%] lg:max-w-none text-center lg:text-left">
             SmartWealthTrends is dedicated to bringing you the latest in finance. With in-depth
             reviews, comprehensive comparisons, and easy-to-follow guides, you’ll be prepared for
