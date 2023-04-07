@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, useContext, useEffect, useRef, useState } from 'react';
 import { Link, Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import { IUseWindowSize, useWindowSize } from 'hooks/useWindowSize';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -10,6 +10,8 @@ import LogoIcon from '../assets/images/LogoIcon.png';
 import { ReactComponent as BurgerOpenIcon } from '../assets/icons/Burger.svg';
 import { ReactComponent as BurgerCloseIcon } from '../assets/icons/BurgerCross.svg';
 import { HeaderFilters } from './HeaderFilters';
+import { FilterContext } from 'contexts/FilterContext';
+import { CreditRatingSlugEnum, IssuersSlugEnum } from 'utils/constants';
 
 interface IHeaderProps {
   queryParams?: URLSearchParams;
@@ -18,6 +20,9 @@ interface IHeaderProps {
 export const Header: FC<IHeaderProps> = ({ queryParams }) => {
   const [activeDropdown, setActiveDropdown] = useState<string>('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+  const [currentParams, setCurrentParams] = useState<string>('');
+
+  const filter = useContext(FilterContext);
 
   const size: IUseWindowSize = useWindowSize();
 
@@ -71,6 +76,25 @@ export const Header: FC<IHeaderProps> = ({ queryParams }) => {
     navigate(url);
   }
 
+  useEffect(() => {
+    const paramsObj = {
+      category: filter.activeCategory.slug,
+      ...(filter.activeIssuer.slug !== IssuersSlugEnum.allIssuers && {
+        issuer: filter.activeIssuer.slug,
+      }),
+      ...(filter.activeCreditRange.slug !== CreditRatingSlugEnum.allCreditRating && {
+        creditRange: filter.activeCreditRange.slug,
+      }),
+    };
+
+    const params = Object.entries(paramsObj)
+      .map(([key, val]) => `${key}=${encodeURIComponent(val)}`)
+      .join('&');
+
+    setCurrentParams(params);
+    console.log(currentParams);
+  }, [filter]);
+
   return (
     <>
       {size.width > 768 ? (
@@ -78,12 +102,16 @@ export const Header: FC<IHeaderProps> = ({ queryParams }) => {
           <div className="flex items-center h-[100px]">
             {size.width < 976 && (
               <div className="flex justify-center items-center mr-[16px] cursor-pointer">
-                <img onClick={handleClick} src={LogoIcon} alt="logo" className="h-[30px]"></img>
+                <Link to={`/?${currentParams}`}>
+                  <img src={LogoIcon} alt="logo" className="h-[30px]" />
+                </Link>
               </div>
             )}
             {size.width > 976 && (
               <div className="flex justify-center items-center mr-[54px] cursor-pointer">
-                <img onClick={handleClick} src={Logo} alt="logo" className="h-[30px]"></img>
+                <Link to={`/?${currentParams}`}>
+                  <img src={Logo} alt="logo" className="h-[30px]" />
+                </Link>
               </div>
             )}
             <HeaderFilters
