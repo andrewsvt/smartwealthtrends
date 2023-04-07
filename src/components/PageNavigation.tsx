@@ -24,7 +24,7 @@ export const PageNavigation: FC = () => {
           offset={-50}
           className="text-secondary-text font-medium hover:text-primary customTransition"
         >
-          Pros and Cons
+          Quick Facts
         </ScrollLink>
         <ScrollLink
           to="section3"

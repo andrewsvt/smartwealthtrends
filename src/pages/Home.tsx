@@ -2,7 +2,7 @@ import { FilterContext } from '../contexts/FilterContext';
 import React, { FC, useContext } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
-import { CardBlock, Header } from '../components';
+import { CardBlock } from '../components';
 import { Listing } from 'interfaces/Api';
 
 interface IHomeProps {
@@ -25,26 +25,28 @@ export const Home: FC<IHomeProps> = ({ apiData, totalRecords, isLoading }) => {
         </div>
         <AnimatePresence>
           <motion.div className="grid grid-cols-1 gap-4">
-            {isLoading
-              ? Array(3)
-                  .fill(null)
-                  .map((element, idx) => {
-                    return (
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1, transition: { duration: 0.6 } }}
-                        viewport={{ once: true }}
-                        exit={{ opacity: 0, transition: { duration: 0.3 } }}
-                        className="bg-white rounded-[14px] w-full h-[490px]"
-                        key={idx}
-                      ></motion.div>
-                    );
-                  })
-              : totalRecords > 0
-              ? apiData.map((product, index) => (
-                  <CardBlock key={product.ID} product={product} index={index} />
-                ))
-              : 'Nothing matching was found.'}
+            {isLoading ? (
+              Array(3)
+                .fill(null)
+                .map((element, idx) => {
+                  return (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1, transition: { duration: 0.6 } }}
+                      viewport={{ once: true }}
+                      exit={{ opacity: 0, transition: { duration: 0.3 } }}
+                      className="bg-white rounded-[14px] w-full h-[490px]"
+                      key={idx}
+                    ></motion.div>
+                  );
+                })
+            ) : totalRecords > 0 ? (
+              apiData.map((product, index) => (
+                <CardBlock key={product.ID} product={product} index={index} />
+              ))
+            ) : (
+              <p className="w-full h-screen">Nothing matching was found.</p>
+            )}
           </motion.div>
         </AnimatePresence>
       </div>

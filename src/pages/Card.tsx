@@ -23,8 +23,6 @@ interface ICardpageProps {
 }
 
 export const Card: FC<ICardpageProps> = ({ apiData }) => {
-  let { cardId } = useParams();
-
   const pathname = window.location.pathname.split('/');
 
   const size: IUseWindowSize = useWindowSize();
@@ -32,11 +30,6 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
   //contexts
   const { selectedCard, updateSelectedCard } = useContext(selectedCardContext);
   const { products, addProduct, removeProduct } = useContext(ComparisonContext);
-
-  useEffect(() => {
-    if (selectedCard.ID !== cardId) {
-    }
-  }, []);
 
   const [tableItems, setTableItems] = useState<ITableItem[]>([
     {
@@ -182,7 +175,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
           </div>
           <div className="mt-[28px] grid grid-cols-1 gap-[60px]">
             {/* Pros and cons */}
-            <div id="section2" className="px-[20px] space-y-[32px]">
+            {/* <div id="section2" className="px-[20px] space-y-[32px]">
               <h2
                 className="text-lg font-semibold"
                 dangerouslySetInnerHTML={{
@@ -220,6 +213,29 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                     </li>
                   </ul>
                 </div>
+              </div>
+            </div> */}
+            <div id="section2" className="px-[20px] space-y-[32px]">
+              <h2
+                className="text-lg font-semibold"
+                dangerouslySetInnerHTML={{
+                  __html: 'Quick Facts about ' + selectedCard.CardName,
+                }}
+              />
+              <div className="flex flex-col">
+                <ul className="space-y-[28px]">
+                  {selectedCard.Creative.PPCDescriptionLines.map((line) => (
+                    <li className="flex items-center">
+                      <div className="w-[12px] h-[12px] rounded-[4px] bg-primary mr-[32px]" />
+                      <p
+                        className="text-base font-light flex-1"
+                        dangerouslySetInnerHTML={{
+                          __html: line,
+                        }}
+                      ></p>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
             {/* Review */}
