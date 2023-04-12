@@ -17,7 +17,7 @@ export const CheckBox: FC<ICheckboxProps> = ({ text, state, onClick }) => {
       >
         {state ? <CheckSmallIcon /> : ''}
       </div>
-      <span className="text-base font-medium">{text}</span>
+      <span className="text-base font-medium flex-1">{text}</span>
     </button>
   );
 };

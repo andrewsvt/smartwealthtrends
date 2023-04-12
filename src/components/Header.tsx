@@ -78,8 +78,8 @@ export const Header: FC<IHeaderProps> = ({ queryParams }) => {
   return (
     <>
       {size.width > 768 ? (
-        <div className="sticky top-0 w-full h-auto bg-light-gray z-10 flex flex-row justify-center items-center">
-          <div className="max-w-[1400px] w-full h-auto lg:pt-0 border-b-[1px] border-primary-light flex flex-col lgPlus:flex-row items-start lgPlus:items-center justify-start lgPlus:justify-between">
+        <div className="sticky top-0 w-full px-[16px] h-auto bg-light-gray z-10 flex flex-row justify-center items-center">
+          <div className="max-w-[1400px] w-full h-auto lg:pt-0 border-b-[1px] border-primary-light flex flex-col md:flex-row items-start md:items-center justify-start md:justify-between">
             <div className="flex items-center h-[100px]">
               {size.width < 976 && (
                 <div className="flex justify-center items-center mr-[16px] cursor-pointer">
@@ -89,7 +89,7 @@ export const Header: FC<IHeaderProps> = ({ queryParams }) => {
                 </div>
               )}
               {size.width > 976 && (
-                <div className="flex justify-center items-center w-[335px] mr-[54px] cursor-pointer">
+                <div className="flex justify-center items-center lg:w-[335px] mr-[54px] cursor-pointer">
                   <Link to={`/?${currentParams}`} preventScrollReset={true}>
                     <img src={Logo} alt="logo" className="h-[30px]" />
                   </Link>
@@ -106,26 +106,30 @@ export const Header: FC<IHeaderProps> = ({ queryParams }) => {
         </div>
       ) : (
         <>
-          <div className="sticky bg-bg top-0 pt-[20px] w-full border-b-[1px] border-[#EAE9EE] flex flex-col z-10">
+          <div className="sticky bg-light-gray top-0 h-[100px] w-full border-b-[1px] border-[#EAE9EE] px-[16px] flex flex-col justify-center z-10">
             <div className="flex justify-between items-center">
-              <img src={Logo} alt="logo"></img>
+              <Link to={`/?${currentParams}`} preventScrollReset={true}>
+                <img src={Logo} alt="logo" />
+              </Link>
               <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                 <BurgerOpenIcon />
               </button>
             </div>
-            <CombareButton />
           </div>
           <AnimatePresence>
             {isMobileMenuOpen && (
               <motion.div
                 ref={mobileMenuRef}
-                className="fixed top-0 right-0 z-50 bg-white p-[20px] h-full space-y-[32px]"
+                className="fixed top-0 right-0 z-50 bg-white px-[20px] h-full w-full space-y-[32px]"
                 initial={{ opacity: 0, x: '100%' }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ type: 'spring', stiffness: 500, damping: 50 }}
                 exit={{ opacity: 0, x: '100%' }}
               >
-                <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                <button
+                  className="h-[100px]"
+                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                >
                   <BurgerCloseIcon />
                 </button>
                 <Routes>

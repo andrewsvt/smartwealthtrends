@@ -44,6 +44,7 @@ export const useGetApiData = (): {
 
   useEffect(() => {
     fetchData();
+    window.scrollTo(0, 0);
   }, [fetchData]);
 
   return { apiData, totalRecords, isLoading };

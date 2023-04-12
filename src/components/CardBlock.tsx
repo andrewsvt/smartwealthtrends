@@ -1,6 +1,6 @@
 import React, { FC, useState, useContext, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 import { CheckBox, ExpandButton, PrimaryButton, SecondaryButton } from './UI';
 import { Rating } from 'components';
@@ -10,9 +10,11 @@ import { Listing } from 'interfaces/Api';
 import { ReactComponent as GiftIcon } from '../assets/icons/gift.svg';
 import { ReactComponent as StarIcon } from '../assets/icons/star.svg';
 import { ReactComponent as CopyIcon } from '../assets/icons/copysuccess.svg';
+import { ReactComponent as LockIcon } from '../assets/icons/lock.svg';
 
 import { selectedCardContext } from 'contexts/SelectedCardContext';
 import { ComparisonContext } from 'contexts/ComparisonContext';
+import { IUseWindowSize, useWindowSize } from 'hooks/useWindowSize';
 
 interface ICardBlockProps {
   product: Listing;
@@ -25,14 +27,14 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
   const { updateSelectedCard } = useContext(selectedCardContext);
   const { products, addProduct, removeProduct } = useContext(ComparisonContext);
 
-  // const [isInComparison, setIsInComparison] = useState(false);
+  const size: IUseWindowSize = useWindowSize();
 
   const tableItems = useMemo<ITableItem[]>(
     () => [
       {
         icon: GiftIcon,
-        title: `Welcome Offer - ${product.SignupReward}`,
-        description: product.SignupRequirement,
+        title: `Welcome Offer ${product.SignupReward.length ? '- ' + product.SignupReward : ''}`,
+        description: product.SignupRequirement.length ? product.SignupRequirement : 'N/A',
       },
       {
         icon: StarIcon,
@@ -77,11 +79,22 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
       className="p-[20px] bg-white rounded-[14px] space-y-[32px]"
     >
       <div className="flex flex-col md:flex-row md:h-[180px] md:space-x-[20px]">
-        <img
-          className="h-auto md:h-[180px] w-full md:w-auto"
-          src={product.Creative.RawLogoImageUrl}
-          alt="card"
-        />
+        <div className="relative h-full md:max-w-[300px] w-full md:w-auto ">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileHover={{ opacity: 1 }}
+            transition={{ duration: 0.2 }}
+            className="cursor-pointer absolute flex flex-col justify-center items-center space-y-[10px] bg-primary-dark bg-opacity-60 h-full w-full rounded-[10px]"
+          >
+            <LockIcon />
+            <span className="text-lg font-semibold text-white">Apply Now</span>
+          </motion.div>
+          <img
+            className="w-full h-full object-contain"
+            src={product.Creative.RawLogoImageUrl}
+            alt="card"
+          />
+        </div>
         <div className="flex flex-col space-y-[20px] md:justify-between mt-[20px] md:mt-0">
           <div className="space-y-[12px]">
             <Link to={`/cards/${product.ID}`} onClick={() => updateSelectedCard(product)}>
@@ -97,7 +110,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
               <Rating value={Number(product.EditorRating)} />
             </div>
           </div>
-          <div className="flex flex-col md:flex-row items-center justify-start space-y-[8px] md:space-x-[8px]">
+          <div className="flex flex-col md:flex-row items-center justify-start space-y-[8px] md:space-y-0 md:space-x-[8px]">
             <div className="flex flex-row items-center space-x-[8px] w-full md:w-auto">
               <PrimaryButton text="Apply Now" />
             </div>
@@ -113,7 +126,10 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
         {tableItems.slice(0, 3).map((tableItem, index) => {
           const Icon = tableItem.icon;
           return (
-            <div key={index} className="p-[20px] space-y-[20px] md:tableItem">
+            <div
+              key={index}
+              className={`p-[20px] space-y-[20px] md:tableItem ${size.width < 768 && 'oddBgColor'}`}
+            >
               <div>
                 {/* @ts-ignore */}
                 <Icon style={{ width: '44px', height: '44px' }} />
@@ -138,7 +154,9 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ type: 'spring', stiffness: 400, damping: 50 }}
               exit={{ opacity: 0, y: -30 }}
-              className="p-[20px] space-y-[8px] md:tableItem md:tableItemExpanded"
+              className={`p-[20px] space-y-[8px] md:tableItem md:tableItemExpanded ${
+                size.width < 768 && 'oddBgColor'
+              }`}
               key={index}
             >
               <h4
@@ -166,7 +184,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
               {product.Creative.PPCDescriptionLines.slice(0, 5).map((item, index) => (
                 <li
                   key={index}
-                  className="flex items-center space-x-[12px] py-[12px] px-[20px] rounded-[10px] oddColor"
+                  className="flex items-center space-x-[20px] md:space-x-[12px] py-[12px] px-[20px] rounded-[10px] oddBgColor"
                 >
                   <div className="w-[8px] h-[8px] rounded-[2px] bg-primary" />
                   <p className="flex-1">{item}</p>
@@ -204,6 +222,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
         <ExpandButton
           onClick={() => setIsExpanded(!isExpanded)}
           text={isExpanded ? 'Show Less' : 'Expand'}
+          state={isExpanded}
         />
       </div>
     </motion.div>

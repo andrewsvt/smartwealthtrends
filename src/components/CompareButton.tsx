@@ -1,4 +1,4 @@
-import React, { FC, useState, useContext } from 'react';
+import React, { FC, useState, useContext, useEffect } from 'react';
 import { ComparisonContext } from 'contexts/ComparisonContext';
 import { AnimatePresence } from 'framer-motion';
 
@@ -15,16 +15,22 @@ export const CombareButton: FC = () => {
   };
 
   //disable scroll
-  if (modal) {
-    document.body.classList.add('overflow-hidden');
-  } else {
-    document.body.classList.remove('overflow-hidden');
-  }
+  useEffect(() => {
+    if (modal) {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
+
+    return () => {
+      document.body.classList.remove('overflow-hidden');
+    };
+  }, [modal]);
 
   return (
     <>
       <div onClick={toggleModal} className="relative cursor-pointer flex flex-row items-center">
-        <div className="absolute right-0 bg-white h-[40px] w-[200px] pl-[22px] pr-[62px] rounded-[40px] flex items-center justify-center text-secondary-text hover:text-black customTransition">
+        <div className="absolute right-0 bg-white h-[40px] w-[200px] pl-[22px] pr-[62px] rounded-[40px] hidden lgPlus:flex items-center justify-center text-secondary-text hover:text-black customTransition">
           <span className="text-sm font-medium text-current w-full">Compare Cards</span>
         </div>
         <div className="relative flex justify-center items-center bg-white rounded-full h-[40px] w-[40px] border-[1px] border-light-gray">

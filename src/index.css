@@ -96,6 +96,6 @@ img {
   stroke: #ff4539;
 }
 
-.oddColor:nth-child(odd) {
+.oddBgColor:nth-child(odd) {
   background-color: #f7f7f7;
 }

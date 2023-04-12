@@ -19,7 +19,7 @@ export const Home: FC<IHomeProps> = () => {
 
   return (
     <>
-      <div className="w-full mt-[24px]">
+      <div className="w-full mt-[24px] space-y-[20px] md:space-y-0">
         <AdvertiserDisclosure />
         <div className="flex flex-col items-start justify-center w-full md:h-[110px]">
           <h1 className="text-xl font-semibold pb-[6px]">{`${filter.activeCategory.text} from ${filter.activeIssuer.text}`}</h1>

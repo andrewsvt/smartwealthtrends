@@ -16,7 +16,7 @@ export const Filter: FC = () => {
             const isActive = item.field === activeCategory.field;
             return (
               <div
-                className={`filterItem w-full rounded-[12px] py-[16px] px-[20px] cursor-pointer ${
+                className={`filterItem w-full rounded-[12px] py-[12px] px-[16px] cursor-pointer flex flex-col ${
                   isActive ? 'bg-primary' : 'bg-light-gray'
                 }`}
                 onClick={() => updateCategory(item.slug)}
@@ -26,9 +26,8 @@ export const Filter: FC = () => {
                   id="menuIcon"
                   className={`${isActive ? 'filterIconSelected' : 'filterIcon'}`}
                 />
-
                 <p
-                  className={`mt-4 ${
+                  className={`mt-4 text-sm ${
                     isActive ? 'font-bold filterTextSelected' : 'filterText font-medium'
                   }`}
                 >

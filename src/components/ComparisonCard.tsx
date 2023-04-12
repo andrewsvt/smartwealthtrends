@@ -11,7 +11,7 @@ export const ComparisonCard: FC<IComparisonCardProps> = ({ product }) => {
   const { removeProduct } = useContext(ComparisonContext);
 
   return (
-    <div className="flex flex-col w-[325px] min-w-[200px]">
+    <div className="flex flex-col w-[325px] min-w-[230px]">
       <div className="sticky top-0 flex flex-col justify-between bg-white w-full min-h-[348px] p-[20px] rounded-[14px]">
         <div className="flex flex-col space-y-[16px]">
           <img className="w-[210px] h-auto" src={product.Creative.LogoImageUrl} alt="card" />

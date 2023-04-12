@@ -11,6 +11,7 @@ import { Listing } from 'interfaces/Api';
 
 import { ReactComponent as CheckIcon } from '../assets/icons/check.svg';
 import { ReactComponent as CrossIcon } from '../assets/icons/cross.svg';
+import { ReactComponent as LockIcon } from '../assets/icons/lock.svg';
 
 import { selectedCardContext } from 'contexts/SelectedCardContext';
 import { ComparisonContext } from 'contexts/ComparisonContext';
@@ -19,6 +20,7 @@ import ProgressBar from 'components/UI/ProgressBar';
 import { CreditRatingSlugEnum, IssuersSlugEnum, apiDataInitialState } from 'utils/constants';
 import { AdvertiserDisclosure } from 'components/AdvertiserDisclosure';
 import { FilterContext } from 'contexts/FilterContext';
+import { motion } from 'framer-motion';
 
 interface ICardpageProps {
   apiData: Listing[];
@@ -44,7 +46,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
   const [tableItems, setTableItems] = useState<ITableItem[]>([
     {
       title: 'Sign Up Bonus',
-      description: selectedCard.SignupRequirement,
+      description: selectedCard.SignupRequirement.length ? selectedCard.SignupRequirement : 'N/A',
     },
     {
       title: 'Rewards Rate',
@@ -69,13 +71,15 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
     try {
       const response = await fetch(`${apiUrl}&crd=25&xml_version=2&max=999`);
       const data = await response.json();
-      if (true) {
-        setAllApiData(data.ResultSet.Listings.Listing);
-      }
+      setAllApiData(data.ResultSet.Listings.Listing);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
-  }, []);
+  }, [apiUrl]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   useEffect(() => {
     if (currentParams) {
@@ -97,11 +101,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
       .join('&');
 
     setCurrentParams(params);
-  }, [filter]);
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  }, [filter.activeCategory, filter.activeIssuer, filter.activeCreditRange]);
 
   useEffect(() => {
     const currentObject = allApiData.find((card: Listing) => card.ID === cardId);
@@ -139,7 +139,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
   //scroll up when open new card page
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [selectedCard]);
+  }, [selectedCard.ID]);
 
   //add/remove compare function
   const handleAddToComparison = useCallback(() => {
@@ -150,8 +150,47 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
     removeProduct(selectedCard);
   }, [removeProduct, selectedCard]);
 
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    function handleScroll() {
+      if (window.pageYOffset > 300) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
     <>
+      <motion.div
+        initial={{ y: -100 }}
+        animate={{ y: scrolled ? 0 : -100 }}
+        transition={{ duration: 0.3 }}
+        className="fixed top-0 left-0 lg:left-[-54px] w-full h-[100px] bg-light-gray flex items-center justify-center z-50 p-[16px]"
+      >
+        <div className="flex items-center justify-center space-x-[16px] md:space-x-[32px] h-full max-w-[1400px] w-full m-auto">
+          <img
+            src={selectedCard.Creative.LogoImageUrl}
+            alt="logo"
+            className="h-full w-auto rounded-[6px]"
+          />
+          <p
+            className="text-sm md:text-lg font-semibold flex-1"
+            dangerouslySetInnerHTML={{ __html: selectedCard.CardName }}
+          />
+          <div className="max-w-[202px]">
+            <PrimaryButton text="Apply Now" state={size.width < 768} />
+          </div>
+        </div>
+      </motion.div>
       <div className="w-full">
         {size.width > 768 ? (
           <div className="sticky top-0 bg-bg h-[72px] w-full flex flex-row justify-between items-center">
@@ -171,9 +210,11 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
             <AdvertiserDisclosure />
           </div>
         ) : (
-          <>
-            <div className="flex flex-row items-center py-[24px] lg:py-0">
-              <div className="text-secondary-text pr-[8px]">Home</div>
+          <div className="w-full flex flex-col py-[20px] space-y-[20px]">
+            <div className="flex flex-row items-center lg:py-0">
+              <Link to={`/?${currentParams}`} className="text-secondary-text pr-[8px]">
+                Home
+              </Link>
               {pathname.slice(1).map((path, i) => {
                 return (
                   <div key={i} className="flex flex-row items-center space-x-[8px]">
@@ -183,19 +224,31 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                 );
               })}
             </div>
-          </>
+            <AdvertiserDisclosure />
+          </div>
         )}
         {selectedCard.ID.length ? (
           <div className="grid grid-cols-1 gap-4">
             {/* card details */}
             <div id="section1" className="p-[20px] bg-white rounded-[14px] space-y-[32px]">
-              <div className="flex flex-col md:flex-row md:h-[180px] space-y-[20px] md:space-x-[20px]">
-                <img
-                  className="h-auto md:h-[180px] w-full md:w-auto"
-                  src={selectedCard.Creative.RawLogoImageUrl}
-                  alt="card"
-                />
-                <div className="flex flex-col space-y-[20px] md:justify-between">
+              <div className="flex flex-col md:flex-row md:h-[180px] md:space-x-[20px]">
+                <div className="relative h-full md:max-w-[300px] w-full md:w-auto ">
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    whileHover={{ opacity: 1 }}
+                    transition={{ duration: 0.2 }}
+                    className="cursor-pointer absolute flex flex-col justify-center items-center space-y-[10px] bg-primary-dark bg-opacity-60 h-full w-full rounded-[10px]"
+                  >
+                    <LockIcon />
+                    <span className="text-lg font-semibold text-white">Apply Now</span>
+                  </motion.div>
+                  <img
+                    className="w-full h-full object-contain"
+                    src={selectedCard.Creative.RawLogoImageUrl}
+                    alt="card"
+                  />
+                </div>
+                <div className="flex flex-col space-y-[20px] md:justify-between mt-[20px] md:mt-0">
                   <div className="space-y-[12px]">
                     <h2
                       className="text-lg font-semibold"
@@ -232,7 +285,12 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
               <div className="grid grid-cols-1 md:grid-cols-3 border-[1px] border-border rounded-[10px]">
                 {tableItems.slice(0, 3).map((tableItem, index) => {
                   return (
-                    <div key={index} className="p-[20px] space-y-[20px] md:tableItem">
+                    <div
+                      key={index}
+                      className={`p-[20px] space-y-[20px] md:tableItem ${
+                        size.width < 768 && 'oddBgColor'
+                      }`}
+                    >
                       <div className="space-y-[8px]">
                         <h4
                           className="font-medium text-base"
@@ -249,7 +307,9 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                 {tableItems.slice(3, 6).map((tableItem, index) => (
                   <div
                     key={index}
-                    className="p-[20px] space-y-[8px] md:tableItem md:tableItemExpanded"
+                    className={`p-[20px] space-y-[8px] md:tableItem md:tableItemExpanded ${
+                      size.width < 768 && 'oddBgColor'
+                    }`}
                   >
                     <h4
                       className="font-medium text-base"
@@ -268,7 +328,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                   {selectedCard.Creative.PPCDescriptionLines.map((item, index) => (
                     <li
                       key={index}
-                      className="flex items-center space-x-[12px] py-[12px] px-[20px] rounded-[10px] oddColor"
+                      className="flex items-center space-x-[12px] py-[12px] px-[20px] rounded-[10px] oddBgColor"
                     >
                       <div className="w-[8px] h-[8px] rounded-[2px] bg-primary" />
                       <p className="flex-1">{item}</p>
@@ -402,12 +462,19 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
               <div id="section4" className="space-y-[32px]">
                 <h2 className="text-lg font-semibold pl-[20px]">Related Card Offers</h2>
                 <div className="grid grid-cols-1 gap-4">
-                  {apiData
-                    .filter((product) => product.ID !== cardId)
-                    .slice(0, 2)
-                    .map((product, index) => (
-                      <CardBlock key={product.ID} product={product} index={index} />
-                    ))}
+                  {apiData.length >= 2
+                    ? apiData
+                        .filter((product) => product.ID !== cardId)
+                        .slice(0, 2)
+                        .map((product, index) => (
+                          <CardBlock key={product.ID} product={product} index={index} />
+                        ))
+                    : allApiData
+                        .filter((product) => product.ID !== cardId)
+                        .slice(0, 2)
+                        .map((product, index) => (
+                          <CardBlock key={product.ID} product={product} index={index} />
+                        ))}
                 </div>
               </div>
             </div>

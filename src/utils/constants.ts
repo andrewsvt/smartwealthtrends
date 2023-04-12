@@ -123,6 +123,12 @@ export const categories: ISVGSelectValue[] = [
     slug: CategoriesSlugEnum.topCards,
   },
   {
+    text: 'No annual fee',
+    field: CategoriesEnum.noAnnualFee,
+    icon: CalendarIcon,
+    slug: CategoriesSlugEnum.noAnnualFee,
+  },
+  {
     text: 'Balance transfer',
     field: CategoriesEnum.balanceTransfer,
     icon: RefreshIcon,
@@ -133,12 +139,6 @@ export const categories: ISVGSelectValue[] = [
     field: CategoriesEnum.lowOngoingRate,
     icon: TrandingDownIcon,
     slug: CategoriesSlugEnum.lowOngoingRate,
-  },
-  {
-    text: 'No annual fee',
-    field: CategoriesEnum.noAnnualFee,
-    icon: CalendarIcon,
-    slug: CategoriesSlugEnum.noAnnualFee,
   },
   {
     text: 'Cash Back',

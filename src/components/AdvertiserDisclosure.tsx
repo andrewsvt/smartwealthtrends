@@ -1,7 +1,7 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 
-import { Disclosure } from './index';
+import { CombareButton, Disclosure } from './index';
 
 export const AdvertiserDisclosure: FC = () => {
   const [modal, setModal] = useState<boolean>(false);
@@ -11,16 +11,24 @@ export const AdvertiserDisclosure: FC = () => {
   };
 
   //disable scroll
-  if (modal) {
-    document.body.classList.add('overflow-hidden');
-  } else {
-    document.body.classList.remove('overflow-hidden');
-  }
+  useEffect(() => {
+    if (modal) {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
+
+    return () => {
+      document.body.classList.remove('overflow-hidden');
+    };
+  }, [modal]);
 
   return (
     <>
-      <div className="w-full flex flex-row items-center justify-between">
-        <div></div>
+      <div className="w-full flex flex-row items-center justify-between md:justify-end">
+        <div className="md:hidden">
+          <CombareButton />
+        </div>
         <span onClick={toggleModal} className="text-sm underline font-medium cursor-pointer">
           Advertiser Disclosure
         </span>
