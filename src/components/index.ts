@@ -14,6 +14,7 @@ export { Disclosure } from './Disclosure';
 export { Rating } from './Rating';
 
 export { Dropdown } from './Dropdown';
+export { CategoryDropdown } from './CategoryDropdown';
 
 export { CombareButton } from './CompareButton';
 

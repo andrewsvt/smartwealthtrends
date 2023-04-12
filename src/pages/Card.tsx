@@ -180,7 +180,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
           <img
             src={selectedCard.Creative.LogoImageUrl}
             alt="logo"
-            className="h-full w-auto rounded-[6px]"
+            className="h-full w-auto rounded-[10px]"
           />
           <p
             className="text-sm md:text-lg font-semibold flex-1"

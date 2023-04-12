@@ -2,10 +2,12 @@ import { FilterContext } from '../contexts/FilterContext';
 import React, { FC, useContext } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
-import { CardBlock } from '../components';
+import { CardBlock, CategoryDropdown, CombareButton } from '../components';
 import { Listing } from 'interfaces/Api';
 import { useGetApiData } from 'hooks/useGetApiData';
 import { AdvertiserDisclosure } from 'components/AdvertiserDisclosure';
+import { categories } from 'utils/constants';
+import { IUseWindowSize, useWindowSize } from 'hooks/useWindowSize';
 
 interface IHomeProps {
   apiData: Listing[];
@@ -16,11 +18,22 @@ interface IHomeProps {
 export const Home: FC<IHomeProps> = () => {
   const filter = useContext(FilterContext);
   const { apiData, totalRecords, isLoading } = useGetApiData();
+  const size: IUseWindowSize = useWindowSize();
 
   return (
     <>
       <div className="w-full mt-[24px] space-y-[20px] md:space-y-0">
         <AdvertiserDisclosure />
+        {size.width < 768 && (
+          <ul>
+            <CategoryDropdown
+              filterName="Category"
+              fields={categories}
+              updateState={filter.updateCategory}
+              contextState={filter.activeCategory}
+            />
+          </ul>
+        )}
         <div className="flex flex-col items-start justify-center w-full md:h-[110px]">
           <h1 className="text-xl font-semibold pb-[6px]">{`${filter.activeCategory.text} from ${filter.activeIssuer.text}`}</h1>
           <p className="text-secondary-text text-base ">Description of the page</p>

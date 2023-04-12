@@ -1,7 +1,8 @@
 import React, { FC, useContext } from 'react';
-
 import { motion } from 'framer-motion';
+
 import { ComparisonContext } from 'contexts/ComparisonContext';
+
 import { ComparisonCard } from './ComparisonCard';
 
 interface ComparisonProps {

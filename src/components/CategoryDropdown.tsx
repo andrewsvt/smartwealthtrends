@@ -1,4 +1,4 @@
-import React, { FC, useContext } from 'react';
+import React, { FC, useContext, useState } from 'react';
 import { ReactComponent as ShortArrowDownIcon } from '../assets/icons/arrowShortDown.svg';
 import { ReactComponent as ShortArrowUpIcon } from '../assets/icons/arrowShortUp.svg';
 import { ISVGSelectValue } from 'utils/constants';
@@ -12,19 +12,18 @@ interface IDropdownProps {
   fields: ISVGSelectValue[];
   updateState: any;
   contextState: any;
-  setActiveDropdown: React.Dispatch<string>;
-  activeDropdown: string;
+  setActiveDropdown?: React.Dispatch<string>;
+  activeDropdown?: string;
 }
 
-export const Dropdown: FC<IDropdownProps> = ({
+export const CategoryDropdown: FC<IDropdownProps> = ({
   filterName,
   fields,
   updateState,
   contextState,
-  setActiveDropdown,
-  activeDropdown,
 }) => {
   const filter = useContext(FilterContext);
+  const [activeDropdown, setActiveDropdown] = useState<string>('');
 
   const handleMouseEnter = () => {
     if (activeDropdown === filterName) {
@@ -51,15 +50,13 @@ export const Dropdown: FC<IDropdownProps> = ({
       onClick={handleMouseEnter}
       className="w-full py-3"
     >
-      <div className="relative flex flex-row items-center cursor-pointer w-full md:w-[200px] h-[48px] justify-between bg-white rounded-[10px] border-[1px] border-light-gray py-[10px] px-[20px]">
+      <div className="relative flex flex-row items-center cursor-pointer w-full md:w-[200px] h-[48px] justify-between bg-white rounded-[10px] border-[2px] border-primary py-[10px] px-[20px]">
         <span className="text-sm font-medium pr-[8px] text-primary truncate">
           {contextState.text}
         </span>
         {activeDropdown === filterName ? <ShortArrowUpIcon /> : <ShortArrowDownIcon />}
-        <div className="absolute top-[-12px] left-[12px] bg-light-gray rounded-[10px] h-[18px] flex justify-center items-center">
-          <span className="cursor-default text-[10px] text-secondary-text px-[8px]">
-            {filterName}
-          </span>
+        <div className="absolute top-[-12px] left-[12px] bg-primary rounded-[10px] h-[18px] flex justify-center items-center">
+          <span className="cursor-default text-[10px] text-white px-[8px]">{filterName}</span>
         </div>
       </div>
       <AnimatePresence>
@@ -71,7 +68,7 @@ export const Dropdown: FC<IDropdownProps> = ({
             transition={{ duration: 0.3 }}
             exit="exit"
             className={
-              'bg-white md:absolute md:top-[70px] flex flex-col p-[20px] md:w-auto border-[1px] border-light-gray md:border-none rounded-[10px] shadow-2xl z-20'
+              'bg-white absolute max-w-[360px] sm:max-w-none md:top-[70px] flex flex-col p-[20px] md:w-auto border-[1px] border-light-gray md:border-none rounded-[10px] shadow-2xl z-20'
             }
           >
             <ul className="grid grid-cols-2 gap-y-[20px] gap-x-[40px]">

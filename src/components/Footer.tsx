@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import Logo from '../assets/images/Logo.png';
+import Logo from '../assets/images/Logo.webp';
 import boaLogo from '../assets/icons/bankofamerica.svg';
 import chaseLogo from '../assets/icons/chase.svg';
 import visaLogo from '../assets/icons/visa.svg';

@@ -1,10 +1,14 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState, useContext, useEffect } from 'react';
+import { ComparisonContext } from 'contexts/ComparisonContext';
 import { AnimatePresence } from 'framer-motion';
 
-import { CombareButton, Disclosure } from './index';
+import { CombareButton, Comparison, Disclosure } from './index';
+
+import { ReactComponent as ComparisonIcon } from '../assets/icons/comparison.svg';
 
 export const AdvertiserDisclosure: FC = () => {
   const [modal, setModal] = useState<boolean>(false);
+  const { products } = useContext(ComparisonContext);
 
   const toggleModal = () => {
     setModal(!modal);

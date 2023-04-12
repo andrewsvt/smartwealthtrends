@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 import { CombareButton, PageNavigation } from './index';
 
-import Logo from '../assets/images/Logo.png';
+import Logo from '../assets/images/Logo.webp';
 import LogoIcon from '../assets/images/LogoIcon.png';
 import { ReactComponent as BurgerOpenIcon } from '../assets/icons/Burger.svg';
 import { ReactComponent as BurgerCloseIcon } from '../assets/icons/BurgerCross.svg';
@@ -90,8 +90,16 @@ export const Header: FC<IHeaderProps> = ({ queryParams }) => {
               )}
               {size.width > 976 && (
                 <div className="flex justify-center items-center lg:w-[335px] mr-[54px] cursor-pointer">
-                  <Link to={`/?${currentParams}`} preventScrollReset={true}>
-                    <img src={Logo} alt="logo" className="h-[30px]" />
+                  <Link
+                    className="lg:w-full w-[200px]"
+                    to={`/?${currentParams}`}
+                    preventScrollReset={true}
+                  >
+                    <img
+                      src={Logo}
+                      alt="logo"
+                      className="h-[30px] lg:h-auto w-[200px] lg:w-full object-contain"
+                    />
                   </Link>
                 </div>
               )}
@@ -109,7 +117,7 @@ export const Header: FC<IHeaderProps> = ({ queryParams }) => {
           <div className="sticky bg-light-gray top-0 h-[100px] w-full border-b-[1px] border-[#EAE9EE] px-[16px] flex flex-col justify-center z-10">
             <div className="flex justify-between items-center">
               <Link to={`/?${currentParams}`} preventScrollReset={true}>
-                <img src={Logo} alt="logo" />
+                <img src={Logo} alt="logo" className="max-w-[250px] object-contain" />
               </Link>
               <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                 <BurgerOpenIcon />
