@@ -19,3 +19,5 @@ export { CategoryDropdown } from './CategoryDropdown';
 export { CombareButton } from './CompareButton';
 
 export { Comparison } from './Comparison';
+
+export { ReviewsSlider } from './ReviewsSlider';

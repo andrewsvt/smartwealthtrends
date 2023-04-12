@@ -1,14 +1,10 @@
-import React, { FC, useState, useContext, useEffect } from 'react';
-import { ComparisonContext } from 'contexts/ComparisonContext';
+import React, { FC, useState, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 
-import { CombareButton, Comparison, Disclosure } from './index';
-
-import { ReactComponent as ComparisonIcon } from '../assets/icons/comparison.svg';
+import { CombareButton, Disclosure } from './index';
 
 export const AdvertiserDisclosure: FC = () => {
   const [modal, setModal] = useState<boolean>(false);
-  const { products } = useContext(ComparisonContext);
 
   const toggleModal = () => {
     setModal(!modal);
@@ -29,7 +25,7 @@ export const AdvertiserDisclosure: FC = () => {
 
   return (
     <>
-      <div className="w-full flex flex-row items-center justify-between md:justify-end">
+      <div className="lg:absolute lg:h-[40px] w-full flex flex-row items-center justify-between md:justify-end">
         <div className="md:hidden">
           <CombareButton />
         </div>
