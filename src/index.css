@@ -10,6 +10,27 @@
   box-sizing: border-box;
 }
 
+/* Hide the default scrollbar */
+::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+/* Style the scrollbar track */
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/* Style the scrollbar thumb */
+::-webkit-scrollbar-thumb {
+  background-color: #a3a1ac;
+}
+
+/* Style the scrollbar on hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #8f8e96;
+}
+
 img {
   user-select: none;
   -webkit-user-select: none;
@@ -39,6 +60,9 @@ img {
 }
 .filterIconSelected > path {
   stroke: #fff;
+}
+.filterIconHeaderSelected > path {
+  stroke: #296bef;
 }
 
 .filterText {
@@ -70,4 +94,8 @@ img {
 /* card.tsx */
 .consIcon > path {
   stroke: #ff4539;
+}
+
+.oddColor:nth-child(odd) {
+  background-color: #f7f7f7;
 }

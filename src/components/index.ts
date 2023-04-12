@@ -15,6 +15,6 @@ export { Rating } from './Rating';
 
 export { Dropdown } from './Dropdown';
 
-export { MenuPopups } from './MenuPopups';
+export { CombareButton } from './CompareButton';
 
 export { Comparison } from './Comparison';

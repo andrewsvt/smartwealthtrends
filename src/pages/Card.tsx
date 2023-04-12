@@ -1,24 +1,24 @@
 import React, { FC, useEffect, useState, useContext, useCallback } from 'react';
-import { motion } from 'framer-motion';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
-import { CardBlock, Header, MenuPopups, Rating } from 'components';
+import { CardBlock, Rating } from 'components';
 import { CheckBox, PrimaryButton } from 'components/UI';
 
 import { ITableItem } from '../interfaces';
-
-import { ReactComponent as CheckIcon } from '../assets/icons/check.svg';
-import { ReactComponent as CrossIcon } from '../assets/icons/cross.svg';
 import { ReactComponent as StarIcon } from '../assets/icons/RatingStarFull.svg';
 
 import { Listing } from 'interfaces/Api';
+
+import { ReactComponent as CheckIcon } from '../assets/icons/check.svg';
+import { ReactComponent as CrossIcon } from '../assets/icons/cross.svg';
 
 import { selectedCardContext } from 'contexts/SelectedCardContext';
 import { ComparisonContext } from 'contexts/ComparisonContext';
 import { IUseWindowSize, useWindowSize } from 'hooks/useWindowSize';
 import ProgressBar from 'components/UI/ProgressBar';
+import { CreditRatingSlugEnum, IssuersSlugEnum, apiDataInitialState } from 'utils/constants';
+import { AdvertiserDisclosure } from 'components/AdvertiserDisclosure';
 import { FilterContext } from 'contexts/FilterContext';
-import { apiDataInitialState } from 'utils/constants';
 
 interface ICardpageProps {
   apiData: Listing[];
@@ -28,16 +28,18 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
   const apiUrl = process.env.REACT_APP_API_URL;
   const pathname = window.location.pathname.split('/');
 
-  const [allApiData, setAllApiData] = useState<Listing[]>(apiDataInitialState);
-
   const size: IUseWindowSize = useWindowSize();
+
+  const { cardId } = useParams();
+  const navigate = useNavigate();
+
+  const [allApiData, setAllApiData] = useState<Listing[]>(apiDataInitialState);
+  const [currentParams, setCurrentParams] = useState<string>('');
 
   //contexts
   const { selectedCard, updateSelectedCard } = useContext(selectedCardContext);
   const { products, addProduct, removeProduct } = useContext(ComparisonContext);
   const filter = useContext(FilterContext);
-
-  const { cardId } = useParams();
 
   const [tableItems, setTableItems] = useState<ITableItem[]>([
     {
@@ -67,11 +69,35 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
     try {
       const response = await fetch(`${apiUrl}&crd=25&xml_version=2&max=999`);
       const data = await response.json();
-      setAllApiData(data.ResultSet.Listings.Listing);
+      if (true) {
+        setAllApiData(data.ResultSet.Listings.Listing);
+      }
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   }, []);
+
+  useEffect(() => {
+    if (currentParams) {
+      navigate(`/?${currentParams}`);
+    }
+
+    const paramsObj = {
+      category: filter.activeCategory.slug,
+      ...(filter.activeIssuer.slug !== IssuersSlugEnum.allIssuers && {
+        issuer: filter.activeIssuer.slug,
+      }),
+      ...(filter.activeCreditRange.slug !== CreditRatingSlugEnum.allCreditRating && {
+        creditRange: filter.activeCreditRange.slug,
+      }),
+    };
+
+    const params = Object.entries(paramsObj)
+      .map(([key, val]) => `${key}=${encodeURIComponent(val)}`)
+      .join('&');
+
+    setCurrentParams(params);
+  }, [filter]);
 
   useEffect(() => {
     fetchData();
@@ -81,6 +107,32 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
     const currentObject = allApiData.find((card: Listing) => card.ID === cardId);
     if (currentObject) {
       updateSelectedCard(currentObject);
+      setTableItems([
+        {
+          title: 'Sign Up Bonus',
+          description: selectedCard.SignupRequirement,
+        },
+        {
+          title: 'Rewards Rate',
+          description: selectedCard.PointsPerDollar,
+        },
+        {
+          title: 'Intro APR Rate',
+          description: `${selectedCard.IntroAPRRate}<br/>${selectedCard.IntroAPRDuration}<br/>${selectedCard.RegAPR}<br/>${selectedCard.RegAPRType}`,
+        },
+        {
+          title: 'Annual Fees',
+          description: selectedCard.AnnualFees,
+        },
+        {
+          title: 'Card Brand',
+          description: selectedCard.CardProcessorTypeName,
+        },
+        {
+          title: 'Credit Score Needed',
+          description: selectedCard.CreditScoreNeeded,
+        },
+      ]);
     }
   }, [cardId, allApiData]);
 
@@ -104,7 +156,9 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
         {size.width > 768 ? (
           <div className="sticky top-0 bg-bg h-[72px] w-full flex flex-row justify-between items-center">
             <div className="flex flex-row items-center py-[24px] lg:py-0">
-              <div className="text-secondary-text pr-[8px]">Home</div>
+              <Link to={`/?${currentParams}`} className="text-secondary-text pr-[8px]">
+                Home
+              </Link>
               {pathname.slice(1).map((path, i) => {
                 return (
                   <div key={i} className="flex flex-row space-x-[8px]">
@@ -114,6 +168,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                 );
               })}
             </div>
+            <AdvertiserDisclosure />
           </div>
         ) : (
           <>
@@ -154,12 +209,14 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                     </div>
                   </div>
                   <div className="flex flex-col md:flex-row items-center justify-start space-y-[8px] md:space-x-[8px]">
-                    <PrimaryButton text="Apply Now" />
+                    <div className="flex flex-row items-center space-x-[8px] w-full md:w-auto">
+                      <PrimaryButton text="Apply Now" />
+                    </div>
 
                     {products.map((product) => product.ID).includes(selectedCard.ID) ? (
                       <CheckBox
                         onClick={handleRemoveFromComparison}
-                        text="Remove from compare"
+                        text="Added to compare"
                         state={true}
                       />
                     ) : (
@@ -174,7 +231,6 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 border-[1px] border-border rounded-[10px]">
                 {tableItems.slice(0, 3).map((tableItem, index) => {
-                  const Icon = tableItem.icon;
                   return (
                     <div key={index} className="p-[20px] space-y-[20px] md:tableItem">
                       <div className="space-y-[8px]">
@@ -206,75 +262,25 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                   </div>
                 ))}
               </div>
+              <div className="w-full flex flex-col space-y-[24px]">
+                <h3 className="text-basePlus font-semibold px-[20px]">Quick Facts</h3>
+                <ul className="grid grid-cols-1">
+                  {selectedCard.Creative.PPCDescriptionLines.map((item, index) => (
+                    <li
+                      key={index}
+                      className="flex items-center space-x-[12px] py-[12px] px-[20px] rounded-[10px] oddColor"
+                    >
+                      <div className="w-[8px] h-[8px] rounded-[2px] bg-primary" />
+                      <p className="flex-1">{item}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
             <div className="mt-[28px] grid grid-cols-1 gap-[60px]">
-              {/* Pros and cons */}
-              {/* <div id="section2" className="px-[20px] space-y-[32px]">
-              <h2
-                className="text-lg font-semibold"
-                dangerouslySetInnerHTML={{
-                  __html: 'Pros and Cons of ' + selectedCard.CardName,
-                }}
-              />
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-[28px] md:gap-[74px] ">
-                <div className="space-y-[16px]">
-                  <h3 className="text-basePlus font-medium text-secondary-text">Pros</h3>
-                  <ul className="flex flex-col space-y-[24px] p-[12px]">
-                    <li className="flex flex-col space-y-[8px]">
-                      <div className="flex flex-row space-x-[16px] items-center">
-                        <CheckIcon />
-                        <h4 className="text-base font-medium">Unlimited 2% Cash Back:</h4>
-                      </div>
-                      <p className="font-light">
-                        You'll earn an unlimited 2% cash back on all purchases made with this card
-                        with no rewards caps or limits
-                      </p>
-                    </li>
-                  </ul>
-                </div>
-                <div className="space-y-[16px]">
-                  <h3 className="text-basePlus font-medium text-secondary-text">Cons</h3>
-                  <ul className="flex flex-col space-y-[24px] p-[12px]">
-                    <li className="flex flex-col space-y-[8px]">
-                      <div className="flex flex-row space-x-[16px] items-center">
-                        <CrossIcon classname="consIcon" />
-                        <h4 className="text-base font-medium">Unlimited 2% Cash Back:</h4>
-                      </div>
-                      <p className="font-light">
-                        You'll earn an unlimited 2% cash back on all purchases made with this card
-                        with no rewards caps or limits
-                      </p>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div> */}
-              <div id="section2" className="px-[20px] space-y-[32px]">
-                <h2
-                  className="text-lg font-semibold"
-                  dangerouslySetInnerHTML={{
-                    __html: 'Quick Facts about ' + selectedCard.CardName,
-                  }}
-                />
-                <div className="flex flex-col">
-                  <ul className="space-y-[28px]">
-                    {selectedCard.Creative.PPCDescriptionLines.map((line) => (
-                      <li className="flex items-center">
-                        <div className="w-[12px] h-[12px] rounded-[4px] bg-primary mr-[32px]" />
-                        <p
-                          className="text-base font-light flex-1"
-                          dangerouslySetInnerHTML={{
-                            __html: line,
-                          }}
-                        ></p>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
               {/* Review */}
               <div
-                id="section3"
+                id="section2"
                 className="flex flex-col-reverse md:flex-row w-full md:space-x-[54px]"
               >
                 <div className="w-full md:w-[328px] h-auto bg-white rounded-[14px] space-y-[28px] p-[20px] mt-[28px] md:mt-0">
@@ -351,14 +357,58 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                   </p>
                 </div>
               </div>
+              {/* Pros and cons */}
+              <div id="section3" className="px-[20px] space-y-[32px]">
+                <h2
+                  className="text-lg font-semibold"
+                  dangerouslySetInnerHTML={{
+                    __html: 'Pros and Cons of ' + selectedCard.CardName,
+                  }}
+                />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-[28px] md:gap-[74px] ">
+                  <div className="space-y-[16px]">
+                    <h3 className="text-basePlus font-medium text-secondary-text">Pros</h3>
+                    <ul className="flex flex-col space-y-[24px] p-[12px]">
+                      <li className="flex flex-col space-y-[8px]">
+                        <div className="flex flex-row space-x-[16px] items-center">
+                          <CheckIcon />
+                          <h4 className="text-base font-medium">Unlimited 2% Cash Back:</h4>
+                        </div>
+                        <p className="font-light">
+                          You'll earn an unlimited 2% cash back on all purchases made with this card
+                          with no rewards caps or limits
+                        </p>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="space-y-[16px]">
+                    <h3 className="text-basePlus font-medium text-secondary-text">Cons</h3>
+                    <ul className="flex flex-col space-y-[24px] p-[12px]">
+                      <li className="flex flex-col space-y-[8px]">
+                        <div className="flex flex-row space-x-[16px] items-center">
+                          <CrossIcon classname="consIcon" />
+                          <h4 className="text-base font-medium">Unlimited 2% Cash Back:</h4>
+                        </div>
+                        <p className="font-light">
+                          You'll earn an unlimited 2% cash back on all purchases made with this card
+                          with no rewards caps or limits
+                        </p>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
               {/* Related offers */}
               <div id="section4" className="space-y-[32px]">
                 <h2 className="text-lg font-semibold pl-[20px]">Related Card Offers</h2>
-                <motion.div className="grid grid-cols-1 gap-4">
-                  {apiData?.slice(0, 2).map((product, index) => (
-                    <CardBlock key={product.ID} product={product} index={index} />
-                  ))}
-                </motion.div>
+                <div className="grid grid-cols-1 gap-4">
+                  {apiData
+                    .filter((product) => product.ID !== cardId)
+                    .slice(0, 2)
+                    .map((product, index) => (
+                      <CardBlock key={product.ID} product={product} index={index} />
+                    ))}
+                </div>
               </div>
             </div>
           </div>

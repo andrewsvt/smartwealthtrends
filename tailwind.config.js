@@ -12,19 +12,21 @@ module.exports = {
       },
       colors: {
         'primary': '#296BEF',
-        'primary-light': '#DAE2FF',
+        'primary-light': '#E1E8FF',
         'primary-dark': '#0040A2',
         'secondary': '#FF9530',
         'secondary-light': '#FFEBD8',
 
-        'secondary-text': '#A3A1AC',
+        'almost-white': "#F7F7F7",
         'border': '#F0F0F0',
         'bg': '#F2F1F4',
-        'light-gray': '#EAE9EE',
+        'light-gray': '#EBEAEF',
         'medium-gray': '#CCCCD2',
+        'secondary-text': '#A3A1AC',
         'black': '#1B1B1F',
 
-        'error': '#FF4539',
+        'error': '#F43F5E',
+        'error-dark': '#E11D48',
         'success': '#34F46A'
       },
 

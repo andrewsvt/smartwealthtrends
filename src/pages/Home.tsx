@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { CardBlock } from '../components';
 import { Listing } from 'interfaces/Api';
 import { useGetApiData } from 'hooks/useGetApiData';
+import { AdvertiserDisclosure } from 'components/AdvertiserDisclosure';
 
 interface IHomeProps {
   apiData: Listing[];
@@ -18,12 +19,11 @@ export const Home: FC<IHomeProps> = () => {
 
   return (
     <>
-      <div className="w-full">
-        <div className="my-[24px] md:my-0 md:h-[126px] w-full flex flex-row justify-between items-center">
-          <div className="flex flex-col">
-            <h1 className="text-xl font-semibold pb-[6px]">{`${filter.activeCategory.text} from ${filter.activeIssuer.text}`}</h1>
-            <p className="text-secondary-text text-base ">Description of the page</p>
-          </div>
+      <div className="w-full mt-[24px]">
+        <AdvertiserDisclosure />
+        <div className="flex flex-col items-start justify-center w-full md:h-[110px]">
+          <h1 className="text-xl font-semibold pb-[6px]">{`${filter.activeCategory.text} from ${filter.activeIssuer.text}`}</h1>
+          <p className="text-secondary-text text-base ">Description of the page</p>
         </div>
         <AnimatePresence>
           <motion.div className="grid grid-cols-1 gap-4">

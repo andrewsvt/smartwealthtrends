@@ -1,49 +1,92 @@
+import { ReactComponent as BluePoint } from '../assets/icons/bluePoint.svg';
+
+//categories
 import { ReactComponent as AwardIcon } from '../assets/icons/award.svg';
 import { ReactComponent as TrandingDownIcon } from '../assets/icons/trending-down.svg';
 import { ReactComponent as RefreshIcon } from '../assets/icons/refresh-ccw.svg';
-import { ReactComponent as CoinIcon } from '../assets/icons/coin.svg';
+import { ReactComponent as CardCoinIcon } from '../assets/icons/cardcoin.svg';
 import { ReactComponent as BoxIcon } from '../assets/icons/box.svg';
 import { ReactComponent as AirplaneIcon } from '../assets/icons/airplane.svg';
 import { ReactComponent as BriefcaseIcon } from '../assets/icons/briefcase.svg';
 import { ReactComponent as CalendarIcon } from '../assets/icons/calendar.svg';
+import { ReactComponent as GlobalIcon } from '../assets/icons/global.svg';
+import { ReactComponent as GasIcon } from '../assets/icons/gasstation.svg';
+import { ReactComponent as ForkKnifeIcon } from '../assets/icons/forkknife.svg';
+import { ReactComponent as StudentIcon } from '../assets/icons/student.svg';
+
+//issures
+import { ReactComponent as CitiLogo } from '../assets/icons/issuers/citi.svg';
+import { ReactComponent as CaoitalOneLogo } from '../assets/icons/issuers/capitalone.svg';
+import { ReactComponent as ChaseLogo } from '../assets/icons/issuers/chase.svg';
+import { ReactComponent as BankOfAmericaLogo } from '../assets/icons/issuers/bankofamerica.svg';
+import { ReactComponent as WellsFargoLogo } from '../assets/icons/issuers/wellsfargo.svg';
+import { ReactComponent as AmericanExpressLogo } from '../assets/icons/issuers/americanexpress.svg';
+import { ReactComponent as DiscoverLogo } from '../assets/icons/issuers/discover.svg';
+import { ReactComponent as VisaLogo } from '../assets/icons/issuers/visa.svg';
+import { ReactComponent as MastercardLogo } from '../assets/icons/issuers/mastercard.svg';
+
+//range
+import { ReactComponent as RangeNo } from '../assets/icons/rangeNo.svg';
+import { ReactComponent as RangePoor } from '../assets/icons/rangePoor.svg';
+import { ReactComponent as RangeFair } from '../assets/icons/rangeFair.svg';
+import { ReactComponent as RangeGood } from '../assets/icons/rangeGood.svg';
+import { ReactComponent as RangeExcellent } from '../assets/icons/rangeExcellent.svg';
+
 import { Listing } from 'interfaces/Api';
 import { ReactElement, SVGProps } from 'react';
 
 export enum CategoriesEnum {
   topCards = '&crd=25',
-  lowOngoingRate = '&crd=2',
   balanceTransfer = '&crd=6',
+  lowOngoingRate = '&crd=2',
+  noAnnualFee = '&crd=11',
   cashBack = '&crd=3',
   rewards = '&crd=5',
+  noForeignFees = '&crd=16',
+  gas = '&crd=7',
+  dinning = '',
   travel = '&crd=4',
+  student = '&crd=8',
   business = '&crd=9',
-  noAnnualFee = '&crd=11',
 }
-
 export enum CategoriesSlugEnum {
   topCards = 'top-cards',
-  lowOngoingRate = 'low-ongoing-rate',
   balanceTransfer = 'balance-transfer',
+  lowOngoingRate = 'low-ongoing-rate',
+  noAnnualFee = 'no-annual-fee',
   cashBack = 'cash-back',
   rewards = 'rewards',
+  noForeignFees = 'no-foreign-fees',
+  gas = 'gas',
+  dinning = 'dinning',
   travel = 'travel',
+  student = 'student',
   business = 'business',
-  noAnnualFee = 'no-annual-fee',
 }
 
 export enum IssuersEnum {
   allIssuers = '',
-  chase = '&ccis=188933',
   citi = '&ccis=188934',
-  firstProgress = '&ccis=572111',
-  reliantHoldings = '&ccis=572914',
+  capitalOne = '&ccis=188934',
+  chase = '&ccis=188933',
   bankOfAmerica = '&ccis=574429',
-  theBankOfMissouri = '&ccis=606689',
-  genesisBankcard = '&ccis=607775',
-  celticBank = '&ccis=607790',
-  TDBank = '&ccis=607968',
-  merrickBank = '&ccis=608025',
   wellsFargo = '&ccis=636744',
+  americanExpress = '&ccis=640029',
+  discover = '&ccis=662750',
+  visa = '&ccntwk=1',
+  mastercard = '&ccntwk=2',
+}
+export enum IssuersSlugEnum {
+  allIssuers = '',
+  citi = 'citi',
+  capitalOne = 'capital-one',
+  chase = 'chase',
+  bankOfAmerica = 'bank-of-america',
+  wellsFargo = 'wells-fargo',
+  americanExpress = 'american-express',
+  discover = 'discover',
+  visa = 'visa',
+  mastercard = 'mastercard',
 }
 
 export enum CreditRatingEnum {
@@ -54,29 +97,30 @@ export enum CreditRatingEnum {
   poor = '&cccrate=4',
   noneLimitedHistory = '&cccrate=5',
 }
+export enum CreditRatingSlugEnum {
+  allCreditRating = 'all-credit-rating',
+  excellent = 'excellent',
+  good = 'good',
+  averageFair = 'average-fair',
+  poor = 'poor',
+  noneLimitedHistory = 'none-limited-history',
+}
 
 export interface ISelectValue {
   text: string;
   field: string | CategoriesEnum | IssuersEnum | CreditRatingEnum;
   slug: string;
 }
-
-export interface ICategorySelectValue extends ISelectValue {
+export interface ISVGSelectValue extends ISelectValue {
   icon: (props: SVGProps<SVGElement>) => ReactElement;
 }
 
-export const categories: ICategorySelectValue[] = [
+export const categories: ISVGSelectValue[] = [
   {
     text: 'Top Cards',
     field: CategoriesEnum.topCards,
     icon: AwardIcon,
     slug: CategoriesSlugEnum.topCards,
-  },
-  {
-    text: 'Low Ongoing Rate',
-    field: CategoriesEnum.lowOngoingRate,
-    icon: TrandingDownIcon,
-    slug: CategoriesSlugEnum.lowOngoingRate,
   },
   {
     text: 'Balance transfer',
@@ -85,9 +129,21 @@ export const categories: ICategorySelectValue[] = [
     slug: CategoriesSlugEnum.balanceTransfer,
   },
   {
+    text: 'Low Ongoing Rate',
+    field: CategoriesEnum.lowOngoingRate,
+    icon: TrandingDownIcon,
+    slug: CategoriesSlugEnum.lowOngoingRate,
+  },
+  {
+    text: 'No annual fee',
+    field: CategoriesEnum.noAnnualFee,
+    icon: CalendarIcon,
+    slug: CategoriesSlugEnum.noAnnualFee,
+  },
+  {
     text: 'Cash Back',
     field: CategoriesEnum.cashBack,
-    icon: CoinIcon,
+    icon: CardCoinIcon,
     slug: CategoriesSlugEnum.cashBack,
   },
   {
@@ -103,134 +159,134 @@ export const categories: ICategorySelectValue[] = [
     slug: CategoriesSlugEnum.travel,
   },
   {
+    text: 'No Foreign Fees',
+    field: CategoriesEnum.noForeignFees,
+    icon: GlobalIcon,
+    slug: CategoriesSlugEnum.noForeignFees,
+  },
+  {
+    text: 'Gas',
+    field: CategoriesEnum.gas,
+    icon: GasIcon,
+    slug: CategoriesSlugEnum.gas,
+  },
+  {
+    text: 'Dinning',
+    field: CategoriesEnum.dinning,
+    icon: ForkKnifeIcon,
+    slug: CategoriesSlugEnum.dinning,
+  },
+  {
+    text: 'Student',
+    field: CategoriesEnum.student,
+    icon: StudentIcon,
+    slug: CategoriesSlugEnum.student,
+  },
+  {
     text: 'Business',
     field: CategoriesEnum.business,
     icon: BriefcaseIcon,
     slug: CategoriesSlugEnum.business,
   },
-  {
-    text: 'No annual fee',
-    field: CategoriesEnum.noAnnualFee,
-    icon: CalendarIcon,
-    slug: CategoriesSlugEnum.noAnnualFee,
-  },
 ];
 
-export enum IssuersSlugEnum {
-  allIssuers = 'all-issuers',
-  chase = 'chase',
-  citi = 'citi',
-  firstProgress = 'first-progress',
-  reliantHoldings = 'reliant-holdings',
-  bankOfAmerica = 'bank-of-america',
-  theBankOfMissouri = 'the-bank-of-missouri',
-  genesisBankcard = 'genesis-bankcard',
-  celticBank = 'celtic-bank',
-  tdBank = 'td-bank',
-  merrickBank = 'merrick-bank',
-  wellsFargo = 'wellsFargo',
-}
-
-export const issuers: ISelectValue[] = [
+export const issuers: ISVGSelectValue[] = [
   {
     text: 'All Issuers',
+    icon: BluePoint,
     field: IssuersEnum.allIssuers,
     slug: IssuersSlugEnum.allIssuers,
   },
   {
-    text: 'Chase',
-    field: IssuersEnum.chase,
-    slug: IssuersSlugEnum.chase,
-  },
-  {
-    text: 'Citi',
+    text: 'Citibank',
+    icon: CitiLogo,
     field: IssuersEnum.citi,
     slug: IssuersSlugEnum.citi,
   },
   {
-    text: 'First Progress',
-    field: IssuersEnum.firstProgress,
-    slug: IssuersSlugEnum.firstProgress,
+    text: 'Capital One',
+    icon: CaoitalOneLogo,
+    field: IssuersEnum.capitalOne,
+    slug: IssuersSlugEnum.capitalOne,
   },
   {
-    text: 'Reliant Holdings',
-    field: IssuersEnum.reliantHoldings,
-    slug: IssuersSlugEnum.reliantHoldings,
+    text: 'Chase',
+    icon: ChaseLogo,
+    field: IssuersEnum.chase,
+    slug: IssuersSlugEnum.chase,
   },
   {
     text: 'Bank of America',
+    icon: BankOfAmericaLogo,
     field: IssuersEnum.bankOfAmerica,
     slug: IssuersSlugEnum.bankOfAmerica,
   },
   {
-    text: 'The Bank of Missouri',
-    field: IssuersEnum.theBankOfMissouri,
-    slug: IssuersSlugEnum.theBankOfMissouri,
-  },
-  {
-    text: 'Genesis Bankcard',
-    field: IssuersEnum.genesisBankcard,
-    slug: IssuersSlugEnum.genesisBankcard,
-  },
-  {
-    text: 'Celtic Bank',
-    field: IssuersEnum.celticBank,
-    slug: IssuersSlugEnum.celticBank,
-  },
-  {
-    text: 'TD Bank',
-    field: IssuersEnum.TDBank,
-    slug: IssuersSlugEnum.tdBank,
-  },
-  {
-    text: 'Merrick Bank',
-    field: IssuersEnum.merrickBank,
-    slug: IssuersSlugEnum.merrickBank,
-  },
-  {
     text: 'Wells Fargo',
+    icon: WellsFargoLogo,
     field: IssuersEnum.wellsFargo,
     slug: IssuersSlugEnum.wellsFargo,
   },
+  {
+    text: 'American Express',
+    icon: AmericanExpressLogo,
+    field: IssuersEnum.americanExpress,
+    slug: IssuersSlugEnum.americanExpress,
+  },
+  {
+    text: 'Discover',
+    icon: DiscoverLogo,
+    field: IssuersEnum.discover,
+    slug: IssuersSlugEnum.discover,
+  },
+  {
+    text: 'Visa',
+    icon: VisaLogo,
+    field: IssuersEnum.visa,
+    slug: IssuersSlugEnum.visa,
+  },
+  {
+    text: 'Mastercard',
+    icon: MastercardLogo,
+    field: IssuersEnum.mastercard,
+    slug: IssuersSlugEnum.mastercard,
+  },
 ];
 
-export enum CreditRatingSlugEnum {
-  allCreditRating = 'all-credit-rating',
-  excellent = 'excellent',
-  good = 'good',
-  averageFair = 'average-fair',
-  poor = 'poor',
-  noneLimitedHistory = 'none-limited-history',
-}
-
-export const creditRating: ISelectValue[] = [
+export const creditRating: ISVGSelectValue[] = [
   {
     text: 'All Credit Ranges',
+    icon: BluePoint,
     field: CreditRatingEnum.allCreditRating,
     slug: CreditRatingSlugEnum.allCreditRating,
   },
   {
     text: 'Excellent',
+    icon: RangeExcellent,
     field: CreditRatingEnum.excellent,
     slug: CreditRatingSlugEnum.excellent,
   },
   {
     text: 'Good',
+    icon: RangeGood,
     field: CreditRatingEnum.good,
     slug: CreditRatingSlugEnum.good,
   },
   {
     text: 'Average/Fair',
+    icon: RangeFair,
     field: CreditRatingEnum.averageFair,
     slug: CreditRatingSlugEnum.averageFair,
   },
   {
     text: 'Poor',
+    icon: RangePoor,
     field: CreditRatingEnum.poor,
     slug: CreditRatingSlugEnum.poor,
   },
   {
     text: 'None/Limited History',
+    icon: RangeNo,
     field: CreditRatingEnum.noneLimitedHistory,
     slug: CreditRatingSlugEnum.noneLimitedHistory,
   },

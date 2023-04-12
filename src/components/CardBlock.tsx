@@ -1,8 +1,8 @@
 import React, { FC, useState, useContext, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
-import { CheckBox, PrimaryButton, SecondaryButton } from './UI';
+import { CheckBox, ExpandButton, PrimaryButton, SecondaryButton } from './UI';
 import { Rating } from 'components';
 import { ITableItem } from '../interfaces';
 import { Listing } from 'interfaces/Api';
@@ -41,7 +41,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
       },
       {
         icon: CopyIcon,
-        title: 'Extra Perks',
+        title: 'Intro APR',
         description: product.BonusMiles,
       },
       {
@@ -49,12 +49,12 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
         title: 'Annual Fees',
         description: product.AnnualFees,
       },
-      { icon: '', title: 'Card Brand', description: product.CardProcessorTypeName },
       {
         icon: '',
         title: 'Credit Score Needed',
         description: product.CreditScoreNeeded,
       },
+      { icon: '', title: 'Card Brand', description: product.CardProcessorTypeName },
     ],
     [product]
   );
@@ -72,21 +72,24 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1, transition: { duration: 0.6 } }}
       viewport={{ once: true }}
+      transition={{ duration: 0.3 }}
       exit={{ opacity: 0, transition: { duration: 0.3 } }}
       className="p-[20px] bg-white rounded-[14px] space-y-[32px]"
     >
-      <div className="flex flex-col md:flex-row md:h-[180px] space-y-[20px] md:space-x-[20px]">
+      <div className="flex flex-col md:flex-row md:h-[180px] md:space-x-[20px]">
         <img
           className="h-auto md:h-[180px] w-full md:w-auto"
           src={product.Creative.RawLogoImageUrl}
           alt="card"
         />
-        <div className="flex flex-col space-y-[20px] md:justify-between">
+        <div className="flex flex-col space-y-[20px] md:justify-between mt-[20px] md:mt-0">
           <div className="space-y-[12px]">
-            <h2
-              className="text-lg font-semibold"
-              dangerouslySetInnerHTML={{ __html: product.CardName }}
-            />
+            <Link to={`/cards/${product.ID}`} onClick={() => updateSelectedCard(product)}>
+              <h2
+                className="text-lg font-semibold hover:text-primary-dark customTransition"
+                dangerouslySetInnerHTML={{ __html: product.CardName }}
+              />
+            </Link>
             <div className="flex flex-row items-center">
               <span className="text-base font-medium mr-[14px]">
                 {Number(product.EditorRating).toFixed(1)}
@@ -97,20 +100,9 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
           <div className="flex flex-col md:flex-row items-center justify-start space-y-[8px] md:space-x-[8px]">
             <div className="flex flex-row items-center space-x-[8px] w-full md:w-auto">
               <PrimaryButton text="Apply Now" />
-              <Link
-                className="flex-1 md:flex-auto"
-                to={`/cards/${product.ID}`}
-                preventScrollReset={true}
-              >
-                <SecondaryButton onClick={() => updateSelectedCard(product)} text="Learn More" />
-              </Link>
             </div>
             {products.map((product) => product.ID).includes(product.ID) ? (
-              <CheckBox
-                onClick={handleRemoveFromComparison}
-                text="Remove from compare"
-                state={true}
-              />
+              <CheckBox onClick={handleRemoveFromComparison} text="Added to compare" state={true} />
             ) : (
               <CheckBox onClick={handleAddToComparison} text="Add to compare" state={false} />
             )}
@@ -124,7 +116,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
             <div key={index} className="p-[20px] space-y-[20px] md:tableItem">
               <div>
                 {/* @ts-ignore */}
-                <Icon />
+                <Icon style={{ width: '44px', height: '44px' }} />
               </div>
               <div className="space-y-[8px]">
                 <h4
@@ -139,32 +131,79 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
             </div>
           );
         })}
-        {isExpanded
-          ? tableItems.slice(3, 6).map((tableItem, index) => (
-              <motion.div
-                initial={{ opacity: 0, y: -30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 50 }}
-                exit={{ opacity: 0, y: -30 }}
-                className="p-[20px] space-y-[8px] md:tableItem md:tableItemExpanded"
-                key={index}
-              >
-                <h4
-                  className="font-medium text-base"
-                  dangerouslySetInnerHTML={{ __html: tableItem.title }}
-                />
-                <p
-                  className="font-light text-sm"
-                  dangerouslySetInnerHTML={{ __html: tableItem.description }}
-                />
-              </motion.div>
-            ))
-          : ''}
+        {isExpanded &&
+          tableItems.slice(3, 6).map((tableItem, index) => (
+            <motion.div
+              initial={{ opacity: 0, y: -30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 50 }}
+              exit={{ opacity: 0, y: -30 }}
+              className="p-[20px] space-y-[8px] md:tableItem md:tableItemExpanded"
+              key={index}
+            >
+              <h4
+                className="font-medium text-base"
+                dangerouslySetInnerHTML={{ __html: tableItem.title }}
+              />
+              <p
+                className="font-light text-sm"
+                dangerouslySetInnerHTML={{ __html: tableItem.description }}
+              />
+            </motion.div>
+          ))}
       </motion.div>
+      {isExpanded && (
+        <>
+          <motion.div
+            className="w-full flex flex-col space-y-[24px]"
+            initial={{ opacity: 0, y: -30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 50 }}
+            exit={{ opacity: 0, y: -30 }}
+          >
+            <h3 className="text-basePlus font-semibold px-[20px]">Quick Facts</h3>
+            <ul className="grid grid-cols-1">
+              {product.Creative.PPCDescriptionLines.slice(0, 5).map((item, index) => (
+                <li
+                  key={index}
+                  className="flex items-center space-x-[12px] py-[12px] px-[20px] rounded-[10px] oddColor"
+                >
+                  <div className="w-[8px] h-[8px] rounded-[2px] bg-primary" />
+                  <p className="flex-1">{item}</p>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: -30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 50 }}
+            exit={{ opacity: 0, y: -30 }}
+            className="w-full border-[1px] border-border rounded-[10px] p-[20px] flex flex-col md:flex-row md:items-center md:justify-between"
+          >
+            <p className="text-black font-medium text-base w-full md:w-[50%] mb-[20px] md:mb-0">
+              Review additional details for{' '}
+              <Link
+                to={`/cards/${product.ID}`}
+                onClick={() => updateSelectedCard(product)}
+                className="text-primary font-semibold"
+                dangerouslySetInnerHTML={{ __html: product.CardName }}
+              ></Link>
+            </p>
+            <Link
+              className="min-w-[202px]"
+              to={`/cards/${product.ID}`}
+              onClick={() => updateSelectedCard(product)}
+            >
+              <SecondaryButton text="Learn More" />
+            </Link>
+          </motion.div>
+        </>
+      )}
       <div className="w-full flex justify-center">
-        <SecondaryButton
+        <ExpandButton
           onClick={() => setIsExpanded(!isExpanded)}
-          text={isExpanded ? 'Hide' : 'Expand'}
+          text={isExpanded ? 'Show Less' : 'Expand'}
         />
       </div>
     </motion.div>

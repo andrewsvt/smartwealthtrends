@@ -7,10 +7,11 @@ import visaLogo from '../assets/icons/visa.svg';
 import mastercardLogo from '../assets/icons/mastercard.svg';
 import capitaloneLogo from '../assets/icons/capitalone.svg';
 import citigroupLogo from '../assets/icons/citigroup.svg';
+import { Link } from 'react-router-dom';
 
 export const Footer: FC = () => {
   return (
-    <div className="mt-[60px] space-y-[28px]">
+    <div className="mt-[60px] space-y-[28px] max-w-[1400px] m-auto">
       <div className="flex flex-col lg:flex-row justify-center lg:justify-between items:center lg:items-start relative space-y-[32px] lg:space-y-0">
         <div className="space-y-[28px] w-full lg:w-[312px] flex flex-col items-center lg:items-start">
           <img className="w-[200px]" src={Logo} alt="logo"></img>
@@ -23,10 +24,16 @@ export const Footer: FC = () => {
         <div className="flex flex-col items-center lg:items-start space-y-[28px]">
           <h3 className="text-base font-medium">Polices</h3>
           <ul className="flex flex-col items-center lg:items-start space-y-[18px]">
-            <li className="text-xs text-secondary-text underline font-light">Privacy Policy</li>
-            <li className="text-xs text-secondary-text underline font-light">Terms Of Service</li>
             <li className="text-xs text-secondary-text underline font-light">
-              Affiliate Disclosure
+              <Link to={'https://smartwealthtrends.com/privacy-policy/'}>Privacy Policy</Link>
+            </li>
+            <li className="text-xs text-secondary-text underline font-light">
+              <Link to={'https://smartwealthtrends.com/terms-of-service/'}>Terms Of Service</Link>
+            </li>
+            <li className="text-xs text-secondary-text underline font-light">
+              <Link to={'https://smartwealthtrends.com/affiliate-disclosure/'}>
+                Affiliate Disclosure
+              </Link>
             </li>
           </ul>
         </div>

@@ -10,10 +10,10 @@ function App() {
   const { apiData, totalRecords, isLoading } = useGetApiData();
 
   return (
-    <div className="bg-bg">
-      <div className="relative xl:max-w-[1400px] m-0 xl:m-auto px-4 xl:px-0 w-full h-full pt-0">
+    <div className="bg-bg scrollbar-hide">
+      <div className="relative w-full h-full pt-0">
         <Header />
-        <div className="relative flex flex-row lg:space-x-[54px]">
+        <div className="relative flex flex-row lg:space-x-[54px] xl:max-w-[1400px] m-0 xl:m-auto px-4 xl:px-0">
           <Sidebar />
           <Routes>
             <Route

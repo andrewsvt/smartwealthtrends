@@ -3,7 +3,7 @@ import { Link, Route, Routes } from 'react-router-dom';
 import { IUseWindowSize, useWindowSize } from 'hooks/useWindowSize';
 import { AnimatePresence, motion } from 'framer-motion';
 
-import { MenuPopups, PageNavigation } from './index';
+import { CombareButton, PageNavigation } from './index';
 
 import Logo from '../assets/images/Logo.png';
 import LogoIcon from '../assets/images/LogoIcon.png';
@@ -31,23 +31,15 @@ export const Header: FC<IHeaderProps> = ({ queryParams }) => {
 
   //click outside handlers
   useEffect(() => {
-    const dropdownHandler = (e: any) => {
-      if (!dropdownRef.current?.contains(e.target)) {
-        setActiveDropdown('');
-      }
-    };
-
     const mobileMenuHandler = (e: any) => {
       if (!mobileMenuRef.current?.contains(e.target)) {
         setIsMobileMenuOpen(false);
       }
     };
 
-    document.addEventListener('mousedown', dropdownHandler);
     document.addEventListener('mousedown', mobileMenuHandler);
 
     return () => {
-      document.removeEventListener('mousedown', dropdownHandler);
       document.removeEventListener('mousedown', mobileMenuHandler);
     };
   }, []);
@@ -86,36 +78,31 @@ export const Header: FC<IHeaderProps> = ({ queryParams }) => {
   return (
     <>
       {size.width > 768 ? (
-        <div className="max-w-[1400px] sticky top-0 bg-bg w-full h-auto lg:pt-0 border-b-[1px] border-[#EAE9EE] flex flex-col lgPlus:flex-row items-start lgPlus:items-center justify-start lgPlus:justify-between z-10">
-          <div className="flex items-center h-[100px]">
-            {size.width < 976 && (
-              <div className="flex justify-center items-center mr-[16px] cursor-pointer">
-                <Link to={`/?${currentParams}`} preventScrollReset={true}>
-                  <img src={LogoIcon} alt="logo" className="h-[30px]" />
-                </Link>
-              </div>
-            )}
-            {size.width > 976 && (
-              <div className="flex justify-center items-center mr-[54px] cursor-pointer">
-                <Link to={`/?${currentParams}`} preventScrollReset={true}>
-                  <img src={Logo} alt="logo" className="h-[30px]" />
-                </Link>
-              </div>
-            )}
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <HeaderFilters
-                    ref={dropdownRef}
-                    activeDropdown={activeDropdown}
-                    setActiveDropdown={setActiveDropdown}
-                  />
-                }
+        <div className="sticky top-0 w-full h-auto bg-light-gray z-10 flex flex-row justify-center items-center">
+          <div className="max-w-[1400px] w-full h-auto lg:pt-0 border-b-[1px] border-primary-light flex flex-col lgPlus:flex-row items-start lgPlus:items-center justify-start lgPlus:justify-between">
+            <div className="flex items-center h-[100px]">
+              {size.width < 976 && (
+                <div className="flex justify-center items-center mr-[16px] cursor-pointer">
+                  <Link to={`/?${currentParams}`} preventScrollReset={true}>
+                    <img src={LogoIcon} alt="logo" className="h-[30px]" />
+                  </Link>
+                </div>
+              )}
+              {size.width > 976 && (
+                <div className="flex justify-center items-center w-[335px] mr-[54px] cursor-pointer">
+                  <Link to={`/?${currentParams}`} preventScrollReset={true}>
+                    <img src={Logo} alt="logo" className="h-[30px]" />
+                  </Link>
+                </div>
+              )}
+              <HeaderFilters
+                ref={dropdownRef}
+                activeDropdown={activeDropdown}
+                setActiveDropdown={setActiveDropdown}
               />
-            </Routes>
+            </div>
+            <CombareButton />
           </div>
-          <MenuPopups />
         </div>
       ) : (
         <>
@@ -126,7 +113,7 @@ export const Header: FC<IHeaderProps> = ({ queryParams }) => {
                 <BurgerOpenIcon />
               </button>
             </div>
-            <MenuPopups />
+            <CombareButton />
           </div>
           <AnimatePresence>
             {isMobileMenuOpen && (

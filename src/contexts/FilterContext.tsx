@@ -1,7 +1,7 @@
 import { createContext, useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import {
-  ICategorySelectValue,
+  ISVGSelectValue,
   categories,
   creditRating,
   issuers,
@@ -11,7 +11,7 @@ import {
 } from 'utils/constants';
 
 interface IFilterContext {
-  activeCategory: ICategorySelectValue;
+  activeCategory: ISVGSelectValue;
   activeIssuer: ISelectValue;
   activeCreditRange: ISelectValue;
   updateCategory: (newCategory: string) => void;
