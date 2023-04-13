@@ -14,8 +14,8 @@ export const PageNavigation: FC = () => {
   const [activeSection, setActiveSection] = useState<string>('section1');
 
   useEffect(() => {
-    console.log(activeSection);
-  }, [activeSection]);
+    setActiveSection('section1');
+  }, []);
 
   const handleSetActive = (sectionId: string) => {
     setActiveSection(sectionId);

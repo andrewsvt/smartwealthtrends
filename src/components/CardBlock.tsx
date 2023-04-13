@@ -71,7 +71,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, zIndex: 1 }}
+      initial={{ opacity: 0 }}
       whileInView={{ opacity: 1, transition: { duration: 0.6 } }}
       viewport={{ once: true }}
       transition={{ duration: 0.3 }}
@@ -97,7 +97,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
             />
           </div>
         </div>
-        <div className="flex flex-col space-y-[20px] items-center md:justify-between mt-[20px] md:mt-0">
+        <div className="flex flex-col space-y-[20px] items-center md:items-start md:justify-between mt-[20px] md:mt-0">
           <div className="space-y-[12px] w-full flex flex-col items-center md:items-start">
             <Link to={`/cards/${product.ID}`} onClick={() => updateSelectedCard(product)}>
               <h2

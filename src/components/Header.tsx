@@ -3,7 +3,7 @@ import { Link, Route, Routes } from 'react-router-dom';
 import { IUseWindowSize, useWindowSize } from 'hooks/useWindowSize';
 import { AnimatePresence, motion } from 'framer-motion';
 
-import { CombareButton, PageNavigation } from './index';
+import { PageNavigation } from './index';
 
 import Logo from '../assets/images/Logo.webp';
 import LogoIcon from '../assets/images/LogoIcon.png';
@@ -109,7 +109,6 @@ export const Header: FC<IHeaderProps> = ({ queryParams }) => {
                 setActiveDropdown={setActiveDropdown}
               />
             </div>
-            <CombareButton />
           </div>
         </div>
       ) : (

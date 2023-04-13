@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import { Footer, Header, Sidebar } from './components';
+import { CompareButton, Footer, Header, Sidebar } from './components';
 import { Home, Card } from './pages';
 
 import { useGetApiData } from 'hooks/useGetApiData';
@@ -13,8 +13,9 @@ function App() {
     <div className="bg-bg scrollbar-hide">
       <div className="relative w-full h-full pt-0">
         <Header />
-        <div className="relative flex flex-row lg:space-x-[54px] xl:max-w-[1400px] m-0 xl:m-auto px-4 xl:px-0">
+        <div className="relative flex flex-row xl:max-w-[1400px] m-0 xl:m-auto px-4 xl:px-0">
           <Sidebar />
+          <CompareButton />
           <Routes>
             <Route
               path="/"

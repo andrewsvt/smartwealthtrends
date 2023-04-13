@@ -181,7 +181,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
         initial={{ y: -100 }}
         animate={{ y: scrolled ? 0 : -100 }}
         transition={{ duration: 0.3 }}
-        className="fixed top-0 left-0 lg:left-[-54px] w-full h-[100px] bg-light-gray flex items-center justify-center z-50 p-[16px] space-x-[16px] md:space-x-[32px]"
+        className="fixed top-0 left-0 w-full h-[100px] bg-light-gray flex items-center justify-center z-50 p-[16px] space-x-[16px] md:space-x-[32px]"
       >
         <img
           src={selectedCard.Creative.LogoImageUrl}
@@ -257,7 +257,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                       alt="card"
                     />
                   </div>
-                  <div className="flex flex-col space-y-[20px] items-center md:justify-between mt-[20px] md:mt-0">
+                  <div className="flex flex-col space-y-[20px] items-center md:items-start md:justify-between mt-[20px] md:mt-0">
                     <div className="space-y-[12px] w-full flex flex-col items-center md:items-start">
                       <h2
                         className="text-lg font-semibold"

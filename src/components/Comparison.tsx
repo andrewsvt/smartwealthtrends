@@ -1,9 +1,11 @@
-import React, { FC, useContext } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
 import { ComparisonContext } from 'contexts/ComparisonContext';
 
 import { ComparisonCard } from './ComparisonCard';
+
+import { ReactComponent as CrossIcon } from '../assets/icons/cross.svg';
 
 interface ComparisonProps {
   modal: boolean;
@@ -12,14 +14,36 @@ interface ComparisonProps {
 
 export const Comparison: FC<ComparisonProps> = ({ modal, setModal }) => {
   const { products } = useContext(ComparisonContext);
+  const [closing, setClosing] = useState<boolean>(false);
 
   const toggleModal = () => {
     setModal(!modal);
   };
+
+  useEffect(() => {
+    if (products.length === 0 && !closing) {
+      setClosing(true);
+      setTimeout(() => {
+        setModal(false);
+        setClosing(false);
+      }, 500);
+    }
+  }, [products, closing, setModal]);
+
   return (
-    <div className="w-screen h-screen fixed top-0 left-0 flex justify-center items-center z-20">
+    <div className="w-screen h-screen fixed top-0 left-0 flex justify-center items-center z-30">
       <motion.div
-        className="absolute bottom-[16px] lg:bottom-auto z-20 flex flex-row justify-start lg:justify-center bg-bg rounded-[18px] lg:rounded-t-[18px] max-w-[1400px] w-full h-[776px] max-h-[86%] p-[20px] space-x-[20px] overflow-x-scroll lg:overflow-x-hidden overflow-y-scroll"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        whileHover={{ scale: 1.3, rotateZ: '90deg' }}
+        onClick={toggleModal}
+        className="fixed top-0 right-0 m-4 md:m-5 cursor-pointer bg-white rounded-full p-[8px] z-20"
+      >
+        <CrossIcon />
+      </motion.div>
+      <motion.div
+        className="absolute bottom-[16px] lg:bottom-auto z-20 flex flex-row justify-start lg:justify-center bg-bg rounded-[18px] lg:rounded-t-[18px] max-w-[1400px] w-full h-[776px] max-h-[86%] p-[20px] space-x-[20px] overflow-x-scroll lg:overflow-x-hidden overflow-y-scroll popupScrollbar"
         initial={{ opacity: 0, scale: 0.7 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{

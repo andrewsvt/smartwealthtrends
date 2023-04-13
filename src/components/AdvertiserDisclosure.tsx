@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 
-import { CombareButton, Disclosure } from './index';
+import { CompareButton, Disclosure } from './index';
 
 export const AdvertiserDisclosure: FC = () => {
   const [modal, setModal] = useState<boolean>(false);
@@ -25,10 +25,7 @@ export const AdvertiserDisclosure: FC = () => {
 
   return (
     <>
-      <div className="lg:absolute lg:right-0 lg:h-[40px] w-full lg:w-auto flex flex-row items-center justify-between md:justify-end">
-        <div className="md:hidden">
-          <CombareButton />
-        </div>
+      <div className="lg:absolute lg:right-0 lg:h-[40px] w-full lg:w-auto flex flex-row items-center justify-end">
         <span onClick={toggleModal} className="text-sm underline font-medium cursor-pointer">
           Advertiser Disclosure
         </span>
