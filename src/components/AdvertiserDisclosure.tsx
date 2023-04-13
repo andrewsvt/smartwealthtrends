@@ -2,7 +2,7 @@ import React, { FC, useState, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 
 import { CompareButton, Disclosure } from './index';
-import Portal from './Portal';
+import Portal from '../utils/Portal';
 
 export const AdvertiserDisclosure: FC = () => {
   const [modal, setModal] = useState<boolean>(false);

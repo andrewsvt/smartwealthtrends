@@ -1,7 +1,11 @@
-import React, { useState, useEffect, FC } from 'react';
-import { motion } from 'framer-motion';
+import React, { FC, useRef, useEffect } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 import { ReactComponent as QuotesIcon } from '../assets/icons/quotes.svg';
+import { Navigation, Pagination } from 'swiper';
 
 const reviews: { quote: string; logo: string }[] = [
   {
@@ -11,7 +15,7 @@ const reviews: { quote: string; logo: string }[] = [
   },
   {
     quote:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget nunc ut neque vestibulum pellentesque.',
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget nunc ut neque vestibulum pellentesque.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget nunc ut neque vestibulum pellentesque.',
     logo: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Adobe_Corporate_logo.svg',
   },
   {
@@ -21,72 +25,62 @@ const reviews: { quote: string; logo: string }[] = [
   },
 ];
 
-interface ReviewSlideProps {
-  review: {
-    quote: string;
-    logo: string;
-  };
-  isVisible: boolean;
-}
-
-// const ReviewSlide: FC<ReviewSlideProps> = ({ review, isVisible }) => {
-//   return (
-//     <motion.div
-//       className="p-[20px] space-y-[20px] flex flex-col justify-center items-center"
-//       initial={{ x: isVisible ? '100%' : '-100%' }}
-//       animate={{ x: 0 }}
-//       exit={{ x: isVisible ? '-100%' : '100%' }}
-//       transition={{ duration: 0.5 }}
-//     >
-//       <QuotesIcon />
-//       <p className="text-center">{review.quote}</p>
-//       <img src={review.logo} alt="reviwer logo" className="w-[50%]" />
-//     </motion.div>
-//   );
-// };
-
 export const ReviewsSlider: FC = () => {
-  const [currentReviewIndex, setCurrentReviewIndex] = useState(0);
+  const swiperRef = useRef<any>(null);
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      setCurrentReviewIndex(currentReviewIndex === reviews.length - 1 ? 0 : currentReviewIndex + 1);
-    }, 5000);
+    const swiperInstance = swiperRef.current?.swiper;
+    let interval: NodeJS.Timeout;
 
-    return () => clearInterval(intervalId);
-  }, [currentReviewIndex]);
+    const startAutoplay = () => {
+      interval = setInterval(() => {
+        swiperInstance?.slideNext();
+      }, 5000);
+    };
+
+    const stopAutoplay = () => {
+      clearInterval(interval);
+    };
+
+    if (swiperInstance) {
+      swiperInstance.on('mouseenter', stopAutoplay);
+      swiperInstance.on('mouseleave', startAutoplay);
+
+      startAutoplay();
+    }
+
+    return () => {
+      swiperInstance?.off('mouseenter', stopAutoplay);
+      swiperInstance?.off('mouseleave', startAutoplay);
+
+      stopAutoplay();
+    };
+  }, []);
 
   return (
     <div className="flex flex-col w-full p-[16px]">
       <span className="w-full pl-[4px] font-normal text-primary text-sm">Reviews</span>
-      <div className="relative h-[240px] w-full overflow-x-hidden">
-        <div
-          className="slider absolute flex flex-nowrap top-0 left-0 w-full h-full"
-          style={{ transform: `translateX(-${currentReviewIndex * 100}%)` }}
+      <div className="flex flex-col justify-center items-center space-y-[20px] py-[20px]">
+        <QuotesIcon />
+        <Swiper
+          modules={[Pagination]}
+          className="h-[300px] w-full"
+          spaceBetween={50}
+          slidesPerView={1}
+          pagination={{ clickable: true }}
+          onSlideChange={() => console.log('slide change')}
+          loop
+          ref={swiperRef}
         >
-          {reviews.map((review, index) => (
-            <div
-              key={index}
-              className={`slide space-y-[20px] h-full p-[20px] flex flex-col justify-center items-center ${
-                index === currentReviewIndex ? 'active' : ''
-              } ${
-                index === currentReviewIndex - 1 ||
-                (index === reviews.length - 1 && currentReviewIndex === 0)
-                  ? 'previous'
-                  : ''
-              } ${
-                index === currentReviewIndex + 1 ||
-                (index === 0 && currentReviewIndex === reviews.length - 1)
-                  ? 'next'
-                  : ''
-              }`}
-            >
-              <QuotesIcon />
-              <p className="text-center flex-1">{review.quote}</p>
-              <img src={review.logo} alt="reviwer logo" className="w-[50%] object-contain" />
-            </div>
+          {reviews.map((review) => (
+            <SwiperSlide key={review.logo}>
+              <div className="flex flex-col justify-center items-center w-full space-y-[20px]">
+                <p className="text-center text-base text-black font-medium">{review.quote}</p>
+                <img className="h-[30px]" src={review.logo} alt="reviewer logo" />
+              </div>
+            </SwiperSlide>
           ))}
-        </div>
+        </Swiper>
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Comparison } from './index';
 
 import { ReactComponent as ComparisonIcon } from '../assets/icons/comparison.svg';
-import Portal from './Portal';
+import Portal from '../utils/Portal';
 
 export const CompareButton: FC = () => {
   const [modal, setModal] = useState<boolean>(false);
