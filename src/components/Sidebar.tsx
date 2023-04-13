@@ -5,14 +5,11 @@ import { Filter, PageNavigation, ReviewsSlider } from './index';
 
 export const Sidebar: FC = () => {
   return (
-    <aside className="sticky self-start top-[124px] h-[calc(100vh-148px)] min-w-[260px] max-w-[335px] w-full bg-white rounded-[14px] hidden lg:flex flex-col overflow-y-auto">
+    <aside className="sticky self-start top-[124px] h-[calc(100vh-148px)] min-w-[260px] max-w-[335px] w-full rounded-[14px] hidden lg:flex flex-col overflow-y-auto">
       <div className="h-full overflow-y-scroll thinScrollbar">
         <Routes>
           <Route path="/" element={<Filter />} />
           <Route path="/cards/:id" element={<PageNavigation />} />
-        </Routes>
-        <Routes>
-          <Route path="/cards/:id" element={<ReviewsSlider />} />
         </Routes>
       </div>
     </aside>

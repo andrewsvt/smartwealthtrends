@@ -79,27 +79,29 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
       className="p-[20px] bg-white rounded-[14px] space-y-[32px]"
     >
       <div className="flex flex-col md:flex-row md:h-[180px] md:space-x-[20px]">
-        <div className="relative h-full md:max-w-[300px] w-full md:w-auto ">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileHover={{ opacity: 1 }}
-            transition={{ duration: 0.2 }}
-            className="cursor-pointer absolute flex flex-col justify-center items-center space-y-[10px] bg-primary-dark bg-opacity-60 h-full w-full rounded-[10px]"
-          >
-            <LockIcon />
-            <span className="text-lg font-semibold text-white">Apply Now</span>
-          </motion.div>
-          <img
-            className="w-[240px] m-auto md:w-full h-full object-contain"
-            src={product.Creative.RawLogoImageUrl}
-            alt="card"
-          />
+        <div className="h-full flex flex-col justify-center items-center">
+          <div className="relative h-full md:h-fit md:max-h-[180px] w-[240px] md:max-w-[290px] md:w-full">
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileHover={{ opacity: 1 }}
+              transition={{ duration: 0.2 }}
+              className="cursor-pointer absolute flex flex-col justify-center items-center space-y-[10px] bg-primary-dark bg-opacity-60 h-full w-full rounded-[10px]"
+            >
+              <LockIcon />
+              <span className="text-lg font-semibold text-white">Apply Now</span>
+            </motion.div>
+            <img
+              className="w-full h-full object-contain"
+              src={product.Creative.RawLogoImageUrl}
+              alt="card"
+            />
+          </div>
         </div>
-        <div className="flex flex-col space-y-[20px] md:justify-between mt-[20px] md:mt-0">
-          <div className="space-y-[12px]">
+        <div className="flex flex-col space-y-[20px] items-center md:justify-between mt-[20px] md:mt-0">
+          <div className="space-y-[12px] w-full flex flex-col items-center md:items-start">
             <Link to={`/cards/${product.ID}`} onClick={() => updateSelectedCard(product)}>
               <h2
-                className="text-lg font-semibold hover:text-primary-dark customTransition"
+                className="text-lg text-center md:text-left w-full font-semibold hover:text-primary-dark customTransition"
                 dangerouslySetInnerHTML={{ __html: product.CardName }}
               />
             </Link>
@@ -110,7 +112,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
               <Rating value={Number(product.EditorRating)} />
             </div>
           </div>
-          <div className="flex flex-col md:flex-row items-center justify-start space-y-[8px] md:space-y-0 md:space-x-[8px]">
+          <div className="flex flex-col md:flex-row items-center justify-start space-y-[8px] md:space-y-0 md:space-x-[8px] w-full md:w-auto">
             <div className="flex flex-row items-center space-x-[8px] w-full md:w-auto">
               <PrimaryButton text="Apply Now" />
             </div>
@@ -128,7 +130,9 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
           return (
             <div
               key={index}
-              className={`p-[20px] space-y-[20px] md:tableItem ${size.width < 768 && 'oddBgColor'}`}
+              className={`p-[20px] space-y-[20px] md:tableItem ${
+                size.width < 768 ? 'oddBgColor tableItemMobile' : 'tableItem'
+              }`}
             >
               <div>
                 {/* @ts-ignore */}
@@ -154,8 +158,8 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ type: 'spring', stiffness: 400, damping: 50 }}
               exit={{ opacity: 0, y: -30 }}
-              className={`p-[20px] space-y-[8px] md:tableItem md:tableItemExpanded ${
-                size.width < 768 && 'oddBgColor'
+              className={`p-[20px] space-y-[8px] ${
+                size.width < 768 ? 'oddBgColor tableItemMobile' : 'tableItem tableItemExpanded'
               }`}
               key={index}
             >
@@ -180,17 +184,20 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
             exit={{ opacity: 0, y: -30 }}
           >
             <h3 className="text-basePlus font-semibold px-[20px]">Quick Facts</h3>
-            <ul className="grid grid-cols-1">
-              {product.Creative.PPCDescriptionLines.slice(0, 5).map((item, index) => (
-                <li
-                  key={index}
-                  className="flex items-center space-x-[20px] md:space-x-[12px] py-[12px] px-[20px] rounded-[10px] oddBgColor"
-                >
-                  <div className="w-[8px] h-[8px] rounded-[2px] bg-primary" />
-                  <p className="flex-1">{item}</p>
-                </li>
-              ))}
-            </ul>
+            <div className="PPCDescription">
+              <ul>
+                {product.Creative.PPCDescriptionLines.slice(0, 5).map((item, index) => (
+                  <li
+                    key={index}
+                    dangerouslySetInnerHTML={{ __html: item }}
+                    // className="flex items-center space-x-[20px] md:space-x-[12px] py-[12px] px-[20px] rounded-[10px] oddBgColor"
+                  >
+                    {/* <div className="w-[8px] h-[8px] rounded-[2px] bg-primary" /> */}
+                    {/* <p className="flex-1">{item}</p> */}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: -30 }}

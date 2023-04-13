@@ -21,7 +21,6 @@ import { CreditRatingSlugEnum, IssuersSlugEnum, apiDataInitialState } from 'util
 import { AdvertiserDisclosure } from 'components/AdvertiserDisclosure';
 import { FilterContext } from 'contexts/FilterContext';
 import { motion } from 'framer-motion';
-import { useGetApiData } from 'hooks/useGetApiData';
 
 interface ICardpageProps {
   apiData: Listing[];
@@ -29,7 +28,6 @@ interface ICardpageProps {
 
 export const Card: FC<ICardpageProps> = ({ apiData }) => {
   const apiUrl = process.env.REACT_APP_API_URL;
-  // const pathname = window.location.pathname.split('/');
 
   const size: IUseWindowSize = useWindowSize();
 
@@ -217,14 +215,6 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                     className="text-secondary-text cursor-default"
                     dangerouslySetInnerHTML={{ __html: selectedCard.CardName }}
                   />
-                  {/* {pathname.slice(1).map((path, i) => {
-                          return (
-                            <div key={i} className="flex flex-row space-x-[8px]">
-                              <div className="text-medium-gray">/</div>
-                              <span className="text-secondary-text pr-[8px]">{path}</span>
-                            </div>
-                          );
-                        })} */}
                 </div>
                 <AdvertiserDisclosure />
               </div>
@@ -267,8 +257,8 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                       alt="card"
                     />
                   </div>
-                  <div className="flex flex-col space-y-[20px] md:justify-between mt-[20px] md:mt-0">
-                    <div className="space-y-[12px]">
+                  <div className="flex flex-col space-y-[20px] items-center md:justify-between mt-[20px] md:mt-0">
+                    <div className="space-y-[12px] w-full flex flex-col items-center md:items-start">
                       <h2
                         className="text-lg font-semibold"
                         dangerouslySetInnerHTML={{ __html: selectedCard.CardName }}
@@ -280,11 +270,10 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                         <Rating value={Number(selectedCard.EditorRating)} />
                       </div>
                     </div>
-                    <div className="flex flex-col md:flex-row items-center justify-start space-y-[8px] md:space-x-[8px]">
+                    <div className="flex flex-col md:flex-row items-center justify-start space-y-[8px] md:space-x-[8px] w-full md:w-auto">
                       <div className="flex flex-row items-center space-x-[8px] w-full md:w-auto">
                         <PrimaryButton text="Apply Now" />
                       </div>
-
                       {products.map((product) => product.ID).includes(selectedCard.ID) ? (
                         <CheckBox
                           onClick={handleRemoveFromComparison}
@@ -306,8 +295,8 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                     return (
                       <div
                         key={index}
-                        className={`p-[20px] space-y-[20px] md:tableItem ${
-                          size.width < 768 && 'oddBgColor'
+                        className={`p-[20px] space-y-[20px] ${
+                          size.width < 768 ? 'oddBgColor tableItemMobile' : 'tableItem'
                         }`}
                       >
                         <div className="space-y-[8px]">
@@ -326,8 +315,10 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                   {tableItems.slice(3, 6).map((tableItem, index) => (
                     <div
                       key={index}
-                      className={`p-[20px] space-y-[8px] md:tableItem md:tableItemExpanded ${
-                        size.width < 768 && 'oddBgColor'
+                      className={`p-[20px] space-y-[8px] ${
+                        size.width < 768
+                          ? 'oddBgColor tableItemMobile'
+                          : 'tableItem tableItemExpanded'
                       }`}
                     >
                       <h4
@@ -343,17 +334,10 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                 </div>
                 <div className="w-full flex flex-col space-y-[24px]">
                   <h3 className="text-basePlus font-semibold px-[20px]">Quick Facts</h3>
-                  <ul className="grid grid-cols-1">
-                    {selectedCard.Creative.PPCDescriptionLines.map((item, index) => (
-                      <li
-                        key={index}
-                        className="flex items-center space-x-[12px] py-[12px] px-[20px] rounded-[10px] oddBgColor"
-                      >
-                        <div className="w-[8px] h-[8px] rounded-[2px] bg-primary" />
-                        <p className="flex-1">{item}</p>
-                      </li>
-                    ))}
-                  </ul>
+                  <div
+                    className="PPCDescription"
+                    dangerouslySetInnerHTML={{ __html: selectedCard.Creative.PPCDescription }}
+                  ></div>
                 </div>
               </div>
               <div className="mt-[28px] grid grid-cols-1 gap-[60px]">

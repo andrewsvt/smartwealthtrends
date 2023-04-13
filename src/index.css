@@ -89,13 +89,21 @@ img {
 .tableItem {
   border-right: 1px solid #f0f0f0;
 }
-
 .tableItem:nth-child(3n) {
   border-right: none;
 }
-
 .tableItemExpanded:nth-last-child(-n + 3) {
   border-top: 1px solid #f0f0f0;
+}
+
+/* response */
+
+.tableItemMobile {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.tableItemMobile:nth-last-child(1) {
+  border-bottom: none;
 }
 
 /* rating.tsx */
@@ -107,6 +115,29 @@ img {
 /* card.tsx */
 .consIcon > path {
   stroke: #ff4539;
+}
+
+.PPCDescription > ul {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.PPCDescription > ul > li {
+  padding: 12px 20px;
+}
+
+.PPCDescription > ul > li:nth-child(odd) {
+  background-color: #f7f7f7;
+}
+
+.PPCDescription > ul > li:before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background-color: #296bef;
+  margin-right: 12px;
 }
 
 .oddBgColor:nth-child(odd) {
@@ -158,4 +189,18 @@ img {
 
 .slide.next {
   transform: translateX(100%);
+}
+
+.activeNavLink {
+  color: #296bef;
+}
+
+.activeNavLink::before {
+  content: '';
+  display: inline-block;
+  width: 2px;
+  height: 24px;
+  border-radius: 2px;
+  background-color: #296bef;
+  margin-right: 16px;
 }

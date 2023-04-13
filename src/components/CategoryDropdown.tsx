@@ -52,7 +52,7 @@ export const CategoryDropdown: FC<IDropdownProps> = ({
       onClick={handleMouseEnter}
       className="w-full py-3"
     >
-      <div className="relative flex flex-row items-center cursor-pointer w-full md:w-[200px] h-[56px] justify-between bg-white rounded-[14px] border-[2px] border-primary py-[10px] px-[20px]">
+      <div className="relative flex flex-row items-center cursor-pointer w-full md:w-[200px] h-[56px] justify-between bg-light-gray rounded-[14px] border-[2px] border-primary py-[10px] px-[20px]">
         <SelectedIcon classname="filterIconHeaderSelected" />
         <span className="text-sm font-bold pr-[8px] text-primary truncate">
           {contextState.text}
