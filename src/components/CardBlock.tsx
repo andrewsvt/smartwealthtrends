@@ -34,17 +34,17 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
       {
         icon: GiftIcon,
         title: `Welcome Offer ${product.SignupReward.length ? '- ' + product.SignupReward : ''}`,
-        description: product.SignupRequirement.length ? product.SignupRequirement : 'N/A',
+        description: product.SignupRequirement.length > 0 ? product.SignupRequirement : 'N/A',
       },
       {
         icon: StarIcon,
         title: 'Rewards Rate',
-        description: product.PointsPerDollar,
+        description: product.PointsPerDollar.length > 0 ? product.PointsPerDollar : 'N/A',
       },
       {
         icon: CopyIcon,
         title: 'Intro APR',
-        description: product.BonusMiles,
+        description: product.BonusMiles.length > 0 ? product.BonusMiles : 'N/A',
       },
       {
         icon: '',
@@ -90,7 +90,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
             <span className="text-lg font-semibold text-white">Apply Now</span>
           </motion.div>
           <img
-            className="w-full h-full object-contain"
+            className="w-[240px] m-auto md:w-full h-full object-contain"
             src={product.Creative.RawLogoImageUrl}
             alt="card"
           />

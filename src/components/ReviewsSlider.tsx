@@ -58,7 +58,7 @@ export const ReviewsSlider: FC = () => {
 
   return (
     <div className="flex flex-col w-full p-[16px]">
-      <span className="font-normal text-primary text-sm">Reviews</span>
+      <span className="w-full pl-[4px] font-normal text-primary text-sm">Reviews</span>
       <div className="relative h-[240px] w-full overflow-x-hidden">
         <div
           className="slider absolute flex flex-nowrap top-0 left-0 w-full h-full"

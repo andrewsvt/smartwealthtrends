@@ -114,7 +114,7 @@ export const Header: FC<IHeaderProps> = ({ queryParams }) => {
         </div>
       ) : (
         <>
-          <div className="sticky bg-light-gray top-0 h-[100px] w-full border-b-[1px] border-[#EAE9EE] px-[16px] flex flex-col justify-center z-10">
+          <div className="sticky bg-light-gray top-0 h-[80px] w-full border-b-[1px] border-[#EAE9EE] px-[16px] flex flex-col justify-center z-10">
             <div className="flex justify-between items-center">
               <Link to={`/?${currentParams}`} preventScrollReset={true}>
                 <img src={Logo} alt="logo" className="max-w-[250px] object-contain" />

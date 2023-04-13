@@ -43,6 +43,8 @@ export const CategoryDropdown: FC<IDropdownProps> = ({
     exit: { opacity: 0, y: -10, transition: { duration: 0.3 } },
   };
 
+  const SelectedIcon = contextState.icon;
+
   return (
     <li
       onMouseEnter={handleMouseEnter}
@@ -50,14 +52,15 @@ export const CategoryDropdown: FC<IDropdownProps> = ({
       onClick={handleMouseEnter}
       className="w-full py-3"
     >
-      <div className="relative flex flex-row items-center cursor-pointer w-full md:w-[200px] h-[48px] justify-between bg-white rounded-[10px] border-[2px] border-primary py-[10px] px-[20px]">
-        <span className="text-sm font-medium pr-[8px] text-primary truncate">
+      <div className="relative flex flex-row items-center cursor-pointer w-full md:w-[200px] h-[56px] justify-between bg-white rounded-[14px] border-[2px] border-primary py-[10px] px-[20px]">
+        <SelectedIcon classname="filterIconHeaderSelected" />
+        <span className="text-sm font-bold pr-[8px] text-primary truncate">
           {contextState.text}
         </span>
         {activeDropdown === filterName ? <ShortArrowUpIcon /> : <ShortArrowDownIcon />}
-        <div className="absolute top-[-12px] left-[12px] bg-primary rounded-[10px] h-[18px] flex justify-center items-center">
-          <span className="cursor-default text-[10px] text-white px-[8px]">{filterName}</span>
-        </div>
+        <span className="absolute top-[-24px] left-0 cursor-default text-[12px] uppercase font-semibold text-medium-gray px-[8px]">
+          {filterName}
+        </span>
       </div>
       <AnimatePresence>
         {activeDropdown === filterName && (

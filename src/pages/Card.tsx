@@ -21,6 +21,7 @@ import { CreditRatingSlugEnum, IssuersSlugEnum, apiDataInitialState } from 'util
 import { AdvertiserDisclosure } from 'components/AdvertiserDisclosure';
 import { FilterContext } from 'contexts/FilterContext';
 import { motion } from 'framer-motion';
+import { useGetApiData } from 'hooks/useGetApiData';
 
 interface ICardpageProps {
   apiData: Listing[];
@@ -28,7 +29,7 @@ interface ICardpageProps {
 
 export const Card: FC<ICardpageProps> = ({ apiData }) => {
   const apiUrl = process.env.REACT_APP_API_URL;
-  const pathname = window.location.pathname.split('/');
+  // const pathname = window.location.pathname.split('/');
 
   const size: IUseWindowSize = useWindowSize();
 
@@ -168,317 +169,336 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
     };
   }, []);
 
+  const textToSlug = (text: string) => {
+    return text.toLowerCase().replace(/ /g, '-');
+  };
+
+  const handleIssuerClick = () => {
+    filter.updateIssuer(textToSlug(selectedCard.DisplayName));
+  };
+
   return (
     <>
       <motion.div
         initial={{ y: -100 }}
         animate={{ y: scrolled ? 0 : -100 }}
         transition={{ duration: 0.3 }}
-        className="fixed top-0 left-0 lg:left-[-54px] w-full h-[100px] bg-light-gray flex items-center justify-center z-50 p-[16px]"
+        className="fixed top-0 left-0 lg:left-[-54px] w-full h-[100px] bg-light-gray flex items-center justify-center z-50 p-[16px] space-x-[16px] md:space-x-[32px]"
       >
-        <div className="flex items-center justify-center space-x-[16px] md:space-x-[32px] h-full max-w-[1400px] w-full m-auto">
-          <img
-            src={selectedCard.Creative.LogoImageUrl}
-            alt="logo"
-            className="h-full w-auto rounded-[10px]"
-          />
-          <p
-            className="text-sm md:text-lg font-semibold flex-1"
-            dangerouslySetInnerHTML={{ __html: selectedCard.CardName }}
-          />
-          <div className="max-w-[202px]">
-            <PrimaryButton text="Apply Now" state={size.width < 768} />
-          </div>
+        <img
+          src={selectedCard.Creative.LogoImageUrl}
+          alt="logo"
+          className="h-full w-auto rounded-[10px]"
+        />
+        <p
+          className="text-sm md:text-lg font-semibold"
+          dangerouslySetInnerHTML={{ __html: selectedCard.CardName }}
+        />
+        <div className="max-w-[202px]">
+          <PrimaryButton text="Apply Now" />
         </div>
       </motion.div>
       <div className="w-full">
-        {size.width > 768 ? (
-          <div className="sticky top-0 bg-bg h-[72px] w-full flex flex-row justify-between items-center">
-            <div className="flex flex-row items-center py-[24px] lg:py-0">
-              <Link to={`/?${currentParams}`} className="text-secondary-text pr-[8px]">
-                Home
-              </Link>
-              {pathname.slice(1).map((path, i) => {
-                return (
-                  <div key={i} className="flex flex-row space-x-[8px]">
-                    <div className="text-medium-gray">/</div>
-                    <span className="text-secondary-text pr-[8px]">{path}</span>
-                  </div>
-                );
-              })}
-            </div>
-            <AdvertiserDisclosure />
-          </div>
-        ) : (
-          <div className="w-full flex flex-col py-[20px] space-y-[20px]">
-            <div className="flex flex-row items-center lg:py-0">
-              <Link to={`/?${currentParams}`} className="text-secondary-text pr-[8px]">
-                Home
-              </Link>
-              {pathname.slice(1).map((path, i) => {
-                return (
-                  <div key={i} className="flex flex-row items-center space-x-[8px]">
-                    <div className="text-medium-gray">/</div>
-                    <span className="text-secondary-text pr-[8px]">{path}</span>
-                  </div>
-                );
-              })}
-            </div>
-            <AdvertiserDisclosure />
-          </div>
-        )}
         {selectedCard.ID.length ? (
-          <div className="grid grid-cols-1 gap-4">
-            {/* card details */}
-            <div id="section1" className="p-[20px] bg-white rounded-[14px] space-y-[32px]">
-              <div className="flex flex-col md:flex-row md:h-[180px] md:space-x-[20px]">
-                <div className="relative h-full md:max-w-[300px] w-full md:w-auto ">
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    whileHover={{ opacity: 1 }}
-                    transition={{ duration: 0.2 }}
-                    className="cursor-pointer absolute flex flex-col justify-center items-center space-y-[10px] bg-primary-dark bg-opacity-60 h-full w-full rounded-[10px]"
-                  >
-                    <LockIcon />
-                    <span className="text-lg font-semibold text-white">Apply Now</span>
-                  </motion.div>
-                  <img
-                    className="w-full h-full object-contain"
-                    src={selectedCard.Creative.RawLogoImageUrl}
-                    alt="card"
+          <>
+            {' '}
+            {size.width > 768 ? (
+              <div className="sticky top-0 bg-bg h-[72px] w-full flex flex-row justify-between items-center">
+                <div className="flex flex-row items-center py-[24px] lg:py-0 space-x-[8px]">
+                  <Link to={`/?${currentParams}`} className="text-secondary-text">
+                    Home
+                  </Link>
+                  <div className="text-medium-gray">/</div>
+                  <div onClick={handleIssuerClick} className="text-secondary-text cursor-pointer">
+                    {selectedCard.DisplayName}
+                  </div>
+                  <div className="text-medium-gray">/</div>
+                  <div
+                    className="text-secondary-text cursor-default"
+                    dangerouslySetInnerHTML={{ __html: selectedCard.CardName }}
+                  />
+                  {/* {pathname.slice(1).map((path, i) => {
+                          return (
+                            <div key={i} className="flex flex-row space-x-[8px]">
+                              <div className="text-medium-gray">/</div>
+                              <span className="text-secondary-text pr-[8px]">{path}</span>
+                            </div>
+                          );
+                        })} */}
+                </div>
+                <AdvertiserDisclosure />
+              </div>
+            ) : (
+              <div className="w-full flex flex-col py-[20px] space-y-[20px]">
+                <div className="flex flex-row items-center lg:py-0 space-x-[8px] truncate">
+                  <Link to={`/?${currentParams}`} className="text-secondary-text">
+                    Home
+                  </Link>
+                  <div className="text-medium-gray">/</div>
+                  <div onClick={handleIssuerClick} className="text-secondary-text cursor-pointer">
+                    {selectedCard.DisplayName}
+                  </div>
+                  <div className="text-medium-gray">/</div>
+                  <div
+                    className="text-secondary-text cursor-default"
+                    dangerouslySetInnerHTML={{ __html: selectedCard.CardName }}
                   />
                 </div>
-                <div className="flex flex-col space-y-[20px] md:justify-between mt-[20px] md:mt-0">
-                  <div className="space-y-[12px]">
-                    <h2
-                      className="text-lg font-semibold"
-                      dangerouslySetInnerHTML={{ __html: selectedCard.CardName }}
+                <AdvertiserDisclosure />
+              </div>
+            )}
+            <div className="grid grid-cols-1 gap-4">
+              {/* card details */}
+              <div id="section1" className="p-[20px] bg-white rounded-[14px] space-y-[32px]">
+                <div className="flex flex-col md:flex-row md:h-[180px] md:space-x-[20px]">
+                  <div className="relative h-full md:max-w-[300px] w-full md:w-auto ">
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      whileHover={{ opacity: 1 }}
+                      transition={{ duration: 0.2 }}
+                      className="cursor-pointer absolute flex flex-col justify-center items-center space-y-[10px] bg-primary-dark bg-opacity-60 h-full w-full rounded-[10px]"
+                    >
+                      <LockIcon />
+                      <span className="text-lg font-semibold text-white">Apply Now</span>
+                    </motion.div>
+                    <img
+                      className="w-full h-full object-contain"
+                      src={selectedCard.Creative.RawLogoImageUrl}
+                      alt="card"
                     />
-                    <div className="flex flex-row items-center">
-                      <span className="text-base font-medium mr-[14px]">
-                        {Number(selectedCard.EditorRating).toFixed(1)}
-                      </span>
-                      <Rating value={Number(selectedCard.EditorRating)} />
-                    </div>
                   </div>
-                  <div className="flex flex-col md:flex-row items-center justify-start space-y-[8px] md:space-x-[8px]">
-                    <div className="flex flex-row items-center space-x-[8px] w-full md:w-auto">
-                      <PrimaryButton text="Apply Now" />
+                  <div className="flex flex-col space-y-[20px] md:justify-between mt-[20px] md:mt-0">
+                    <div className="space-y-[12px]">
+                      <h2
+                        className="text-lg font-semibold"
+                        dangerouslySetInnerHTML={{ __html: selectedCard.CardName }}
+                      />
+                      <div className="flex flex-row items-center">
+                        <span className="text-base font-medium mr-[14px]">
+                          {Number(selectedCard.EditorRating).toFixed(1)}
+                        </span>
+                        <Rating value={Number(selectedCard.EditorRating)} />
+                      </div>
                     </div>
+                    <div className="flex flex-col md:flex-row items-center justify-start space-y-[8px] md:space-x-[8px]">
+                      <div className="flex flex-row items-center space-x-[8px] w-full md:w-auto">
+                        <PrimaryButton text="Apply Now" />
+                      </div>
 
-                    {products.map((product) => product.ID).includes(selectedCard.ID) ? (
-                      <CheckBox
-                        onClick={handleRemoveFromComparison}
-                        text="Added to compare"
-                        state={true}
-                      />
-                    ) : (
-                      <CheckBox
-                        onClick={handleAddToComparison}
-                        text="Add to compare"
-                        state={false}
-                      />
-                    )}
+                      {products.map((product) => product.ID).includes(selectedCard.ID) ? (
+                        <CheckBox
+                          onClick={handleRemoveFromComparison}
+                          text="Added to compare"
+                          state={true}
+                        />
+                      ) : (
+                        <CheckBox
+                          onClick={handleAddToComparison}
+                          text="Add to compare"
+                          state={false}
+                        />
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 border-[1px] border-border rounded-[10px]">
-                {tableItems.slice(0, 3).map((tableItem, index) => {
-                  return (
+                <div className="grid grid-cols-1 md:grid-cols-3 border-[1px] border-border rounded-[10px]">
+                  {tableItems.slice(0, 3).map((tableItem, index) => {
+                    return (
+                      <div
+                        key={index}
+                        className={`p-[20px] space-y-[20px] md:tableItem ${
+                          size.width < 768 && 'oddBgColor'
+                        }`}
+                      >
+                        <div className="space-y-[8px]">
+                          <h4
+                            className="font-medium text-base"
+                            dangerouslySetInnerHTML={{ __html: tableItem.title }}
+                          />
+                          <p
+                            className="font-light text-sm"
+                            dangerouslySetInnerHTML={{ __html: tableItem.description }}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                  {tableItems.slice(3, 6).map((tableItem, index) => (
                     <div
                       key={index}
-                      className={`p-[20px] space-y-[20px] md:tableItem ${
+                      className={`p-[20px] space-y-[8px] md:tableItem md:tableItemExpanded ${
                         size.width < 768 && 'oddBgColor'
                       }`}
                     >
-                      <div className="space-y-[8px]">
-                        <h4
-                          className="font-medium text-base"
-                          dangerouslySetInnerHTML={{ __html: tableItem.title }}
-                        />
-                        <p
-                          className="font-light text-sm"
-                          dangerouslySetInnerHTML={{ __html: tableItem.description }}
-                        />
-                      </div>
+                      <h4
+                        className="font-medium text-base"
+                        dangerouslySetInnerHTML={{ __html: tableItem.title }}
+                      />
+                      <p
+                        className="font-light text-sm"
+                        dangerouslySetInnerHTML={{ __html: tableItem.description }}
+                      />
                     </div>
-                  );
-                })}
-                {tableItems.slice(3, 6).map((tableItem, index) => (
-                  <div
-                    key={index}
-                    className={`p-[20px] space-y-[8px] md:tableItem md:tableItemExpanded ${
-                      size.width < 768 && 'oddBgColor'
-                    }`}
-                  >
-                    <h4
-                      className="font-medium text-base"
-                      dangerouslySetInnerHTML={{ __html: tableItem.title }}
-                    />
-                    <p
-                      className="font-light text-sm"
-                      dangerouslySetInnerHTML={{ __html: tableItem.description }}
-                    />
-                  </div>
-                ))}
-              </div>
-              <div className="w-full flex flex-col space-y-[24px]">
-                <h3 className="text-basePlus font-semibold px-[20px]">Quick Facts</h3>
-                <ul className="grid grid-cols-1">
-                  {selectedCard.Creative.PPCDescriptionLines.map((item, index) => (
-                    <li
-                      key={index}
-                      className="flex items-center space-x-[12px] py-[12px] px-[20px] rounded-[10px] oddBgColor"
-                    >
-                      <div className="w-[8px] h-[8px] rounded-[2px] bg-primary" />
-                      <p className="flex-1">{item}</p>
-                    </li>
                   ))}
-                </ul>
-              </div>
-            </div>
-            <div className="mt-[28px] grid grid-cols-1 gap-[60px]">
-              {/* Review */}
-              <div
-                id="section2"
-                className="flex flex-col-reverse md:flex-row w-full md:space-x-[54px]"
-              >
-                <div className="w-full md:w-[328px] h-auto bg-white rounded-[14px] space-y-[28px] p-[20px] mt-[28px] md:mt-0">
-                  <div className="flex flex-row items-center space-x-[16px]">
-                    <div className="w-[64px] h-[64px] rounded-[12px] bg-bg flex items-center justify-center">
-                      <span className="text-[28px] leading-[36px] font-semibold text-secondary">
-                        {Number(selectedCard.EditorRating).toFixed(1)}
-                      </span>
-                    </div>
-                    <div className="flex flex-col space-y-[2px]">
-                      <div className="flex flex-row items-center">
-                        <Rating value={Number(selectedCard.EditorRating)} />
-                      </div>
-                      <p className="text-base font-medium">Expert Rating</p>
-                    </div>
-                  </div>
-                  <div className="flex flex-col space-y-[16px]">
-                    <div className="space-y-[8px]">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-secondary-text font-medium">Rewards</span>
-                        <div className="flex flex-row items-center space-x-[4px]">
-                          <span className="text-sm font-medium">{3.4}</span>
-                          <StarIcon style={{ width: '16px', height: '16px' }} />
-                        </div>
-                      </div>
-                      <ProgressBar value={3.4} />
-                    </div>
-                    <div className="space-y-[8px]">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-secondary-text font-medium">Fees</span>
-                        <div className="flex flex-row items-center space-x-[4px]">
-                          <span className="text-sm font-medium">{4.2}</span>
-                          <StarIcon style={{ width: '16px', height: '16px' }} />
-                        </div>
-                      </div>
-                      <ProgressBar value={4.2} />
-                    </div>
-                    <div className="space-y-[8px]">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-secondary-text font-medium">Value</span>
-                        <div className="flex flex-row items-center space-x-[4px]">
-                          <span className="text-sm font-medium">{5.0}</span>
-                          <StarIcon style={{ width: '16px', height: '16px' }} />
-                        </div>
-                      </div>
-                      <ProgressBar value={5.0} />
-                    </div>
-                  </div>
                 </div>
-                <div className="flex flex-col flex-1 space-y-[28px]">
-                  <div className="space-y-[8px]">
-                    <h2
-                      className="text-lg font-semibold"
-                      dangerouslySetInnerHTML={{
-                        __html: selectedCard.CardName + ' Card Expert Review',
-                      }}
-                    />
-                    <p className="text-sm font-light text-secondary-text">
-                      {selectedCard.LastUpdated}
+                <div className="w-full flex flex-col space-y-[24px]">
+                  <h3 className="text-basePlus font-semibold px-[20px]">Quick Facts</h3>
+                  <ul className="grid grid-cols-1">
+                    {selectedCard.Creative.PPCDescriptionLines.map((item, index) => (
+                      <li
+                        key={index}
+                        className="flex items-center space-x-[12px] py-[12px] px-[20px] rounded-[10px] oddBgColor"
+                      >
+                        <div className="w-[8px] h-[8px] rounded-[2px] bg-primary" />
+                        <p className="flex-1">{item}</p>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              <div className="mt-[28px] grid grid-cols-1 gap-[60px]">
+                {/* Review */}
+                <div
+                  id="section2"
+                  className="flex flex-col-reverse md:flex-row w-full md:space-x-[54px]"
+                >
+                  <div className="w-full md:w-[328px] h-auto bg-white rounded-[14px] space-y-[28px] p-[20px] mt-[28px] md:mt-0">
+                    <div className="flex flex-row items-center space-x-[16px]">
+                      <div className="w-[64px] h-[64px] rounded-[12px] bg-bg flex items-center justify-center">
+                        <span className="text-[28px] leading-[36px] font-semibold text-secondary">
+                          {Number(selectedCard.EditorRating).toFixed(1)}
+                        </span>
+                      </div>
+                      <div className="flex flex-col space-y-[2px]">
+                        <div className="flex flex-row items-center">
+                          <Rating value={Number(selectedCard.EditorRating)} />
+                        </div>
+                        <p className="text-base font-medium">Expert Rating</p>
+                      </div>
+                    </div>
+                    <div className="flex flex-col space-y-[16px]">
+                      <div className="space-y-[8px]">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-secondary-text font-medium">Rewards</span>
+                          <div className="flex flex-row items-center space-x-[4px]">
+                            <span className="text-sm font-medium">{3.4}</span>
+                            <StarIcon style={{ width: '16px', height: '16px' }} />
+                          </div>
+                        </div>
+                        <ProgressBar value={3.4} />
+                      </div>
+                      <div className="space-y-[8px]">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-secondary-text font-medium">Fees</span>
+                          <div className="flex flex-row items-center space-x-[4px]">
+                            <span className="text-sm font-medium">{4.2}</span>
+                            <StarIcon style={{ width: '16px', height: '16px' }} />
+                          </div>
+                        </div>
+                        <ProgressBar value={4.2} />
+                      </div>
+                      <div className="space-y-[8px]">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-secondary-text font-medium">Value</span>
+                          <div className="flex flex-row items-center space-x-[4px]">
+                            <span className="text-sm font-medium">{5.0}</span>
+                            <StarIcon style={{ width: '16px', height: '16px' }} />
+                          </div>
+                        </div>
+                        <ProgressBar value={5.0} />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex flex-col flex-1 space-y-[28px]">
+                    <div className="space-y-[8px]">
+                      <h2
+                        className="text-lg font-semibold"
+                        dangerouslySetInnerHTML={{
+                          __html: selectedCard.CardName + ' Card Expert Review',
+                        }}
+                      />
+                      <p className="text-sm font-light text-secondary-text">
+                        {selectedCard.LastUpdated}
+                      </p>
+                    </div>
+                    <p className="text-base font-light">
+                      The Citi Custom Cash℠ Card has come to the market with one of the more
+                      interesting rewards programs we’ve seen in a while. Earn 5% cash back on
+                      purchases in your top eligible spend category each billing cycle, up to the
+                      first $500 spent, 1% cash back thereafter. Also, earn unlimited 1% cash back
+                      on all other purchases. What this means is that unlike some other rewards
+                      cards on the market that require you to manually opt-in to special categories
+                      each month, this card will automatically apply the highest rate of cash back
+                      to your most-used category. That makes the Citi Custom Cash℠ Card a great pick
+                      for anyone looking for a low-maintenance card that still offers an incredibly
+                      competitive cash back offer. And the sign-up bonus just sweetens the deal with
+                      a low spend threshold and a solid return in the form of ThankYou® Points.
                     </p>
                   </div>
-                  <p className="text-base font-light">
-                    The Citi Custom Cash℠ Card has come to the market with one of the more
-                    interesting rewards programs we’ve seen in a while. Earn 5% cash back on
-                    purchases in your top eligible spend category each billing cycle, up to the
-                    first $500 spent, 1% cash back thereafter. Also, earn unlimited 1% cash back on
-                    all other purchases. What this means is that unlike some other rewards cards on
-                    the market that require you to manually opt-in to special categories each month,
-                    this card will automatically apply the highest rate of cash back to your
-                    most-used category. That makes the Citi Custom Cash℠ Card a great pick for
-                    anyone looking for a low-maintenance card that still offers an incredibly
-                    competitive cash back offer. And the sign-up bonus just sweetens the deal with a
-                    low spend threshold and a solid return in the form of ThankYou® Points.
-                  </p>
                 </div>
-              </div>
-              {/* Pros and cons */}
-              <div id="section3" className="px-[20px] space-y-[32px]">
-                <h2
-                  className="text-lg font-semibold"
-                  dangerouslySetInnerHTML={{
-                    __html: 'Pros and Cons of ' + selectedCard.CardName,
-                  }}
-                />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-[28px] md:gap-[74px] ">
-                  <div className="space-y-[16px]">
-                    <h3 className="text-basePlus font-medium text-secondary-text">Pros</h3>
-                    <ul className="flex flex-col space-y-[24px] p-[12px]">
-                      <li className="flex flex-col space-y-[8px]">
-                        <div className="flex flex-row space-x-[16px] items-center">
-                          <CheckIcon />
-                          <h4 className="text-base font-medium">Unlimited 2% Cash Back:</h4>
-                        </div>
-                        <p className="font-light">
-                          You'll earn an unlimited 2% cash back on all purchases made with this card
-                          with no rewards caps or limits
-                        </p>
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="space-y-[16px]">
-                    <h3 className="text-basePlus font-medium text-secondary-text">Cons</h3>
-                    <ul className="flex flex-col space-y-[24px] p-[12px]">
-                      <li className="flex flex-col space-y-[8px]">
-                        <div className="flex flex-row space-x-[16px] items-center">
-                          <CrossIcon classname="consIcon" />
-                          <h4 className="text-base font-medium">Unlimited 2% Cash Back:</h4>
-                        </div>
-                        <p className="font-light">
-                          You'll earn an unlimited 2% cash back on all purchases made with this card
-                          with no rewards caps or limits
-                        </p>
-                      </li>
-                    </ul>
+                {/* Pros and cons */}
+                <div id="section3" className="px-[20px] space-y-[32px]">
+                  <h2
+                    className="text-lg font-semibold"
+                    dangerouslySetInnerHTML={{
+                      __html: 'Pros and Cons of ' + selectedCard.CardName,
+                    }}
+                  />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-[28px] md:gap-[74px] ">
+                    <div className="space-y-[16px]">
+                      <h3 className="text-basePlus font-medium text-secondary-text">Pros</h3>
+                      <ul className="flex flex-col space-y-[24px] p-[12px]">
+                        <li className="flex flex-col space-y-[8px]">
+                          <div className="flex flex-row space-x-[16px] items-center">
+                            <CheckIcon />
+                            <h4 className="text-base font-medium">Unlimited 2% Cash Back:</h4>
+                          </div>
+                          <p className="font-light">
+                            You'll earn an unlimited 2% cash back on all purchases made with this
+                            card with no rewards caps or limits
+                          </p>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="space-y-[16px]">
+                      <h3 className="text-basePlus font-medium text-secondary-text">Cons</h3>
+                      <ul className="flex flex-col space-y-[24px] p-[12px]">
+                        <li className="flex flex-col space-y-[8px]">
+                          <div className="flex flex-row space-x-[16px] items-center">
+                            <CrossIcon classname="consIcon" />
+                            <h4 className="text-base font-medium">Unlimited 2% Cash Back:</h4>
+                          </div>
+                          <p className="font-light">
+                            You'll earn an unlimited 2% cash back on all purchases made with this
+                            card with no rewards caps or limits
+                          </p>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
-              </div>
-              {/* Related offers */}
-              <div id="section4" className="space-y-[32px]">
-                <h2 className="text-lg font-semibold pl-[20px]">Related Card Offers</h2>
-                <div className="grid grid-cols-1 gap-4">
-                  {apiData.length >= 2
-                    ? apiData
-                        .filter((product) => product.ID !== cardId)
-                        .slice(0, 2)
-                        .map((product, index) => (
-                          <CardBlock key={product.ID} product={product} index={index} />
-                        ))
-                    : allApiData
-                        .filter((product) => product.ID !== cardId)
-                        .slice(0, 2)
-                        .map((product, index) => (
-                          <CardBlock key={product.ID} product={product} index={index} />
-                        ))}
+                {/* Related offers */}
+                <div id="section4" className="space-y-[32px]">
+                  <h2 className="text-lg font-semibold pl-[20px]">Related Card Offers</h2>
+                  <div className="grid grid-cols-1 gap-4">
+                    {apiData.length >= 2
+                      ? apiData
+                          .filter((product) => product.ID !== cardId)
+                          .slice(0, 2)
+                          .map((product, index) => (
+                            <CardBlock key={product.ID} product={product} index={index} />
+                          ))
+                      : allApiData
+                          .filter((product) => product.ID !== cardId)
+                          .slice(0, 2)
+                          .map((product, index) => (
+                            <CardBlock key={product.ID} product={product} index={index} />
+                          ))}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </>
         ) : (
           'Loading...'
         )}

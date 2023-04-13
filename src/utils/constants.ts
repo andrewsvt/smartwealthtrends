@@ -11,7 +11,7 @@ import { ReactComponent as BriefcaseIcon } from '../assets/icons/briefcase.svg';
 import { ReactComponent as CalendarIcon } from '../assets/icons/calendar.svg';
 import { ReactComponent as GlobalIcon } from '../assets/icons/global.svg';
 import { ReactComponent as GasIcon } from '../assets/icons/gasstation.svg';
-import { ReactComponent as ForkKnifeIcon } from '../assets/icons/forkknife.svg';
+import { ReactComponent as PercentIcon } from '../assets/icons/percent.svg';
 import { ReactComponent as StudentIcon } from '../assets/icons/student.svg';
 
 //issures
@@ -44,7 +44,7 @@ export enum CategoriesEnum {
   rewards = '&crd=5',
   noForeignFees = '&crd=16',
   gas = '&crd=7',
-  dinning = '',
+  zeroApr = '&crd=10',
   travel = '&crd=4',
   student = '&crd=8',
   business = '&crd=9',
@@ -58,7 +58,7 @@ export enum CategoriesSlugEnum {
   rewards = 'rewards',
   noForeignFees = 'no-foreign-fees',
   gas = 'gas',
-  dinning = 'dinning',
+  zeroApr = '&crd=10',
   travel = 'travel',
   student = 'student',
   business = 'business',
@@ -171,10 +171,10 @@ export const categories: ISVGSelectValue[] = [
     slug: CategoriesSlugEnum.gas,
   },
   {
-    text: 'Dinning',
-    field: CategoriesEnum.dinning,
-    icon: ForkKnifeIcon,
-    slug: CategoriesSlugEnum.dinning,
+    text: '0% APR',
+    field: CategoriesEnum.zeroApr,
+    icon: PercentIcon,
+    slug: CategoriesSlugEnum.zeroApr,
   },
   {
     text: 'Student',

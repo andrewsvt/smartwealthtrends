@@ -2,9 +2,8 @@ import { FilterContext } from '../contexts/FilterContext';
 import React, { FC, useContext } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
-import { CardBlock, CategoryDropdown, CombareButton } from '../components';
+import { CardBlock, CategoryDropdown } from '../components';
 import { Listing } from 'interfaces/Api';
-import { useGetApiData } from 'hooks/useGetApiData';
 import { AdvertiserDisclosure } from 'components/AdvertiserDisclosure';
 import { categories } from 'utils/constants';
 import { IUseWindowSize, useWindowSize } from 'hooks/useWindowSize';
@@ -15,9 +14,8 @@ interface IHomeProps {
   isLoading: boolean;
 }
 
-export const Home: FC<IHomeProps> = () => {
+export const Home: FC<IHomeProps> = ({ apiData, totalRecords, isLoading }) => {
   const filter = useContext(FilterContext);
-  const { apiData, totalRecords, isLoading } = useGetApiData();
   const size: IUseWindowSize = useWindowSize();
 
   return (

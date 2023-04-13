@@ -11,7 +11,7 @@ export const PageNavigation: FC = () => {
 
   return (
     <div className="p-[16px] w-full flex justify-start flex-col space-y-[24px] bg-white rounded-[14px]">
-      <span className="font-normal text-primary text-sm">Page Sections</span>
+      <span className="w-full pl-[4px] font-normal text-primary text-sm">Page Section</span>
       <ul className="flex flex-col space-y-[16px] cursor-pointer pl-0 md:pl-[16px]">
         {sectionArray.map((section) => (
           <ScrollLink
