@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Comparison } from './index';
 
 import { ReactComponent as ComparisonIcon } from '../assets/icons/comparison.svg';
+import Portal from './Portal';
 
 export const CompareButton: FC = () => {
   const [modal, setModal] = useState<boolean>(false);
@@ -67,7 +68,7 @@ export const CompareButton: FC = () => {
         )}
       </AnimatePresence>
       <AnimatePresence>
-        {modal ? <Comparison modal={modal} setModal={setModal} /> : ''}
+        <Portal>{modal ? <Comparison modal={modal} setModal={setModal} /> : ''}</Portal>
       </AnimatePresence>
     </>
   );

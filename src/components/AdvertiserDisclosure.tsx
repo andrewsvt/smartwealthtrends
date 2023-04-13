@@ -2,6 +2,7 @@ import React, { FC, useState, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 
 import { CompareButton, Disclosure } from './index';
+import Portal from './Portal';
 
 export const AdvertiserDisclosure: FC = () => {
   const [modal, setModal] = useState<boolean>(false);
@@ -31,7 +32,7 @@ export const AdvertiserDisclosure: FC = () => {
         </span>
       </div>
       <AnimatePresence>
-        {modal ? <Disclosure modal={modal} setModal={setModal} /> : ''}
+        <Portal>{modal ? <Disclosure modal={modal} setModal={setModal} /> : ''}</Portal>
       </AnimatePresence>
     </>
   );
