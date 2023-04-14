@@ -1,5 +1,7 @@
 import React, { FC } from 'react';
+import { Link } from 'react-router-dom';
 
+//icons and imgs
 import Logo from '../assets/images/Logo.webp';
 import boaLogo from '../assets/icons/bankofamerica.svg';
 import chaseLogo from '../assets/icons/chase.svg';
@@ -7,7 +9,6 @@ import visaLogo from '../assets/icons/visa.svg';
 import mastercardLogo from '../assets/icons/mastercard.svg';
 import capitaloneLogo from '../assets/icons/capitalone.svg';
 import citigroupLogo from '../assets/icons/citigroup.svg';
-import { Link } from 'react-router-dom';
 
 export const Footer: FC = () => {
   return (

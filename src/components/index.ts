@@ -21,3 +21,5 @@ export { CompareButton } from './CompareButton';
 export { Comparison } from './Comparison';
 
 export { ReviewsSlider } from './ReviewsSlider';
+
+export { HeaderFilters } from './HeaderFilters';

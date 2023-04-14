@@ -1,11 +1,14 @@
 import React, { FC, useContext, useState } from 'react';
-import { ReactComponent as ShortArrowDownIcon } from '../assets/icons/arrowShortDown.svg';
-import { ReactComponent as ShortArrowUpIcon } from '../assets/icons/arrowShortUp.svg';
-import { ISVGSelectValue } from 'utils/constants';
 import { AnimatePresence, motion } from 'framer-motion';
+import _ from 'lodash';
+
+import { ISVGSelectValue } from 'utils/constants';
+
 import { FilterContext } from 'contexts/FilterContext';
 
-import _ from 'lodash';
+//icons
+import { ReactComponent as ShortArrowDownIcon } from '../assets/icons/arrowShortDown.svg';
+import { ReactComponent as ShortArrowUpIcon } from '../assets/icons/arrowShortUp.svg';
 
 interface IDropdownProps {
   filterName: string;

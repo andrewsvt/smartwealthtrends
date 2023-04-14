@@ -1,11 +1,13 @@
 import React, { FC, useState, useContext, useEffect } from 'react';
-import { ComparisonContext } from 'contexts/ComparisonContext';
 import { AnimatePresence, motion } from 'framer-motion';
 
-import { Comparison } from './index';
+import { ComparisonContext } from 'contexts/ComparisonContext';
+
+import Portal from '../utils/Portal';
+
+import { Comparison } from 'components';
 
 import { ReactComponent as ComparisonIcon } from '../assets/icons/comparison.svg';
-import Portal from '../utils/Portal';
 
 export const CompareButton: FC = () => {
   const [modal, setModal] = useState<boolean>(false);

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import { Filter, PageNavigation } from './index';
+import { Filter, PageNavigation } from 'components';
 
 export const Sidebar: FC = () => {
   return (

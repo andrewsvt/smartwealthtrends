@@ -30,42 +30,19 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
   const apiUrl = process.env.REACT_APP_API_URL;
 
   const size: IUseWindowSize = useWindowSize();
-
   const { cardId } = useParams();
   const navigate = useNavigate();
 
   const [allApiData, setAllApiData] = useState<Listing[]>(apiDataInitialState);
   const [currentParams, setCurrentParams] = useState<string>('');
+  const [scrolled, setScrolled] = useState(false);
 
   //contexts
   const { selectedCard, updateSelectedCard } = useContext(selectedCardContext);
   const { products, addProduct, removeProduct } = useContext(ComparisonContext);
   const filter = useContext(FilterContext);
 
-  const [tableItems, setTableItems] = useState<ITableItem[]>([
-    {
-      title: 'Sign Up Bonus',
-      description: selectedCard.SignupRequirement.length ? selectedCard.SignupRequirement : 'N/A',
-    },
-    {
-      title: 'Rewards Rate',
-      description: selectedCard.PointsPerDollar,
-    },
-    {
-      title: 'Intro APR Rate',
-      description: `${selectedCard.IntroAPRRate}<br/>${selectedCard.IntroAPRDuration}<br/>${selectedCard.RegAPR}<br/>${selectedCard.RegAPRType}`,
-    },
-    {
-      title: 'Annual Fees',
-      description: selectedCard.AnnualFees,
-    },
-    { title: 'Card Brand', description: selectedCard.CardProcessorTypeName },
-    {
-      title: 'Credit Score Needed',
-      description: selectedCard.CreditScoreNeeded,
-    },
-  ]);
-
+  //fetch all cards
   const fetchData = useCallback(async () => {
     try {
       const response = await fetch(`${apiUrl}&crd=25&xml_version=2&max=999`);
@@ -76,10 +53,12 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
     }
   }, [apiUrl]);
 
+  //call fetch
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
+  //get params
   useEffect(() => {
     if (currentParams) {
       navigate(`/?${currentParams}`);
@@ -102,36 +81,11 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
     setCurrentParams(params);
   }, [filter.activeCategory, filter.activeIssuer, filter.activeCreditRange]);
 
+  //set context after reloading
   useEffect(() => {
     const currentObject = allApiData.find((card: Listing) => card.ID === cardId);
     if (currentObject) {
       updateSelectedCard(currentObject);
-      setTableItems([
-        {
-          title: 'Sign Up Bonus',
-          description: selectedCard.SignupRequirement,
-        },
-        {
-          title: 'Rewards Rate',
-          description: selectedCard.PointsPerDollar,
-        },
-        {
-          title: 'Intro APR Rate',
-          description: `${selectedCard.IntroAPRRate}<br/>${selectedCard.IntroAPRDuration}<br/>${selectedCard.RegAPR}<br/>${selectedCard.RegAPRType}`,
-        },
-        {
-          title: 'Annual Fees',
-          description: selectedCard.AnnualFees,
-        },
-        {
-          title: 'Card Brand',
-          description: selectedCard.CardProcessorTypeName,
-        },
-        {
-          title: 'Credit Score Needed',
-          description: selectedCard.CreditScoreNeeded,
-        },
-      ]);
     }
   }, [cardId, allApiData]);
 
@@ -139,6 +93,30 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [selectedCard.ID]);
+
+  const tableItems = [
+    {
+      title: 'Sign Up Bonus',
+      description: selectedCard.SignupRequirement.length ? selectedCard.SignupRequirement : 'N/A',
+    },
+    {
+      title: 'Rewards Rate',
+      description: selectedCard.PointsPerDollar,
+    },
+    {
+      title: 'Intro APR Rate',
+      description: `${selectedCard.IntroAPRRate}<br/>${selectedCard.IntroAPRDuration}<br/>${selectedCard.RegAPR}<br/>${selectedCard.RegAPRType}`,
+    },
+    {
+      title: 'Annual Fees',
+      description: selectedCard.AnnualFees,
+    },
+    { title: 'Card Brand', description: selectedCard.CardProcessorTypeName },
+    {
+      title: 'Credit Score Needed',
+      description: selectedCard.CreditScoreNeeded,
+    },
+  ];
 
   //add/remove compare function
   const handleAddToComparison = useCallback(() => {
@@ -149,8 +127,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
     removeProduct(selectedCard);
   }, [removeProduct, selectedCard]);
 
-  const [scrolled, setScrolled] = useState(false);
-
+  //check user scroll
   useEffect(() => {
     function handleScroll() {
       if (window.pageYOffset > 300) {

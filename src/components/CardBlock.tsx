@@ -2,19 +2,22 @@ import React, { FC, useState, useContext, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
+import { selectedCardContext } from 'contexts/SelectedCardContext';
+import { ComparisonContext } from 'contexts/ComparisonContext';
+
+import { IUseWindowSize, useWindowSize } from 'hooks/useWindowSize';
+
 import { CheckBox, ExpandButton, PrimaryButton, SecondaryButton } from './UI';
 import { Rating } from 'components';
+
 import { ITableItem } from '../interfaces';
 import { Listing } from 'interfaces/Api';
 
+//icons
 import { ReactComponent as GiftIcon } from '../assets/icons/gift.svg';
 import { ReactComponent as StarIcon } from '../assets/icons/star.svg';
 import { ReactComponent as CopyIcon } from '../assets/icons/copysuccess.svg';
 import { ReactComponent as LockIcon } from '../assets/icons/lock.svg';
-
-import { selectedCardContext } from 'contexts/SelectedCardContext';
-import { ComparisonContext } from 'contexts/ComparisonContext';
-import { IUseWindowSize, useWindowSize } from 'hooks/useWindowSize';
 
 interface ICardBlockProps {
   product: Listing;

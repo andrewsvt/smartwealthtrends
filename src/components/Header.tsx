@@ -1,17 +1,20 @@
 import React, { FC, useContext, useEffect, useRef, useState } from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
-import { IUseWindowSize, useWindowSize } from 'hooks/useWindowSize';
 import { AnimatePresence, motion } from 'framer-motion';
 
-import { PageNavigation } from './index';
+import { FilterContext } from 'contexts/FilterContext';
+import { IUseWindowSize, useWindowSize } from 'hooks/useWindowSize';
 
+import { CreditRatingSlugEnum, IssuersSlugEnum } from 'utils/constants';
+
+import { PageNavigation } from 'components';
+
+//icons and imgs
 import Logo from '../assets/images/Logo.webp';
 import LogoIcon from '../assets/images/LogoIcon.png';
 import { ReactComponent as BurgerOpenIcon } from '../assets/icons/Burger.svg';
 import { ReactComponent as BurgerCloseIcon } from '../assets/icons/BurgerCross.svg';
-import { HeaderFilters } from './HeaderFilters';
-import { FilterContext } from 'contexts/FilterContext';
-import { CreditRatingSlugEnum, IssuersSlugEnum } from 'utils/constants';
+import { HeaderFilters } from './index';
 
 interface IHeaderProps {
   queryParams?: URLSearchParams;

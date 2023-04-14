@@ -1,7 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Link as ScrollLink } from 'react-scroll';
-import { ReviewsSlider } from './index';
 import { AnimatePresence, motion } from 'framer-motion';
+
+import { ReviewsSlider } from 'components';
 
 export const PageNavigation: FC = () => {
   const sectionArray = [

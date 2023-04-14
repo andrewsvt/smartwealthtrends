@@ -1,9 +1,9 @@
 import React, { FC, useContext, useState } from 'react';
+import { motion } from 'framer-motion';
 
 import { FilterContext } from '../contexts/FilterContext';
+
 import { categories } from '../utils/constants';
-import { motion } from 'framer-motion';
-import { SecondaryButton } from './UI';
 
 export const Filter: FC = () => {
   const { activeCategory, updateCategory } = useContext(FilterContext);

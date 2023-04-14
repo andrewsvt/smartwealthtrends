@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+
 import { ReactComponent as RatingStarFull } from '../assets/icons/RatingStarFull.svg';
 import { ReactComponent as RatingStarHalf } from '../assets/icons/RatingStarHalf.svg';
 import { ReactComponent as RatingStarEmpty } from '../assets/icons/RatingStarEmpty.svg';

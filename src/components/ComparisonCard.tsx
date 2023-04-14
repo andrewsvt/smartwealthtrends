@@ -1,8 +1,9 @@
-import { Listing } from 'interfaces/Api';
 import React, { FC, useContext } from 'react';
-import { PrimaryButton, TrashButton } from './UI';
+import { Listing } from 'interfaces/Api';
+
 import { ComparisonContext } from 'contexts/ComparisonContext';
 
+import { PrimaryButton, TrashButton } from './UI';
 interface IComparisonCardProps {
   product: Listing;
 }
@@ -13,7 +14,7 @@ export const ComparisonCard: FC<IComparisonCardProps> = ({ product }) => {
   return (
     <div className="flex flex-col w-[325px] min-w-[230px]">
       <div className="flex flex-col justify-between bg-white w-full min-h-[305px] p-[16px] rounded-[14px]">
-        <div className="flex flex-col space-y-[16px]">
+        <div className="flex flex-col items-center space-y-[16px]">
           <img className="w-[210px] h-auto" src={product.Creative.LogoImageUrl} alt="card" />
           <h2
             className="text-basePlus font-semibold"
