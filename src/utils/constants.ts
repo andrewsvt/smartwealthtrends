@@ -77,7 +77,7 @@ export enum IssuersEnum {
   mastercard = '&ccntwk=2',
 }
 export enum IssuersSlugEnum {
-  allIssuers = '',
+  allIssuers = 'all-issuers',
   citi = 'citi',
   capitalOne = 'capital-one',
   chase = 'chase',
@@ -380,3 +380,5 @@ export const apiDataInitialState: Listing[] = [
     },
   },
 ];
+
+export const homeRoutes = ['/', '/:category', '/:category/:range']

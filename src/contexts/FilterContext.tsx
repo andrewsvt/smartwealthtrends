@@ -1,5 +1,5 @@
-import { createContext, useCallback, useEffect, useState } from 'react';
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { createContext, useCallback, useEffect, useMemo, useState } from 'react';
+import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import {
   ISVGSelectValue,
   categories,
@@ -9,11 +9,12 @@ import {
   IssuersSlugEnum,
   CreditRatingSlugEnum,
 } from 'utils/constants';
+import { getFiltersLink } from 'utils/getFiltersLink';
 
 interface IFilterContext {
   activeCategory: ISVGSelectValue;
-  activeIssuer: ISelectValue;
-  activeCreditRange: ISelectValue;
+  activeIssuer: ISVGSelectValue;
+  activeCreditRange: ISVGSelectValue;
   updateCategory: (newCategory: string) => void;
   updateIssuer: (newIssuer: string) => void;
   updateCreditRange: (newCreditRange: string) => void;
@@ -28,11 +29,27 @@ export const FilterContextProvider = ({ children }: any) => {
 
   const location = useLocation();
   const navigate = useNavigate();
-  const [params] = useSearchParams();
+
+  const { categoryParam, rangeParam } = useMemo(() => {
+    const params = location.pathname.split('/').slice(1);
+
+    return { categoryParam: params[0], rangeParam: params[1] };
+  }, [location]);
+
+  const isHomePage = useMemo(() => {
+    if (location.pathname === '/') return true;
+
+    const isCorrectCategory = [...categories, ...issuers].find(
+      (item) => item.slug === categoryParam
+    );
+
+    return !!isCorrectCategory;
+  }, [categoryParam, location]);
 
   const updateCategory = useCallback((newCategory: string) => {
     const fullCategory = categories.find((category) => category.slug === newCategory);
     if (fullCategory) {
+      setActiveIssuer(issuers[0]);
       setActiveCategory(fullCategory);
     }
   }, []);
@@ -40,6 +57,7 @@ export const FilterContextProvider = ({ children }: any) => {
   const updateIssuer = useCallback((newIssuer: string) => {
     const fullIssuers = issuers.find((issuer) => issuer.slug === newIssuer);
     if (fullIssuers) {
+      setActiveCategory(categories[0]);
       setActiveIssuer(fullIssuers);
     }
   }, []);
@@ -52,41 +70,30 @@ export const FilterContextProvider = ({ children }: any) => {
   }, []);
 
   useEffect(() => {
-    const isHomePage = location.pathname === '/';
-
-    const paramsObj = {
-      category: activeCategory.slug,
-      ...(activeIssuer.slug !== IssuersSlugEnum.allIssuers && { issuer: activeIssuer.slug }),
-      ...(activeCreditRange.slug !== CreditRatingSlugEnum.allCreditRating && {
-        creditRange: activeCreditRange.slug,
-      }),
-    };
-
     if (isHomePage) {
-      const params = Object.entries(paramsObj)
-        .map(([key, val]) => `${key}=${encodeURIComponent(val)}`)
-        .join('&');
-      navigate({ search: params });
+      const newLink = getFiltersLink(activeCategory, activeIssuer, activeCreditRange);
+      navigate(newLink);
     }
-  }, [activeCategory, activeIssuer, activeCreditRange, location.pathname]);
+  }, [activeCategory, activeIssuer, activeCreditRange]);
 
   useEffect(() => {
-    const newParams = {
-      category: params.get('category'),
-      issuer: params.get('issuer'),
-      creditRange: params.get('creditRange'),
-    };
+    if (!isHomePage) return;
 
-    if (newParams.category) {
-      updateCategory(newParams.category);
+    if (categoryParam) {
+      const isCategory = categories.find((item) => item.slug === categoryParam);
+      const isIssuers = issuers.find((item) => item.slug === categoryParam);
+
+      if (isCategory) {
+        updateCategory(categoryParam);
+      } else if (isIssuers) {
+        updateIssuer(categoryParam);
+      } else {
+        navigate('/');
+      }
     }
 
-    if (newParams.issuer) {
-      updateIssuer(newParams.issuer);
-    }
-
-    if (newParams.creditRange) {
-      updateCreditRange(newParams.creditRange);
+    if (rangeParam) {
+      updateCreditRange(rangeParam);
     }
   }, []);
 

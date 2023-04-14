@@ -5,6 +5,7 @@ import { CompareButton, Footer, Header, Sidebar } from './components';
 import { Home, Card } from './pages';
 
 import { useGetApiData } from 'hooks/useGetApiData';
+import { homeRoutes } from './utils/constants';
 
 function App() {
   const { apiData, totalRecords, isLoading } = useGetApiData();
@@ -17,10 +18,16 @@ function App() {
           <Sidebar />
           <CompareButton />
           <Routes>
-            <Route
-              path="/"
-              element={<Home apiData={apiData} totalRecords={totalRecords} isLoading={isLoading} />}
-            />
+            {homeRoutes.map((path) => (
+              <Route
+                key={path}
+                path={path}
+                element={
+                  <Home apiData={apiData} totalRecords={totalRecords} isLoading={isLoading} />
+                }
+              />
+            ))}
+
             <Route path="/cards/:cardId" element={<Card apiData={apiData} />} />
           </Routes>
         </div>

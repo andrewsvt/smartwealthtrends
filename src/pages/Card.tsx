@@ -1,10 +1,9 @@
-import React, { FC, useEffect, useState, useContext, useCallback } from 'react';
+import React, { FC, useEffect, useState, useContext, useCallback, useMemo } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { CardBlock, Rating } from 'components';
 import { CheckBox, PrimaryButton } from 'components/UI';
 
-import { ITableItem } from '../interfaces';
 import { ReactComponent as StarIcon } from '../assets/icons/RatingStarFull.svg';
 
 import { Listing } from 'interfaces/Api';
@@ -17,10 +16,11 @@ import { selectedCardContext } from 'contexts/SelectedCardContext';
 import { ComparisonContext } from 'contexts/ComparisonContext';
 import { IUseWindowSize, useWindowSize } from 'hooks/useWindowSize';
 import ProgressBar from 'components/UI/ProgressBar';
-import { CreditRatingSlugEnum, IssuersSlugEnum, apiDataInitialState } from 'utils/constants';
+import { apiDataInitialState } from 'utils/constants';
 import { AdvertiserDisclosure } from 'components/AdvertiserDisclosure';
 import { FilterContext } from 'contexts/FilterContext';
 import { motion } from 'framer-motion';
+import { getFiltersLink } from 'utils/getFiltersLink';
 
 interface ICardpageProps {
   apiData: Listing[];
@@ -34,8 +34,8 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
   const navigate = useNavigate();
 
   const [allApiData, setAllApiData] = useState<Listing[]>(apiDataInitialState);
-  const [currentParams, setCurrentParams] = useState<string>('');
   const [scrolled, setScrolled] = useState(false);
+  const [currentParams, setCurrentParams] = useState('');
 
   //contexts
   const { selectedCard, updateSelectedCard } = useContext(selectedCardContext);
@@ -60,25 +60,17 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
 
   //get params
   useEffect(() => {
+    const newLink = getFiltersLink(
+      filter.activeCategory,
+      filter.activeIssuer,
+      filter.activeCreditRange
+    );
+
     if (currentParams) {
-      navigate(`/?${currentParams}`);
+      navigate(newLink);
     }
 
-    const paramsObj = {
-      category: filter.activeCategory.slug,
-      ...(filter.activeIssuer.slug !== IssuersSlugEnum.allIssuers && {
-        issuer: filter.activeIssuer.slug,
-      }),
-      ...(filter.activeCreditRange.slug !== CreditRatingSlugEnum.allCreditRating && {
-        creditRange: filter.activeCreditRange.slug,
-      }),
-    };
-
-    const params = Object.entries(paramsObj)
-      .map(([key, val]) => `${key}=${encodeURIComponent(val)}`)
-      .join('&');
-
-    setCurrentParams(params);
+    setCurrentParams(newLink);
   }, [filter.activeCategory, filter.activeIssuer, filter.activeCreditRange]);
 
   //set context after reloading
@@ -180,7 +172,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
             {size.width > 768 ? (
               <div className="sticky top-0 bg-bg h-[72px] w-full flex flex-row justify-between items-center">
                 <div className="flex flex-row items-center py-[24px] lg:py-0 space-x-[8px]">
-                  <Link to={`/?${currentParams}`} className="text-secondary-text">
+                  <Link to={currentParams} className="text-secondary-text">
                     Home
                   </Link>
                   <div className="text-medium-gray">/</div>
@@ -198,7 +190,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
             ) : (
               <div className="w-full flex flex-col py-[20px] space-y-[20px]">
                 <div className="flex flex-row items-center lg:py-0 space-x-[8px] truncate">
-                  <Link to={`/?${currentParams}`} className="text-secondary-text">
+                  <Link to={currentParams} className="text-secondary-text">
                     Home
                   </Link>
                   <div className="text-medium-gray">/</div>

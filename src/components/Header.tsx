@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect, useRef, useState } from 'react';
+import React, { FC, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -15,6 +15,7 @@ import LogoIcon from '../assets/images/LogoIcon.png';
 import { ReactComponent as BurgerOpenIcon } from '../assets/icons/Burger.svg';
 import { ReactComponent as BurgerCloseIcon } from '../assets/icons/BurgerCross.svg';
 import { HeaderFilters } from './index';
+import { getFiltersLink } from 'utils/getFiltersLink';
 
 interface IHeaderProps {
   queryParams?: URLSearchParams;
@@ -23,7 +24,6 @@ interface IHeaderProps {
 export const Header: FC<IHeaderProps> = ({ queryParams }) => {
   const [activeDropdown, setActiveDropdown] = useState<string>('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
-  const [currentParams, setCurrentParams] = useState<string>('');
 
   const filter = useContext(FilterContext);
 
@@ -60,23 +60,7 @@ export const Header: FC<IHeaderProps> = ({ queryParams }) => {
     };
   }, [isMobileMenuOpen]);
 
-  useEffect(() => {
-    const paramsObj = {
-      category: filter.activeCategory.slug,
-      ...(filter.activeIssuer.slug !== IssuersSlugEnum.allIssuers && {
-        issuer: filter.activeIssuer.slug,
-      }),
-      ...(filter.activeCreditRange.slug !== CreditRatingSlugEnum.allCreditRating && {
-        creditRange: filter.activeCreditRange.slug,
-      }),
-    };
-
-    const params = Object.entries(paramsObj)
-      .map(([key, val]) => `${key}=${encodeURIComponent(val)}`)
-      .join('&');
-
-    setCurrentParams(params);
-  }, [filter]);
+  const homeLink = useMemo(() => getFiltersLink(filter.activeCategory, filter.activeIssuer, filter.activeCreditRange), [filter])
 
   return (
     <>
@@ -86,7 +70,7 @@ export const Header: FC<IHeaderProps> = ({ queryParams }) => {
             <div className="flex items-center h-[100px]">
               {size.width < 976 && (
                 <div className="flex justify-center items-center mr-[16px] cursor-pointer">
-                  <Link to={`/?${currentParams}`} preventScrollReset={true}>
+                  <Link to={homeLink} preventScrollReset={true}>
                     <img src={LogoIcon} alt="logo" className="h-[30px]" />
                   </Link>
                 </div>
@@ -95,7 +79,7 @@ export const Header: FC<IHeaderProps> = ({ queryParams }) => {
                 <div className="flex justify-center items-center lg:w-[335px] mr-[54px] cursor-pointer">
                   <Link
                     className="lg:w-full w-[200px]"
-                    to={`/?${currentParams}`}
+                    to={homeLink}
                     preventScrollReset={true}
                   >
                     <img
@@ -118,7 +102,7 @@ export const Header: FC<IHeaderProps> = ({ queryParams }) => {
         <>
           <div className="sticky bg-light-gray top-0 h-[80px] w-full border-b-[1px] border-[#EAE9EE] px-[16px] flex flex-col justify-center z-10">
             <div className="flex justify-between items-center">
-              <Link to={`/?${currentParams}`} preventScrollReset={true}>
+              <Link to={homeLink} preventScrollReset={true}>
                 <img src={Logo} alt="logo" className="max-w-[250px] object-contain" />
               </Link>
               <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
