@@ -56,7 +56,7 @@ export const CategoryDropdown: FC<IDropdownProps> = ({
       className="w-full py-3"
     >
       <div className="relative flex flex-row items-center cursor-pointer w-full md:w-[200px] h-[56px] justify-between bg-light-gray rounded-[14px] border-[2px] border-primary py-[10px] px-[20px]">
-        <SelectedIcon classname="filterIconHeaderSelected" />
+        <SelectedIcon className="filterIconHeaderSelected" />
         <span className="text-sm font-bold pr-[8px] text-primary truncate">
           {contextState.text}
         </span>
@@ -82,7 +82,6 @@ export const CategoryDropdown: FC<IDropdownProps> = ({
                 const Icon = item.icon;
                 const isActive = item.field === filter.activeCategory.field;
                 const isCategory = _.some(fields, { field: filter.activeCategory.field });
-                console.log(isCategory);
                 return (
                   <li
                     key={item.field}

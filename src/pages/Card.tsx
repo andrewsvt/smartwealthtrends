@@ -158,7 +158,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
         initial={{ y: -100 }}
         animate={{ y: scrolled ? 0 : -100 }}
         transition={{ duration: 0.3 }}
-        className="fixed top-0 left-0 w-full h-[100px] bg-light-gray flex items-center justify-center z-50 p-[16px] space-x-[16px] md:space-x-[32px]"
+        className="fixed top-0 left-0 w-full h-[100px] bg-light-gray flex items-center justify-center z-30 p-[16px] space-x-[16px] md:space-x-[32px]"
       >
         <img
           src={selectedCard.Creative.LogoImageUrl}
@@ -426,7 +426,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                       <ul className="flex flex-col space-y-[24px] p-[12px]">
                         <li className="flex flex-col space-y-[8px]">
                           <div className="flex flex-row space-x-[16px] items-center">
-                            <CrossIcon classname="consIcon" />
+                            <CrossIcon className="consIcon" />
                             <h4 className="text-base font-medium">Unlimited 2% Cash Back:</h4>
                           </div>
                           <p className="font-light">

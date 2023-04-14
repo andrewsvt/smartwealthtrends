@@ -81,7 +81,6 @@ export const Dropdown: FC<IDropdownProps> = ({
                 const Icon = item.icon;
                 const isActive = item.field === filter.activeCategory.field;
                 const isCategory = _.some(fields, { field: filter.activeCategory.field });
-                console.log(isCategory);
                 return (
                   <li
                     key={item.field}

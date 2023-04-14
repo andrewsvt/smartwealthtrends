@@ -32,9 +32,11 @@ export const AdvertiserDisclosure: FC = () => {
           Advertiser Disclosure
         </span>
       </div>
-      <AnimatePresence>
-        <Portal>{modal ? <Disclosure modal={modal} setModal={setModal} /> : ''}</Portal>
-      </AnimatePresence>
+      <Portal>
+        <AnimatePresence>
+          {modal ? <Disclosure modal={modal} setModal={setModal} /> : ''}
+        </AnimatePresence>
+      </Portal>
     </>
   );
 };

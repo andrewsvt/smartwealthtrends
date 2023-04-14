@@ -67,7 +67,7 @@ export enum CategoriesSlugEnum {
 export enum IssuersEnum {
   allIssuers = '',
   citi = '&ccis=188934',
-  capitalOne = '&ccis=188934',
+  capitalOne = '&ccis=637141',
   chase = '&ccis=188933',
   bankOfAmerica = '&ccis=574429',
   wellsFargo = '&ccis=636744',

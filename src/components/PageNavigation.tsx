@@ -13,10 +13,11 @@ export const PageNavigation: FC = () => {
   ];
 
   const [activeSection, setActiveSection] = useState<string>('section1');
+  const path = window.location.pathname;
 
   useEffect(() => {
     setActiveSection('section1');
-  }, []);
+  }, [path]);
 
   const handleSetActive = (sectionId: string) => {
     setActiveSection(sectionId);
@@ -27,8 +28,9 @@ export const PageNavigation: FC = () => {
       <div className="p-[16px] w-full flex justify-start flex-col space-y-[24px]">
         <span className="w-full pl-[4px] font-normal text-primary text-sm">Page Section</span>
         <div className="flex flex-col space-y-[16px] cursor-pointer pl-0 md:pl-[4px]">
-          {sectionArray.map((section) => (
+          {sectionArray.map((section, index) => (
             <ScrollLink
+              key={index}
               to={section.section}
               smooth={true}
               duration={500}

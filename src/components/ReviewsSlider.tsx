@@ -73,7 +73,7 @@ export const ReviewsSlider: FC = () => {
           spaceBetween={50}
           slidesPerView={1}
           pagination={{ clickable: true }}
-          onSlideChange={() => console.log('slide change')}
+          // onSlideChange={() => console.log('slide change')}
           loop
           ref={swiperRef}
         >

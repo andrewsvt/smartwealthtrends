@@ -31,7 +31,7 @@ export const Comparison: FC<ComparisonProps> = ({ modal, setModal }) => {
   }, [products, closing, setModal]);
 
   return (
-    <div className="w-screen h-screen fixed top-0 left-0 flex justify-center items-center z-30">
+    <div className="w-screen h-screen fixed top-0 left-0 flex justify-center items-center z-50">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -53,7 +53,7 @@ export const Comparison: FC<ComparisonProps> = ({ modal, setModal }) => {
         exit={{ opacity: 0, scale: 0.7, transition: { duration: 0.2 } }}
       >
         {products.length ? (
-          products.map((product) => <ComparisonCard product={product} />)
+          products.map((product) => <ComparisonCard key={product.ID} product={product} />)
         ) : (
           <span className="w-full h-full flex justify-center items-center text-secondary-text">
             Compare is empty

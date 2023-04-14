@@ -69,9 +69,11 @@ export const CompareButton: FC = () => {
           </motion.div>
         )}
       </AnimatePresence>
-      <AnimatePresence>
-        <Portal>{modal ? <Comparison modal={modal} setModal={setModal} /> : ''}</Portal>
-      </AnimatePresence>
+      <Portal>
+        <AnimatePresence>
+          {modal ? <Comparison modal={modal} setModal={setModal} /> : ''}
+        </AnimatePresence>
+      </Portal>
     </>
   );
 };
