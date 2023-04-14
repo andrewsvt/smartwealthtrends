@@ -58,7 +58,7 @@ export enum CategoriesSlugEnum {
   rewards = 'rewards',
   noForeignFees = 'no-foreign-fees',
   gas = 'gas',
-  zeroApr = '&crd=10',
+  zeroApr = 'zero-apr',
   travel = 'travel',
   student = 'student',
   business = 'business',
@@ -381,4 +381,4 @@ export const apiDataInitialState: Listing[] = [
   },
 ];
 
-export const homeRoutes = ['/', '/:category', '/:category/:range']
+export const homeRoutes = ['/', '/:category', '/:category/:range'];
