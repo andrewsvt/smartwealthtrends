@@ -140,8 +140,12 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
     return text.toLowerCase().replace(/ /g, '-');
   };
 
+  // const issuerSlug = textToSlug(selectedCard.DisplayName);
+
   const handleIssuerClick = () => {
-    filter.updateIssuer(textToSlug(selectedCard.DisplayName));
+    const slug = textToSlug(selectedCard.DisplayName);
+    filter.updateIssuer(slug);
+    navigate(`/${slug}`);
   };
 
   return (
