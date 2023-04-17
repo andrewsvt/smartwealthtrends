@@ -30,22 +30,6 @@ export const FilterContextProvider = ({ children }: any) => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { categoryParam, rangeParam } = useMemo(() => {
-    const params = location.pathname.split('/').slice(1);
-
-    return { categoryParam: params[0], rangeParam: params[1] };
-  }, [location]);
-
-  const isHomePage = useMemo(() => {
-    if (location.pathname === '/') return true;
-
-    const isCorrectCategory = [...categories, ...issuers].find(
-      (item) => item.slug === categoryParam
-    );
-
-    return !!isCorrectCategory;
-  }, [categoryParam, location]);
-
   const updateCategory = useCallback((newCategory: string) => {
     const fullCategory = categories.find((category) => category.slug === newCategory);
     if (fullCategory) {
@@ -69,11 +53,37 @@ export const FilterContextProvider = ({ children }: any) => {
     }
   }, []);
 
+  const { categoryParam, rangeParam } = useMemo(() => {
+    const params = location.pathname.split('/').slice(1);
+
+    return { categoryParam: params[0], rangeParam: params[1] };
+  }, [location]);
+
+  const isHomePage = useMemo(() => {
+    if (location.pathname === '/') return true;
+
+    const isCorrectCategory = [...categories, ...issuers].some(
+      (item) => item.slug === categoryParam
+    );
+
+    return isCorrectCategory;
+  }, [categoryParam, location]);
+
+  const isCardPage = useMemo(() => {
+    const params = location.pathname.split('/').slice(1);
+
+    if (params.includes('cards')) {
+      return true;
+    } else return false;
+  }, [location]);
+
   useEffect(() => {
     if (isHomePage) {
       const newLink = getFiltersLink(activeCategory, activeIssuer, activeCreditRange);
       navigate(newLink);
-    }
+    } else if (isCardPage) {
+      console.log('card page');
+    } else navigate('/top-cards');
   }, [activeCategory, activeIssuer, activeCreditRange]);
 
   useEffect(() => {

@@ -1,32 +1,30 @@
-import React, { FC, useEffect, useState, useContext, useCallback, useMemo } from 'react';
+import React, { FC, useEffect, useState, useContext, useCallback } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-
-import { CardBlock, Rating } from 'components';
-import { CheckBox, PrimaryButton } from 'components/UI';
-
-import { ReactComponent as StarIcon } from '../assets/icons/RatingStarFull.svg';
-
-import { Listing } from 'interfaces/Api';
-
-import { ReactComponent as CheckIcon } from '../assets/icons/check.svg';
-import { ReactComponent as CrossIcon } from '../assets/icons/cross.svg';
-import { ReactComponent as LockIcon } from '../assets/icons/lock.svg';
+import { motion } from 'framer-motion';
+import { IUseWindowSize, useWindowSize } from 'hooks/useWindowSize';
 
 import { selectedCardContext } from 'contexts/SelectedCardContext';
 import { ComparisonContext } from 'contexts/ComparisonContext';
-import { IUseWindowSize, useWindowSize } from 'hooks/useWindowSize';
-import ProgressBar from 'components/UI/ProgressBar';
-import { apiDataInitialState } from 'utils/constants';
-import { AdvertiserDisclosure } from 'components/AdvertiserDisclosure';
 import { FilterContext } from 'contexts/FilterContext';
-import { motion } from 'framer-motion';
+
+import { apiDataInitialState, issuers } from 'utils/constants';
 import { getFiltersLink } from 'utils/getFiltersLink';
 
+import { CardBlock, Rating, AdvertiserDisclosure } from 'components';
+import { CheckBox, PrimaryButton, ProgressBar } from 'components/UI';
+
+import { Listing } from 'interfaces/Api';
+
+import { ReactComponent as StarIcon } from '../assets/icons/RatingStarFull.svg';
+import { ReactComponent as CheckIcon } from '../assets/icons/check.svg';
+import { ReactComponent as CrossIcon } from '../assets/icons/cross.svg';
+import { ReactComponent as LockIcon } from '../assets/icons/lock.svg';
 interface ICardpageProps {
   apiData: Listing[];
+  relatedApiData: Listing[];
 }
 
-export const Card: FC<ICardpageProps> = ({ apiData }) => {
+export const Card: FC<ICardpageProps> = ({ apiData, relatedApiData }) => {
   const apiUrl = process.env.REACT_APP_API_URL;
 
   const size: IUseWindowSize = useWindowSize();
@@ -34,6 +32,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
   const navigate = useNavigate();
 
   const [allApiData, setAllApiData] = useState<Listing[]>(apiDataInitialState);
+
   const [scrolled, setScrolled] = useState(false);
   const [currentParams, setCurrentParams] = useState('');
 
@@ -42,10 +41,30 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
   const { products, addProduct, removeProduct } = useContext(ComparisonContext);
   const filter = useContext(FilterContext);
 
+  const getLocalStorageItem = (key: string) => {
+    const itemStr = localStorage.getItem(key);
+    if (!itemStr) {
+      return null;
+    }
+    const item = JSON.parse(itemStr);
+    if (item.expiration && new Date().getTime() > item.expiration) {
+      localStorage.removeItem(key);
+      return null;
+    }
+    return item.value;
+  };
+
   //fetch all cards
   const fetchData = useCallback(async () => {
     try {
-      const response = await fetch(`${apiUrl}&crd=25&xml_version=2&max=999`);
+      // Get the item from local storage
+      let lastRequestLink: string = getLocalStorageItem('lastRequestLink');
+
+      if (lastRequestLink === null || lastRequestLink === '') {
+        lastRequestLink = `${apiUrl}&crd=25&xml_version=2&max=999`;
+      }
+
+      const response = await fetch(lastRequestLink);
       const data = await response.json();
       setAllApiData(data.ResultSet.Listings.Listing);
     } catch (error) {
@@ -140,12 +159,13 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
     return text.toLowerCase().replace(/ /g, '-');
   };
 
-  // const issuerSlug = textToSlug(selectedCard.DisplayName);
-
   const handleIssuerClick = () => {
     const slug = textToSlug(selectedCard.DisplayName);
-    filter.updateIssuer(slug);
-    navigate(`/${slug}`);
+
+    if (issuers.some((obj) => obj.slug === slug)) {
+      filter.updateIssuer(slug);
+      navigate(`/${slug}`);
+    }
   };
 
   return (
@@ -172,49 +192,28 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
       <div className="w-full">
         {selectedCard.ID.length ? (
           <>
-            {' '}
-            {size.width > 768 ? (
-              <div className="sticky top-0 bg-bg h-[72px] w-full flex flex-row justify-between items-center">
-                <div className="flex flex-row items-center py-[24px] lg:py-0 space-x-[8px]">
-                  <Link to={currentParams} className="text-secondary-text">
-                    Home
-                  </Link>
-                  <div className="text-medium-gray">/</div>
-                  <div onClick={handleIssuerClick} className="text-secondary-text cursor-pointer">
-                    {selectedCard.DisplayName}
-                  </div>
-                  <div className="text-medium-gray">/</div>
-                  <div
-                    className="text-secondary-text cursor-default"
-                    dangerouslySetInnerHTML={{ __html: selectedCard.CardName }}
-                  />
+            <div className="lg:h-[72px] py-[20px] lg:py-0 w-full flex flex-col lg:flex-row justify-between items-center">
+              <div className="flex flex-row items-center py-[24px] lg:py-0 space-x-[8px] truncate">
+                <Link to={currentParams} className="text-secondary-text">
+                  Home
+                </Link>
+                <div className="text-medium-gray">/</div>
+                <div onClick={handleIssuerClick} className="text-secondary-text cursor-pointer">
+                  {selectedCard.DisplayName}
                 </div>
-                <AdvertiserDisclosure />
+                <div className="text-medium-gray">/</div>
+                <div
+                  className="text-secondary-text cursor-default"
+                  dangerouslySetInnerHTML={{ __html: selectedCard.CardName }}
+                />
               </div>
-            ) : (
-              <div className="w-full flex flex-col py-[20px] space-y-[20px]">
-                <div className="flex flex-row items-center lg:py-0 space-x-[8px] truncate">
-                  <Link to={currentParams} className="text-secondary-text">
-                    Home
-                  </Link>
-                  <div className="text-medium-gray">/</div>
-                  <div onClick={handleIssuerClick} className="text-secondary-text cursor-pointer">
-                    {selectedCard.DisplayName}
-                  </div>
-                  <div className="text-medium-gray">/</div>
-                  <div
-                    className="text-secondary-text cursor-default"
-                    dangerouslySetInnerHTML={{ __html: selectedCard.CardName }}
-                  />
-                </div>
-                <AdvertiserDisclosure />
-              </div>
-            )}
+              <AdvertiserDisclosure />
+            </div>
             <div className="grid grid-cols-1 gap-4">
               {/* card details */}
               <div id="section1" className="p-[20px] bg-white rounded-[14px] space-y-[32px]">
-                <div className="flex flex-col md:flex-row md:h-[180px] md:space-x-[20px]">
-                  <div className="relative h-full md:max-w-[300px] w-full md:w-auto ">
+                <div className="flex flex-col items-center md:items-start md:flex-row md:h-[180px] md:space-x-[20px]">
+                  <div className="relative h-full md:h-fit md:min-h-[180px] md:max-h-[180px] w-[240px] md:max-w-[290px] md:w-full">
                     <motion.div
                       initial={{ opacity: 0 }}
                       whileHover={{ opacity: 1 }}
@@ -225,12 +224,12 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                       <span className="text-lg font-semibold text-white">Apply Now</span>
                     </motion.div>
                     <img
-                      className="w-full h-full object-contain"
+                      className="w-full h-full object-contain rounded-[10px]"
                       src={selectedCard.Creative.RawLogoImageUrl}
                       alt="card"
                     />
                   </div>
-                  <div className="flex flex-col space-y-[20px] items-center md:items-start md:justify-between mt-[20px] md:mt-0">
+                  <div className="flex flex-col space-y-[20px] items-center md:items-start md:h-full md:justify-between mt-[20px] md:mt-0">
                     <div className="space-y-[12px] w-full flex flex-col items-center md:items-start">
                       <h2
                         className="text-lg font-semibold"
@@ -243,7 +242,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                         <Rating value={Number(selectedCard.EditorRating)} />
                       </div>
                     </div>
-                    <div className="flex flex-col md:flex-row items-center justify-start space-y-[8px] md:space-x-[8px] w-full md:w-auto">
+                    <div className="flex flex-col md:flex-row items-center justify-start space-y-[8px] md:space-y-0 md:space-x-[8px] w-full md:w-auto">
                       <div className="flex flex-row items-center space-x-[8px] w-full md:w-auto">
                         <PrimaryButton text="Apply Now" />
                       </div>
@@ -445,7 +444,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                           .map((product, index) => (
                             <CardBlock key={product.ID} product={product} index={index} />
                           ))
-                      : allApiData
+                      : relatedApiData
                           .filter((product) => product.ID !== cardId)
                           .slice(0, 2)
                           .map((product, index) => (
@@ -457,7 +456,9 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
             </div>
           </>
         ) : (
-          'Loading...'
+          <span className="lg:h-[72px] py-[20px] lg:py-0 w-full flex flex-col lg:flex-row justify-between items-center">
+            Loading...
+          </span>
         )}
       </div>
     </>

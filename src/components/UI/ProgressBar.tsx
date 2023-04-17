@@ -4,7 +4,7 @@ interface ProgressBarProps {
   value: number;
 }
 
-const ProgressBar: React.FC<ProgressBarProps> = ({ value }) => {
+export const ProgressBar: React.FC<ProgressBarProps> = ({ value }) => {
   const progress = Math.max(0, Math.min(value, 5)); // Ensure value is between 0 and 5
   const filledWidth = `${(progress / 5) * 100}%`; // Calculate the width of the filled portion of the progress bar
 
@@ -14,5 +14,3 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ value }) => {
     </div>
   );
 };
-
-export default ProgressBar;

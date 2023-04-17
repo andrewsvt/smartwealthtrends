@@ -4,6 +4,7 @@ import { Listing } from 'interfaces/Api';
 import { ComparisonContext } from 'contexts/ComparisonContext';
 
 import { PrimaryButton, TrashButton } from './UI';
+
 interface IComparisonCardProps {
   product: Listing;
 }
@@ -11,8 +12,17 @@ interface IComparisonCardProps {
 export const ComparisonCard: FC<IComparisonCardProps> = ({ product }) => {
   const { removeProduct } = useContext(ComparisonContext);
 
+  const compareFields = [
+    { name: 'Balance Transfer Intro APR', field: product.BalanceTransferIntroAPR },
+    { name: 'Intro APR Duration', field: product.IntroAPRDuration },
+    { name: 'Intro APR Rate', field: product.IntroAPRRate },
+    { name: 'Annual Fees', field: product.AnnualFees },
+    { name: 'Card Brand', field: product.CardProcessorTypeName },
+    { name: 'Credit Score Needed', field: product.CreditScoreNeeded },
+  ];
+
   return (
-    <div className="flex flex-col w-[325px] min-w-[230px]">
+    <div className="relative flex flex-col w-[325px] min-w-[230px]">
       <div className="flex flex-col justify-between bg-white w-full min-h-[305px] p-[16px] rounded-[14px]">
         <div className="flex flex-col items-center space-y-[16px]">
           <img className="w-[210px] h-auto" src={product.Creative.LogoImageUrl} alt="card" />
@@ -28,48 +38,15 @@ export const ComparisonCard: FC<IComparisonCardProps> = ({ product }) => {
       </div>
       <div className="px-[16px] md:px-[20px]">
         <ul>
-          <li className="space-y-[8px] h-[160px] lg:h-auto py-[30px] border-b-[1px] border-medium-gray">
-            <h3 className="text-base font-medium">Balance Transfer Intro APR</h3>
-            <p
-              className="text-sm font-light"
-              dangerouslySetInnerHTML={{ __html: product.BalanceTransferIntroAPR }}
-            />
-          </li>
-          <li className="space-y-[8px] h-[160px] lg:h-auto py-[30px] border-b-[1px] border-medium-gray">
-            <h3 className="text-base font-medium">Intro APRD uration</h3>
-            <p
-              className="text-sm font-light"
-              dangerouslySetInnerHTML={{ __html: product.IntroAPRDuration }}
-            />
-          </li>
-          <li className="space-y-[8px] h-[160px] lg:h-auto py-[30px] border-b-[1px] border-medium-gray">
-            <h3 className="text-base font-medium">Intro APR Rate</h3>
-            <p
-              className="text-sm font-light"
-              dangerouslySetInnerHTML={{ __html: product.IntroAPRRate }}
-            />
-          </li>
-          <li className="space-y-[8px] h-[160px] lg:h-auto py-[30px] border-b-[1px] border-medium-gray">
-            <h3 className="text-base font-medium">Annual Fees</h3>
-            <p
-              className="text-sm font-light"
-              dangerouslySetInnerHTML={{ __html: product.AnnualFees }}
-            />
-          </li>
-          <li className="space-y-[8px] h-[160px] lg:h-auto py-[30px] border-b-[1px] border-medium-gray">
-            <h3 className="text-base font-medium">Card Brand</h3>
-            <p
-              className="text-sm font-light"
-              dangerouslySetInnerHTML={{ __html: product.CardProcessorTypeName }}
-            />
-          </li>
-          <li className="space-y-[8px] h-[160px] lg:h-auto py-[30px] border-b-[1px] border-medium-gray">
-            <h3 className="text-base font-medium">Credit Score Needed</h3>
-            <p
-              className="text-sm font-light"
-              dangerouslySetInnerHTML={{ __html: product.CreditScoreNeeded }}
-            />
-          </li>
+          {compareFields.map((field) => (
+            <li className="space-y-[8px] h-[160px] lg:h-auto py-[30px] border-b-[1px] border-medium-gray">
+              <h3 className="text-base font-medium">{field.name}</h3>
+              <p
+                className="text-sm font-light"
+                dangerouslySetInnerHTML={{ __html: field.field.length > 0 ? field.field : 'N/A' }}
+              />
+            </li>
+          ))}
         </ul>
       </div>
     </div>

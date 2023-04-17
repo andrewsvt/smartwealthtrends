@@ -6,9 +6,11 @@ import { Home, Card } from './pages';
 
 import { useGetApiData } from 'hooks/useGetApiData';
 import { homeRoutes } from './utils/constants';
+import { useGetRelatedCards } from 'hooks/useGetRelatedCards';
 
 function App() {
   const { apiData, totalRecords, isLoading } = useGetApiData();
+  const relatedApiData = useGetRelatedCards();
 
   return (
     <div className="bg-bg scrollbar-hide">
@@ -27,8 +29,10 @@ function App() {
                 }
               />
             ))}
-
-            <Route path="/cards/:cardId" element={<Card apiData={apiData} />} />
+            <Route
+              path="/cards/:cardId"
+              element={<Card apiData={apiData} relatedApiData={relatedApiData} />}
+            />
           </Routes>
         </div>
         <Footer />

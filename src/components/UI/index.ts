@@ -4,3 +4,5 @@ export { ExpandButton } from './Buttons';
 export { TrashButton } from './Buttons';
 
 export { CheckBox } from './Checkbox';
+
+export { ProgressBar } from './ProgressBar';

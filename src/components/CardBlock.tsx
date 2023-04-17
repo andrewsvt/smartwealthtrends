@@ -83,7 +83,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
     >
       <div className="flex flex-col md:flex-row md:h-[180px] md:space-x-[20px]">
         <div className="h-full flex flex-col justify-center items-center">
-          <div className="relative h-full md:h-fit md:max-h-[180px] w-[240px] md:max-w-[290px] md:w-full">
+          <div className="relative h-full md:h-fit md:min-h-[180px] md:max-h-[180px] w-[240px] md:max-w-[290px] md:w-full">
             <motion.div
               initial={{ opacity: 0 }}
               whileHover={{ opacity: 1 }}
@@ -94,7 +94,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
               <span className="text-lg font-semibold text-white">Apply Now</span>
             </motion.div>
             <img
-              className="w-full h-full object-contain"
+              className="w-full h-full object-contain rounded-[10px]"
               src={product.Creative.RawLogoImageUrl}
               alt="card"
             />
