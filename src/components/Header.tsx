@@ -74,29 +74,29 @@ export const Header: FC = () => {
 
   return (
     <>
-      {size.width > 768 ? (
+      {size.width > 976 ? (
         <>
           <div className="sticky top-0 w-full px-[16px] h-auto bg-light-gray z-10 flex flex-row justify-center items-center">
             <div className="max-w-[1400px] w-full h-auto lg:pt-0 border-b-[1px] border-primary-light flex flex-col md:flex-row items-start md:items-center justify-start md:justify-between">
               <div className="flex items-center h-[100px]">
-                {size.width < 976 && (
+                {/* {size.width < 976 && (
                   <div className="flex justify-center items-center mr-[16px] cursor-pointer">
                     <Link to={homeLink} preventScrollReset={true}>
                       <img src={LogoIcon} alt="logo" className="h-[30px]" />
                     </Link>
                   </div>
-                )}
-                {size.width > 976 && (
-                  <div className="flex justify-center items-center lg:w-[335px] mr-[54px] cursor-pointer">
-                    <Link className="lg:w-full w-[200px]" to={homeLink} preventScrollReset={true}>
-                      <img
-                        src={Logo}
-                        alt="logo"
-                        className="h-[30px] lg:h-auto w-[200px] lg:w-full object-contain"
-                      />
-                    </Link>
-                  </div>
-                )}
+                )} */}
+                {/* {size.width > 976 && ( */}
+                <div className="flex justify-center items-center lg:w-[335px] mr-[24px] lgPlus:mr-[54px] cursor-pointer">
+                  <Link className="lg:w-full w-[200px]" to={homeLink} preventScrollReset={true}>
+                    <img
+                      src={Logo}
+                      alt="logo"
+                      className="h-[30px] lg:h-auto w-[200px] lg:w-full object-contain"
+                    />
+                  </Link>
+                </div>
+                {/* )} */}
                 <HeaderFilters
                   ref={dropdownRef}
                   activeDropdown={activeDropdown}
@@ -117,28 +117,36 @@ export const Header: FC = () => {
           </div>
           <AnimatePresence>
             {isDesktopMenuOpen && (
-              <motion.div
-                ref={desktopMenuRef}
-                className="fixed top-0 right-0 z-50 bg-white px-4 h-full w-[300px]"
-                initial={{ opacity: 0, right: -300 }}
-                animate={{ opacity: 1, right: 0 }}
-                transition={{ duration: 0.5 }}
-                exit={{ opacity: 0, right: -300 }}
-              >
-                <button
-                  className="h-[100px]"
-                  onClick={() => setIsDesktopMenuOpen(!isDesktopMenuOpen)}
+              <>
+                <motion.div
+                  ref={desktopMenuRef}
+                  className="fixed top-0 right-0 z-50 bg-white px-4 h-full w-[300px]"
+                  initial={{ opacity: 0, right: -300 }}
+                  animate={{ opacity: 1, right: 0 }}
+                  transition={{ duration: 0.5 }}
+                  exit={{ opacity: 0, right: -300 }}
                 >
-                  <BurgerCloseIcon />
-                </button>
-                <NavMenuItems />
-              </motion.div>
+                  <button
+                    className="h-[100px]"
+                    onClick={() => setIsDesktopMenuOpen(!isDesktopMenuOpen)}
+                  >
+                    <BurgerCloseIcon />
+                  </button>
+                  <NavMenuItems />
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0, transition: { duration: 0.2 } }}
+                  className="fixed top-0 left-0 h-screen w-screen bg-black bg-opacity-80 z-20"
+                ></motion.div>
+              </>
             )}
           </AnimatePresence>
         </>
       ) : (
         <>
-          <div className="sticky bg-light-gray top-0 h-[80px] w-full border-b-[1px] border-[#EAE9EE] px-[16px] flex flex-col justify-center z-10">
+          <div className="sticky bg-light-gray top-0 h-[64px] w-full border-b-[1px] border-[#EAE9EE] px-[16px] flex flex-col justify-center z-10">
             <div className="flex justify-between items-center">
               <Link to={homeLink} preventScrollReset={true}>
                 <img src={Logo} alt="logo" className="max-w-[250px] object-contain" />

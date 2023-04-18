@@ -23,7 +23,7 @@ export const HeaderFilters = forwardRef<HTMLUListElement, HeaderFiltersProps>(
       <ul
         ref={ref}
         className={
-          size.width > 768
+          size.width > 976
             ? 'flex flex-col w-full md:w-auto md:flex-row items-center md:space-x-[8px]'
             : 'flex flex-col justify-start items-center space-y-[8px]'
         }

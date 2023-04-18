@@ -25,9 +25,13 @@ export const Home: FC<IHomeProps> = ({ apiData, totalRecords, isLoading }) => {
 
   return (
     <>
-      <div className="relative w-full mt-[24px] space-y-[20px] md:space-y-0">
+      <div className="relative w-full mt-[24px] lg:space-y-0">
         <AdvertiserDisclosure />
-        {size.width < 768 && (
+        <div className="flex flex-col items-start justify-center w-full py-[20px] lg:py-0 lg:pb-[20px]">
+          <h1 className="text-xl font-semibold pb-[6px] lg:w-[70%]">{`${filter.activeCategory.text} from ${filter.activeIssuer.text}`}</h1>
+          <p className="text-secondary-text text-base lg:w-[50%]">Description of the page</p>
+        </div>
+        {size.width < 976 && (
           <ul>
             <CategoryDropdown
               filterName="Category"
@@ -37,10 +41,6 @@ export const Home: FC<IHomeProps> = ({ apiData, totalRecords, isLoading }) => {
             />
           </ul>
         )}
-        <div className="flex flex-col items-start justify-center w-full md:pb-[20px]">
-          <h1 className="text-xl font-semibold pb-[6px] lg:w-[70%]">{`${filter.activeCategory.text} from ${filter.activeIssuer.text}`}</h1>
-          <p className="text-secondary-text text-base lg:w-[50%]">Description of the page</p>
-        </div>
         <AnimatePresence>
           <motion.div className="grid grid-cols-1 gap-4">
             {isLoading ? (

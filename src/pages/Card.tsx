@@ -247,7 +247,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
       <div className="w-full">
         {selectedCard.ID.length ? (
           <>
-            <div className="lg:h-[72px] py-[20px] lg:py-0 w-full flex flex-col lg:flex-row justify-between items-center">
+            <div className="lg:h-[72px] pb-[20px] lg:pb-0 w-full flex flex-col lg:flex-row justify-between items-center">
               <div className="flex flex-row items-center py-[24px] lg:py-0 space-x-[8px] w-full lg:w-[75%] truncate">
                 <Link to={currentParams} className="text-secondary-text">
                   Home

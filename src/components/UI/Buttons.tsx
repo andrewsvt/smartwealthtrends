@@ -12,12 +12,12 @@ interface IButton {
   state?: boolean;
 }
 
-export const PrimaryButton: FC<IButton> = ({ text, state }) => {
+export const PrimaryButton: FC<IButton> = ({ text }) => {
   return (
     <motion.button
       whileTap={{ scale: 0.9 }}
       transition={{ type: 'spring', stiffness: 500, damping: 50 }}
-      className="customTransition py-[12px] px-[16px] min-w-[140px] w-full md:w-[202px] space-x-[8px] font-semibold text-sm md:text-base rounded-[10px] flex flex-1 md:flex-auto justify-center items-center text-white bg-primary hover:bg-primary-dark"
+      className="customTransition py-[12px] px-[16px] min-w-[140px] w-full md:w-[202px] lg:w-[180px] space-x-[8px] font-semibold text-sm md:text-base rounded-[10px] flex flex-1 md:flex-auto justify-center items-center text-white bg-primary hover:bg-primary-dark"
     >
       <span className="text-current">{text}</span>
       <SmallLockIcon />

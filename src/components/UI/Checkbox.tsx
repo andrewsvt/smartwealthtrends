@@ -1,5 +1,7 @@
 import React, { FC } from 'react';
 import { ReactComponent as CheckSmallIcon } from '../../assets/icons/checkSmall.svg';
+import { ReactComponent as CompareIcon } from '../../assets/icons/comparison.svg';
+import { IUseWindowSize, useWindowSize } from 'hooks/useWindowSize';
 
 interface ICheckboxProps {
   text: string;
@@ -8,6 +10,8 @@ interface ICheckboxProps {
 }
 
 export const CheckBox: FC<ICheckboxProps> = ({ text, state, onClick }) => {
+  const size: IUseWindowSize = useWindowSize();
+
   return (
     <button className="flex flex-row items-center space-x-[12px] p-[12px]" onClick={onClick}>
       <div
@@ -17,7 +21,11 @@ export const CheckBox: FC<ICheckboxProps> = ({ text, state, onClick }) => {
       >
         {state ? <CheckSmallIcon /> : ''}
       </div>
-      <span className="text-base font-medium flex-1">{text}</span>
+      {size.width >= 768 && size.width < 1180 ? (
+        <CompareIcon />
+      ) : (
+        <span className="text-base font-medium flex-1">{text}</span>
+      )}
     </button>
   );
 };

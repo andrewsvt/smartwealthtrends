@@ -168,3 +168,7 @@ img {
   -webkit-line-clamp: 4;
   overflow: hidden;
 }
+
+.translateHorizontal {
+  transform: translate(-50%, 0);
+}
