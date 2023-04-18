@@ -25,3 +25,5 @@ export { ReviewsSlider } from './ReviewsSlider';
 export { HeaderFilters } from './HeaderFilters';
 
 export { AdvertiserDisclosure } from './AdvertiserDisclosure';
+
+export { NavMenuItems } from './NavMenuDropdown';

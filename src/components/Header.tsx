@@ -5,24 +5,20 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { FilterContext } from 'contexts/FilterContext';
 import { IUseWindowSize, useWindowSize } from 'hooks/useWindowSize';
 
-import { PageNavigation, ReviewsSlider } from 'components';
+import { NavMenuItems, ReviewsSlider, HeaderFilters } from 'components';
 
 //icons and imgs
 import Logo from '../assets/images/Logo.webp';
 import LogoIcon from '../assets/images/LogoIcon.png';
 import { ReactComponent as BurgerOpenIcon } from '../assets/icons/Burger.svg';
 import { ReactComponent as BurgerCloseIcon } from '../assets/icons/BurgerCross.svg';
-import { HeaderFilters } from './index';
 import { getFiltersLink } from 'utils/getFiltersLink';
 import { homeRoutes } from 'utils/constants';
 
-interface IHeaderProps {
-  queryParams?: URLSearchParams;
-}
-
-export const Header: FC<IHeaderProps> = ({ queryParams }) => {
+export const Header: FC = () => {
   const [activeDropdown, setActiveDropdown] = useState<string>('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+  const [isDesktopMenuOpen, setIsDesktopMenuOpen] = useState<boolean>(false);
 
   const filter = useContext(FilterContext);
 
@@ -30,25 +26,29 @@ export const Header: FC<IHeaderProps> = ({ queryParams }) => {
 
   const dropdownRef = useRef<HTMLUListElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const desktopMenuRef = useRef<HTMLDivElement>(null);
 
   //click outside handlers
   useEffect(() => {
-    const mobileMenuHandler = (e: any) => {
+    const burgerMenuHandler = (e: any) => {
       if (!mobileMenuRef.current?.contains(e.target)) {
         setIsMobileMenuOpen(false);
       }
+      if (!desktopMenuRef.current?.contains(e.target)) {
+        setIsDesktopMenuOpen(false);
+      }
     };
 
-    document.addEventListener('mousedown', mobileMenuHandler);
+    document.addEventListener('mousedown', burgerMenuHandler);
 
     return () => {
-      document.removeEventListener('mousedown', mobileMenuHandler);
+      document.removeEventListener('mousedown', burgerMenuHandler);
     };
   }, []);
 
   //disable scroll
   useEffect(() => {
-    if (isMobileMenuOpen) {
+    if (isMobileMenuOpen || isDesktopMenuOpen) {
       document.body.classList.add('overflow-hidden');
     } else {
       document.body.classList.remove('overflow-hidden');
@@ -57,45 +57,85 @@ export const Header: FC<IHeaderProps> = ({ queryParams }) => {
     return () => {
       document.body.classList.remove('overflow-hidden');
     };
-  }, [isMobileMenuOpen]);
+  }, [isMobileMenuOpen, isDesktopMenuOpen]);
 
   const homeLink = useMemo(
     () => getFiltersLink(filter.activeCategory, filter.activeIssuer, filter.activeCreditRange),
     [filter]
   );
 
+  const handleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const handleDesktopMenu = () => {
+    setIsDesktopMenuOpen(!isDesktopMenuOpen);
+  };
+
   return (
     <>
       {size.width > 768 ? (
-        <div className="sticky top-0 w-full px-[16px] h-auto bg-light-gray z-10 flex flex-row justify-center items-center">
-          <div className="max-w-[1400px] w-full h-auto lg:pt-0 border-b-[1px] border-primary-light flex flex-col md:flex-row items-start md:items-center justify-start md:justify-between">
-            <div className="flex items-center h-[100px]">
-              {size.width < 976 && (
-                <div className="flex justify-center items-center mr-[16px] cursor-pointer">
-                  <Link to={homeLink} preventScrollReset={true}>
-                    <img src={LogoIcon} alt="logo" className="h-[30px]" />
-                  </Link>
-                </div>
-              )}
-              {size.width > 976 && (
-                <div className="flex justify-center items-center lg:w-[335px] mr-[54px] cursor-pointer">
-                  <Link className="lg:w-full w-[200px]" to={homeLink} preventScrollReset={true}>
-                    <img
-                      src={Logo}
-                      alt="logo"
-                      className="h-[30px] lg:h-auto w-[200px] lg:w-full object-contain"
-                    />
-                  </Link>
-                </div>
-              )}
-              <HeaderFilters
-                ref={dropdownRef}
-                activeDropdown={activeDropdown}
-                setActiveDropdown={setActiveDropdown}
-              />
+        <>
+          <div className="sticky top-0 w-full px-[16px] h-auto bg-light-gray z-10 flex flex-row justify-center items-center">
+            <div className="max-w-[1400px] w-full h-auto lg:pt-0 border-b-[1px] border-primary-light flex flex-col md:flex-row items-start md:items-center justify-start md:justify-between">
+              <div className="flex items-center h-[100px]">
+                {size.width < 976 && (
+                  <div className="flex justify-center items-center mr-[16px] cursor-pointer">
+                    <Link to={homeLink} preventScrollReset={true}>
+                      <img src={LogoIcon} alt="logo" className="h-[30px]" />
+                    </Link>
+                  </div>
+                )}
+                {size.width > 976 && (
+                  <div className="flex justify-center items-center lg:w-[335px] mr-[54px] cursor-pointer">
+                    <Link className="lg:w-full w-[200px]" to={homeLink} preventScrollReset={true}>
+                      <img
+                        src={Logo}
+                        alt="logo"
+                        className="h-[30px] lg:h-auto w-[200px] lg:w-full object-contain"
+                      />
+                    </Link>
+                  </div>
+                )}
+                <HeaderFilters
+                  ref={dropdownRef}
+                  activeDropdown={activeDropdown}
+                  setActiveDropdown={setActiveDropdown}
+                />
+              </div>
+              <div className="relative py-3" onClick={handleDesktopMenu}>
+                <motion.div
+                  className="h-[48px] w-[48px] flex items-center justify-center bg-white rounded-[14px] cursor-pointer"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <BurgerOpenIcon />
+                </motion.div>
+              </div>
             </div>
           </div>
-        </div>
+          <AnimatePresence>
+            {isDesktopMenuOpen && (
+              <motion.div
+                ref={desktopMenuRef}
+                className="fixed top-0 right-0 z-50 bg-white px-4 h-full w-[300px]"
+                initial={{ opacity: 0, right: -300 }}
+                animate={{ opacity: 1, right: 0 }}
+                transition={{ duration: 0.5 }}
+                exit={{ opacity: 0, right: -300 }}
+              >
+                <button
+                  className="h-[100px]"
+                  onClick={() => setIsDesktopMenuOpen(!isDesktopMenuOpen)}
+                >
+                  <BurgerCloseIcon />
+                </button>
+                <NavMenuItems />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </>
       ) : (
         <>
           <div className="sticky bg-light-gray top-0 h-[80px] w-full border-b-[1px] border-[#EAE9EE] px-[16px] flex flex-col justify-center z-10">
@@ -103,7 +143,7 @@ export const Header: FC<IHeaderProps> = ({ queryParams }) => {
               <Link to={homeLink} preventScrollReset={true}>
                 <img src={Logo} alt="logo" className="max-w-[250px] object-contain" />
               </Link>
-              <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+              <button onClick={handleMobileMenu}>
                 <BurgerOpenIcon />
               </button>
             </div>
@@ -118,23 +158,30 @@ export const Header: FC<IHeaderProps> = ({ queryParams }) => {
                 transition={{ type: 'spring', stiffness: 500, damping: 50 }}
                 exit={{ opacity: 0, x: '100%' }}
               >
-                <button
-                  className="h-[100px]"
-                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                >
-                  <BurgerCloseIcon />
-                </button>
+                <div className="flex items-center justify-between w-full">
+                  <img src={Logo} alt="logo" className="max-w-[250px] object-contain" />
+                  <button
+                    className="h-[100px]"
+                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                  >
+                    <BurgerCloseIcon />
+                  </button>
+                </div>
+
                 <Routes>
                   {homeRoutes.map((path) => (
                     <Route
                       key={path}
                       path={path}
                       element={
-                        <HeaderFilters
-                          ref={dropdownRef}
-                          activeDropdown={activeDropdown}
-                          setActiveDropdown={setActiveDropdown}
-                        />
+                        <>
+                          <NavMenuItems />
+                          <HeaderFilters
+                            ref={dropdownRef}
+                            activeDropdown={activeDropdown}
+                            setActiveDropdown={setActiveDropdown}
+                          />
+                        </>
                       }
                     />
                   ))}

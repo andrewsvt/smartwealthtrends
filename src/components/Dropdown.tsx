@@ -53,7 +53,7 @@ export const Dropdown: FC<IDropdownProps> = ({
       onClick={handleMouseEnter}
       className="w-full py-3"
     >
-      <div className="relative flex flex-row items-center cursor-pointer w-full md:w-[200px] h-[48px] justify-between bg-white rounded-[10px] border-[1px] border-light-gray py-[10px] px-[20px]">
+      <div className="relative flex flex-row items-center cursor-pointer w-full md:w-[200px] h-[48px] justify-between bg-white rounded-[14px] border-[1px] border-light-gray py-[10px] px-[20px]">
         <span className="text-sm font-medium pr-[8px] text-primary truncate">
           {contextState.text}
         </span>
@@ -73,7 +73,7 @@ export const Dropdown: FC<IDropdownProps> = ({
             transition={{ duration: 0.3 }}
             exit="exit"
             className={
-              'bg-white md:absolute md:top-[70px] flex flex-col p-[20px] md:w-auto border-[1px] border-light-gray md:border-none rounded-[10px] shadow-2xl z-20'
+              'bg-white md:absolute md:top-[70px] flex flex-col p-[20px] md:w-auto border-[1px] border-light-gray md:border-none rounded-[14px] shadow-2xl z-20'
             }
           >
             <ul className="grid grid-cols-2 gap-y-[20px] gap-x-[40px]">
