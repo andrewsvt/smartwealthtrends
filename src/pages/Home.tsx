@@ -1,5 +1,5 @@
 import { FilterContext } from '../contexts/FilterContext';
-import React, { FC, useContext } from 'react';
+import React, { FC, useContext, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { CardBlock, CategoryDropdown } from '../components';
@@ -17,6 +17,11 @@ interface IHomeProps {
 export const Home: FC<IHomeProps> = ({ apiData, totalRecords, isLoading }) => {
   const filter = useContext(FilterContext);
   const size: IUseWindowSize = useWindowSize();
+
+  //update header title
+  useEffect(() => {
+    document.title = 'Smart Wealth Trends';
+  }, []);
 
   return (
     <>

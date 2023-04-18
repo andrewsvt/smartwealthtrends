@@ -8,7 +8,7 @@ export const useGetRelatedCards = () => {
 
   const fetchRelatedData = useCallback(async () => {
     try {
-      const response = await fetch(`${apiUrl}&crd=25&xml_version=2&max=2`);
+      const response = await fetch(`${apiUrl}&crd=25&xml_version=2&max=3`);
       const data = await response.json();
       setRelatedApiData(data.ResultSet.Listings.Listing);
     } catch (error) {

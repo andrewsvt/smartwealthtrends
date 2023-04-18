@@ -26,13 +26,17 @@ export const Footer: FC = () => {
           <h3 className="text-base font-medium">Polices</h3>
           <ul className="flex flex-col items-center lg:items-start space-y-[18px]">
             <li className="text-xs text-secondary-text underline font-light">
-              <Link to={'https://smartwealthtrends.com/privacy-policy/'}>Privacy Policy</Link>
+              <Link target={'_blank'} to={'https://smartwealthtrends.com/privacy-policy/'}>
+                Privacy Policy
+              </Link>
             </li>
             <li className="text-xs text-secondary-text underline font-light">
-              <Link to={'https://smartwealthtrends.com/terms-of-service/'}>Terms Of Service</Link>
+              <Link target={'_blank'} to={'https://smartwealthtrends.com/terms-of-service/'}>
+                Terms Of Service
+              </Link>
             </li>
             <li className="text-xs text-secondary-text underline font-light">
-              <Link to={'https://smartwealthtrends.com/affiliate-disclosure/'}>
+              <Link target={'_blank'} to={'https://smartwealthtrends.com/affiliate-disclosure/'}>
                 Affiliate Disclosure
               </Link>
             </li>

@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState, useContext, useCallback, useMemo } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { IUseWindowSize, useWindowSize } from 'hooks/useWindowSize';
 
@@ -78,6 +78,20 @@ export const Card: FC<ICardpageProps> = ({ apiData, relatedApiData }) => {
     fetchData();
   }, [fetchData]);
 
+  //update header title
+  useEffect(() => {
+    if (selectedCard) {
+      const cardName = selectedCard.CardName;
+      const parser = new DOMParser();
+      const decodedCardName = parser.parseFromString(
+        `<!doctype html><body>${cardName}`,
+        'text/html'
+      ).body.textContent;
+      //@ts-ignore
+      document.title = decodedCardName;
+    }
+  }, [selectedCard]);
+
   //get params
   useEffect(() => {
     const newLink = getFiltersLink(
@@ -109,6 +123,7 @@ export const Card: FC<ICardpageProps> = ({ apiData, relatedApiData }) => {
   const tableItems = useMemo<ITableItem[]>(
     () => [
       {
+        // title: `Welcome Offer ${product.SignupReward.length ? '- ' + product.SignupReward : ''}`,
         title: 'Welcome Offer',
         description: selectedCard.BonusMilesFull.length > 0 ? selectedCard.BonusMilesFull : 'N/A',
       },
@@ -121,21 +136,25 @@ export const Card: FC<ICardpageProps> = ({ apiData, relatedApiData }) => {
       },
       {
         title: 'APR',
-        description: `${
-          selectedCard.IntroAPRRate.length > 0 && selectedCard.IntroAPRDuration.length > 0
-            ? `Intro APR: ${selectedCard.IntroAPRRate} for ${selectedCard.IntroAPRDuration}`
+        description: `<p class="mb-[8px]">${
+          selectedCard.IntroAPRRate.length > 0 && selectedCard.IntroAPRRate !== 'N/A'
+            ? `Intro APR: ${selectedCard.IntroAPRRate}`
             : 'N/A'
-        }<br/>${
-          selectedCard.RegAPR.length > 0
-            ? `Regular APR: ${selectedCard.RegAPR} ${
+        }${
+          selectedCard.IntroAPRDuration.length > 0 && selectedCard.IntroAPRDuration !== 'N/A'
+            ? ` for ${selectedCard.IntroAPRDuration}</p>`
+            : ''
+        }${`<p>Regular APR: ${
+          selectedCard.RegAPR.length > 0 && selectedCard.RegAPR !== 'N/A'
+            ? `${selectedCard.RegAPR} ${
                 selectedCard.RegAPRType.length > 0
                   ? selectedCard.RegAPRType.includes('(')
                     ? selectedCard.RegAPRType
                     : `(${selectedCard.RegAPRType})`
                   : '' // good api btw
               }`
-            : ''
-        }`,
+            : 'N/A'
+        }</p>`}`,
       },
       {
         icon: '',
@@ -199,6 +218,12 @@ export const Card: FC<ICardpageProps> = ({ apiData, relatedApiData }) => {
     }
   };
 
+  const isAmericanExpress = () => {
+    if (selectedCard.DisplayName === 'American Express') {
+      return true;
+    } else return false;
+  };
+
   return (
     <>
       <motion.div
@@ -244,28 +269,36 @@ export const Card: FC<ICardpageProps> = ({ apiData, relatedApiData }) => {
               {/* card details */}
               <div id="section1" className="p-[20px] bg-white rounded-[14px] space-y-[32px]">
                 <div className="flex flex-col items-center md:items-start md:flex-row md:h-[180px] md:space-x-[20px]">
-                  <div className="relative h-full md:h-full md:min-h-[180px] md:max-h-[180px] w-[240px] md:min-w-[284px] md:max-w-[290px] md:w-full">
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      whileHover={{ opacity: 1 }}
-                      transition={{ duration: 0.2 }}
-                      className="cursor-pointer absolute flex flex-col justify-center items-center space-y-[10px] bg-primary-dark bg-opacity-60 h-full w-full rounded-[10px]"
-                    >
-                      <LockIcon />
-                      <span className="text-lg font-semibold text-white">Apply Now</span>
-                    </motion.div>
-                    <img
-                      className="w-full h-full object-contain lg:object-cover rounded-[10px]"
-                      src={selectedCard.Creative.RawLogoImageUrl}
-                      alt="card"
-                    />
-                  </div>
-                  <div className="flex flex-col space-y-[20px] items-center md:items-start md:h-full md:justify-between mt-[20px] md:mt-0">
-                    <div className="space-y-[12px] w-full flex flex-col items-center md:items-start">
-                      <h2
-                        className="text-lg font-semibold"
-                        dangerouslySetInnerHTML={{ __html: selectedCard.CardName }}
+                  <div className="h-full flex flex-col justify-center items-center">
+                    <div className="relative h-full md:h-full md:min-h-[180px] md:max-h-[180px] w-[240px] md:min-w-[284px] md:max-w-[290px] md:w-full">
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        whileHover={{ opacity: 1 }}
+                        transition={{ duration: 0.2 }}
+                        className="cursor-pointer absolute flex flex-col justify-center items-center space-y-[10px] bg-primary-dark bg-opacity-60 h-full w-full rounded-[10px]"
+                      >
+                        <LockIcon />
+                        <span className="text-lg font-semibold text-white">Apply Now</span>
+                      </motion.div>
+                      <img
+                        className="w-full h-full object-contain lg:object-cover rounded-[10px]"
+                        src={selectedCard.Creative.RawLogoImageUrl}
+                        alt="card"
                       />
+                    </div>
+                  </div>
+                  <div className="flex flex-col w-full h-full space-y-[20px] items-center md:items-start md:justify-between mt-[20px] md:mt-0">
+                    <div className="space-y-[12px] w-full flex flex-col items-center md:items-start">
+                      <Link
+                        target={'_blank'}
+                        to={`/cards/${selectedCard.ID}`}
+                        onClick={() => updateSelectedCard(selectedCard)}
+                      >
+                        <h2
+                          className="text-lg text-center md:text-left w-full font-semibold hover:text-primary-dark customTransition"
+                          dangerouslySetInnerHTML={{ __html: selectedCard.CardName }}
+                        />
+                      </Link>
                       <div className="flex flex-row items-center">
                         <span className="text-base font-medium mr-[14px]">
                           {Number(selectedCard.EditorRating).toFixed(1)}
@@ -273,22 +306,38 @@ export const Card: FC<ICardpageProps> = ({ apiData, relatedApiData }) => {
                         <Rating value={Number(selectedCard.EditorRating)} />
                       </div>
                     </div>
-                    <div className="flex flex-col md:flex-row items-center justify-start space-y-[8px] md:space-y-0 md:space-x-[8px] w-full md:w-auto">
-                      <div className="flex flex-row items-center space-x-[8px] w-full md:w-auto">
-                        <PrimaryButton text="Apply Now" />
+                    <div className="flex flex-col md:flex-row items-center justify-between w-full space-y-[8px] md:space-y-0 md:space-x-[8px]">
+                      <div className="flex flex-col md:flex-row items-center space-y-[8px] lg:space-y-0 md:space-x-[8px]">
+                        <div className="flex flex-row items-center space-x-[8px] w-full md:w-auto">
+                          <PrimaryButton text="Apply Now" />
+                        </div>
+                        {products.map((product) => product.ID).includes(selectedCard.ID) ? (
+                          <CheckBox
+                            onClick={handleRemoveFromComparison}
+                            text="Added to compare"
+                            state={true}
+                          />
+                        ) : (
+                          <CheckBox
+                            onClick={handleAddToComparison}
+                            text="Add to compare"
+                            state={false}
+                          />
+                        )}
                       </div>
-                      {products.map((product) => product.ID).includes(selectedCard.ID) ? (
-                        <CheckBox
-                          onClick={handleRemoveFromComparison}
-                          text="Added to compare"
-                          state={true}
-                        />
-                      ) : (
-                        <CheckBox
-                          onClick={handleAddToComparison}
-                          text="Add to compare"
-                          state={false}
-                        />
+                      {selectedCard.TermsAndConditionsLink.length > 1 && (
+                        <div className="flex flex-col items-center space-y-[4px]">
+                          <Link target={'_blank'} to={selectedCard.TermsAndConditionsLink}>
+                            <div className="px-[10px] py-1 bg-light-gray rounded-lg text-primary font-medium text-xs text-center">
+                              Rates & Fees
+                            </div>
+                          </Link>
+                          {isAmericanExpress() && (
+                            <span className="text-secondary-text font-light text-[10px] leading-3 text-center">
+                              Terms Apply
+                            </span>
+                          )}
+                        </div>
                       )}
                     </div>
                   </div>

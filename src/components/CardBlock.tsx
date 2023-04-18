@@ -16,7 +16,7 @@ import { Listing } from 'interfaces/Api';
 //icons
 import { ReactComponent as GiftIcon } from '../assets/icons/gift.svg';
 import { ReactComponent as StarIcon } from '../assets/icons/star.svg';
-import { ReactComponent as CopyIcon } from '../assets/icons/copysuccess.svg';
+import { ReactComponent as PercentIcon } from '../assets/icons/percent.svg';
 import { ReactComponent as LockIcon } from '../assets/icons/lock.svg';
 
 interface ICardBlockProps {
@@ -47,23 +47,27 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
           product.RewardsDescriptionLong.length > 0 ? product.RewardsDescriptionLong : 'N/A',
       },
       {
-        icon: CopyIcon,
+        icon: PercentIcon,
         title: 'APR',
-        description: `${
-          product.IntroAPRRate.length > 0 && product.IntroAPRDuration.length > 0
-            ? `Intro APR: ${product.IntroAPRRate} for ${product.IntroAPRDuration}`
+        description: `<p class="mb-[8px]">${
+          product.IntroAPRRate.length > 0 && product.IntroAPRRate !== 'N/A'
+            ? `Intro APR: ${product.IntroAPRRate}`
             : 'N/A'
-        }<br/>${
-          product.RegAPR.length > 0
-            ? `Regular APR: ${product.RegAPR} ${
+        }${
+          product.IntroAPRDuration.length > 0 && product.IntroAPRDuration !== 'N/A'
+            ? ` for ${product.IntroAPRDuration}</p>`
+            : ''
+        }${`<p>Regular APR: ${
+          product.RegAPR.length > 0 && product.RegAPR !== 'N/A'
+            ? `${product.RegAPR} ${
                 product.RegAPRType.length > 0
                   ? product.RegAPRType.includes('(')
                     ? product.RegAPRType
                     : `(${product.RegAPRType})`
                   : '' // good api btw
               }`
-            : ''
-        }`,
+            : 'N/A'
+        }</p>`}`,
       },
       {
         icon: '',
@@ -129,7 +133,11 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
         </div>
         <div className="flex flex-col w-full space-y-[20px] items-center md:items-start md:justify-between mt-[20px] md:mt-0">
           <div className="space-y-[12px] w-full flex flex-col items-center md:items-start">
-            <Link to={`/cards/${product.ID}`} onClick={() => updateSelectedCard(product)}>
+            <Link
+              target={'_blank'}
+              to={`/cards/${product.ID}`}
+              onClick={() => updateSelectedCard(product)}
+            >
               <h2
                 className="text-lg text-center md:text-left w-full font-semibold hover:text-primary-dark customTransition"
                 dangerouslySetInnerHTML={{ __html: product.CardName }}
@@ -159,7 +167,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
             </div>
             {product.TermsAndConditionsLink.length > 1 && (
               <div className="flex flex-col items-center space-y-[4px]">
-                <Link to={product.TermsAndConditionsLink}>
+                <Link target={'_blank'} to={product.TermsAndConditionsLink}>
                   <div className="px-[10px] py-1 bg-light-gray rounded-lg text-primary font-medium text-xs text-center">
                     Rates & Fees
                   </div>
@@ -186,7 +194,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
             >
               <div>
                 {/* @ts-ignore */}
-                <Icon style={{ width: '44px', height: '44px' }} />
+                <Icon style={{ width: '44px', height: '44px' }} className="tableIcon" />
               </div>
               <div className="space-y-[8px]">
                 <h4
@@ -252,6 +260,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
             <p className="text-black font-medium text-base w-full md:w-[50%] mb-[20px] md:mb-0">
               Review additional details for{' '}
               <Link
+                target={'_blank'}
                 to={`/cards/${product.ID}`}
                 onClick={() => updateSelectedCard(product)}
                 className="text-primary font-semibold"
@@ -259,6 +268,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
               ></Link>
             </p>
             <Link
+              target={'_blank'}
               className="min-w-[202px]"
               to={`/cards/${product.ID}`}
               onClick={() => updateSelectedCard(product)}
