@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState, useContext, useCallback } from 'react';
+import React, { FC, useEffect, useState, useContext, useCallback, useMemo } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { IUseWindowSize, useWindowSize } from 'hooks/useWindowSize';
@@ -19,6 +19,7 @@ import { ReactComponent as StarIcon } from '../assets/icons/RatingStarFull.svg';
 import { ReactComponent as CheckIcon } from '../assets/icons/check.svg';
 import { ReactComponent as CrossIcon } from '../assets/icons/cross.svg';
 import { ReactComponent as LockIcon } from '../assets/icons/lock.svg';
+import { ITableItem } from 'interfaces';
 interface ICardpageProps {
   apiData: Listing[];
   relatedApiData: Listing[];
@@ -105,29 +106,59 @@ export const Card: FC<ICardpageProps> = ({ apiData, relatedApiData }) => {
     window.scrollTo(0, 0);
   }, [selectedCard.ID]);
 
-  const tableItems = [
-    {
-      title: 'Sign Up Bonus',
-      description: selectedCard.SignupRequirement.length ? selectedCard.SignupRequirement : 'N/A',
-    },
-    {
-      title: 'Rewards Rate',
-      description: selectedCard.PointsPerDollar,
-    },
-    {
-      title: 'Intro APR Rate',
-      description: `${selectedCard.IntroAPRRate}<br/>${selectedCard.IntroAPRDuration}<br/>${selectedCard.RegAPR}<br/>${selectedCard.RegAPRType}`,
-    },
-    {
-      title: 'Annual Fees',
-      description: selectedCard.AnnualFees,
-    },
-    { title: 'Card Brand', description: selectedCard.CardProcessorTypeName },
-    {
-      title: 'Credit Score Needed',
-      description: selectedCard.CreditScoreNeeded,
-    },
-  ];
+  const tableItems = useMemo<ITableItem[]>(
+    () => [
+      {
+        title: 'Welcome Offer',
+        description: selectedCard.BonusMilesFull.length > 0 ? selectedCard.BonusMilesFull : 'N/A',
+      },
+      {
+        title: 'Rewards Rate',
+        description:
+          selectedCard.RewardsDescriptionLong.length > 0
+            ? selectedCard.RewardsDescriptionLong
+            : 'N/A',
+      },
+      {
+        title: 'APR',
+        description: `${
+          selectedCard.IntroAPRRate.length > 0 && selectedCard.IntroAPRDuration.length > 0
+            ? `Intro APR: ${selectedCard.IntroAPRRate} for ${selectedCard.IntroAPRDuration}`
+            : 'N/A'
+        }<br/>${
+          selectedCard.RegAPR.length > 0
+            ? `Regular APR: ${selectedCard.RegAPR} ${
+                selectedCard.RegAPRType.length > 0
+                  ? selectedCard.RegAPRType.includes('(')
+                    ? selectedCard.RegAPRType
+                    : `(${selectedCard.RegAPRType})`
+                  : '' // good api btw
+              }`
+            : ''
+        }`,
+      },
+      {
+        icon: '',
+        title: 'Annual Fees',
+        description: selectedCard.AnnualFees.length > 0 ? selectedCard.AnnualFees : 'N/A',
+      },
+      {
+        icon: '',
+        title: 'Credit Score Needed',
+        description:
+          selectedCard.CreditScoreNeeded.length > 0 ? selectedCard.CreditScoreNeeded : 'N/A',
+      },
+      {
+        icon: '',
+        title: 'Card Brand',
+        description:
+          selectedCard.CardProcessorTypeName.length > 0
+            ? selectedCard.CardProcessorTypeName
+            : 'N/A',
+      },
+    ],
+    [selectedCard]
+  );
 
   //add/remove compare function
   const handleAddToComparison = useCallback(() => {
@@ -171,8 +202,8 @@ export const Card: FC<ICardpageProps> = ({ apiData, relatedApiData }) => {
   return (
     <>
       <motion.div
-        initial={{ y: -100 }}
-        animate={{ y: scrolled ? 0 : -100 }}
+        initial={{ y: -120 }}
+        animate={{ y: scrolled ? 0 : -120 }}
         transition={{ duration: 0.3 }}
         className="fixed top-0 left-0 w-full h-[100px] bg-light-gray flex items-center justify-center z-30 p-[16px] space-x-[16px] md:space-x-[32px]"
       >
@@ -182,7 +213,7 @@ export const Card: FC<ICardpageProps> = ({ apiData, relatedApiData }) => {
           className="h-full w-auto rounded-[10px]"
         />
         <p
-          className="text-sm md:text-lg font-semibold"
+          className="text-sm md:text-lg font-semibold cutLongVerticalText"
           dangerouslySetInnerHTML={{ __html: selectedCard.CardName }}
         />
         <div className="max-w-[202px]">
@@ -193,7 +224,7 @@ export const Card: FC<ICardpageProps> = ({ apiData, relatedApiData }) => {
         {selectedCard.ID.length ? (
           <>
             <div className="lg:h-[72px] py-[20px] lg:py-0 w-full flex flex-col lg:flex-row justify-between items-center">
-              <div className="flex flex-row items-center py-[24px] lg:py-0 space-x-[8px] truncate">
+              <div className="flex flex-row items-center py-[24px] lg:py-0 space-x-[8px] w-full lg:w-[75%] truncate">
                 <Link to={currentParams} className="text-secondary-text">
                   Home
                 </Link>
@@ -213,7 +244,7 @@ export const Card: FC<ICardpageProps> = ({ apiData, relatedApiData }) => {
               {/* card details */}
               <div id="section1" className="p-[20px] bg-white rounded-[14px] space-y-[32px]">
                 <div className="flex flex-col items-center md:items-start md:flex-row md:h-[180px] md:space-x-[20px]">
-                  <div className="relative h-full md:h-fit md:min-h-[180px] md:max-h-[180px] w-[240px] md:max-w-[290px] md:w-full">
+                  <div className="relative h-full md:h-full md:min-h-[180px] md:max-h-[180px] w-[240px] md:min-w-[284px] md:max-w-[290px] md:w-full">
                     <motion.div
                       initial={{ opacity: 0 }}
                       whileHover={{ opacity: 1 }}
@@ -224,7 +255,7 @@ export const Card: FC<ICardpageProps> = ({ apiData, relatedApiData }) => {
                       <span className="text-lg font-semibold text-white">Apply Now</span>
                     </motion.div>
                     <img
-                      className="w-full h-full object-contain rounded-[10px]"
+                      className="w-full h-full object-contain lg:object-cover rounded-[10px]"
                       src={selectedCard.Creative.RawLogoImageUrl}
                       alt="card"
                     />

@@ -36,41 +36,68 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
     () => [
       {
         icon: GiftIcon,
-        title: `Welcome Offer ${product.SignupReward.length ? '- ' + product.SignupReward : ''}`,
-        description: product.SignupRequirement.length > 0 ? product.SignupRequirement : 'N/A',
+        // title: `Welcome Offer ${product.SignupReward.length ? '- ' + product.SignupReward : ''}`,
+        title: 'Welcome Offer',
+        description: product.BonusMilesFull.length > 0 ? product.BonusMilesFull : 'N/A',
       },
       {
         icon: StarIcon,
         title: 'Rewards Rate',
-        description: product.PointsPerDollar.length > 0 ? product.PointsPerDollar : 'N/A',
+        description:
+          product.RewardsDescriptionLong.length > 0 ? product.RewardsDescriptionLong : 'N/A',
       },
       {
         icon: CopyIcon,
-        title: 'Intro APR',
-        description: product.BonusMiles.length > 0 ? product.BonusMiles : 'N/A',
+        title: 'APR',
+        description: `${
+          product.IntroAPRRate.length > 0 && product.IntroAPRDuration.length > 0
+            ? `Intro APR: ${product.IntroAPRRate} for ${product.IntroAPRDuration}`
+            : 'N/A'
+        }<br/>${
+          product.RegAPR.length > 0
+            ? `Regular APR: ${product.RegAPR} ${
+                product.RegAPRType.length > 0
+                  ? product.RegAPRType.includes('(')
+                    ? product.RegAPRType
+                    : `(${product.RegAPRType})`
+                  : '' // good api btw
+              }`
+            : ''
+        }`,
       },
       {
         icon: '',
         title: 'Annual Fees',
-        description: product.AnnualFees,
+        description: product.AnnualFees.length > 0 ? product.AnnualFees : 'N/A',
       },
       {
         icon: '',
         title: 'Credit Score Needed',
-        description: product.CreditScoreNeeded,
+        description: product.CreditScoreNeeded.length > 0 ? product.CreditScoreNeeded : 'N/A',
       },
-      { icon: '', title: 'Card Brand', description: product.CardProcessorTypeName },
+      {
+        icon: '',
+        title: 'Card Brand',
+        description:
+          product.CardProcessorTypeName.length > 0 ? product.CardProcessorTypeName : 'N/A',
+      },
     ],
     [product]
   );
 
   const handleAddToComparison = useCallback(() => {
     addProduct(product);
-  }, [addProduct, product, products]);
+  }, [addProduct, product]);
 
   const handleRemoveFromComparison = useCallback(() => {
     removeProduct(product);
   }, [removeProduct, product]);
+
+  const isAmericanExpress = () => {
+    if (product.DisplayName === 'American Express') {
+      return true;
+    } else return false;
+  };
 
   return (
     <motion.div
@@ -83,7 +110,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
     >
       <div className="flex flex-col md:flex-row md:h-[180px] md:space-x-[20px]">
         <div className="h-full flex flex-col justify-center items-center">
-          <div className="relative h-full md:h-fit md:min-h-[180px] md:max-h-[180px] w-[240px] md:max-w-[290px] md:w-full">
+          <div className="relative h-full md:h-full md:min-h-[180px] md:max-h-[180px] w-[240px] md:min-w-[284px] md:max-w-[290px] md:w-full">
             <motion.div
               initial={{ opacity: 0 }}
               whileHover={{ opacity: 1 }}
@@ -94,13 +121,13 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
               <span className="text-lg font-semibold text-white">Apply Now</span>
             </motion.div>
             <img
-              className="w-full h-full object-contain rounded-[10px]"
+              className="w-full h-full object-contain lg:object-cover rounded-[10px]"
               src={product.Creative.RawLogoImageUrl}
               alt="card"
             />
           </div>
         </div>
-        <div className="flex flex-col space-y-[20px] items-center md:items-start md:justify-between mt-[20px] md:mt-0">
+        <div className="flex flex-col w-full space-y-[20px] items-center md:items-start md:justify-between mt-[20px] md:mt-0">
           <div className="space-y-[12px] w-full flex flex-col items-center md:items-start">
             <Link to={`/cards/${product.ID}`} onClick={() => updateSelectedCard(product)}>
               <h2
@@ -115,14 +142,34 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
               <Rating value={Number(product.EditorRating)} />
             </div>
           </div>
-          <div className="flex flex-col md:flex-row items-center justify-start space-y-[8px] md:space-y-0 md:space-x-[8px] w-full md:w-auto">
-            <div className="flex flex-row items-center space-x-[8px] w-full md:w-auto">
-              <PrimaryButton text="Apply Now" />
+          <div className="flex flex-col md:flex-row items-center justify-between w-full space-y-[8px] md:space-y-0 md:space-x-[8px]">
+            <div className="flex flex-col md:flex-row items-center space-y-[8px] lg:space-y-0 md:space-x-[8px]">
+              <div className="flex flex-row items-center space-x-[8px] w-full md:w-auto">
+                <PrimaryButton text="Apply Now" />
+              </div>
+              {products.map((product) => product.ID).includes(product.ID) ? (
+                <CheckBox
+                  onClick={handleRemoveFromComparison}
+                  text="Added to compare"
+                  state={true}
+                />
+              ) : (
+                <CheckBox onClick={handleAddToComparison} text="Add to compare" state={false} />
+              )}
             </div>
-            {products.map((product) => product.ID).includes(product.ID) ? (
-              <CheckBox onClick={handleRemoveFromComparison} text="Added to compare" state={true} />
-            ) : (
-              <CheckBox onClick={handleAddToComparison} text="Add to compare" state={false} />
+            {product.TermsAndConditionsLink.length > 1 && (
+              <div className="flex flex-col items-center space-y-[4px]">
+                <Link to={product.TermsAndConditionsLink}>
+                  <div className="px-[10px] py-1 bg-light-gray rounded-lg text-primary font-medium text-xs text-center">
+                    Rates & Fees
+                  </div>
+                </Link>
+                {isAmericanExpress() && (
+                  <span className="text-secondary-text font-light text-[10px] leading-3 text-center">
+                    Terms Apply
+                  </span>
+                )}
+              </div>
             )}
           </div>
         </div>
@@ -190,14 +237,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
             <div className="PPCDescription">
               <ul>
                 {product.Creative.PPCDescriptionLines.slice(0, 5).map((item, index) => (
-                  <li
-                    key={index}
-                    dangerouslySetInnerHTML={{ __html: item }}
-                    // className="flex items-center space-x-[20px] md:space-x-[12px] py-[12px] px-[20px] rounded-[10px] oddBgColor"
-                  >
-                    {/* <div className="w-[8px] h-[8px] rounded-[2px] bg-primary" /> */}
-                    {/* <p className="flex-1">{item}</p> */}
-                  </li>
+                  <li key={index} dangerouslySetInnerHTML={{ __html: item }}></li>
                 ))}
               </ul>
             </div>

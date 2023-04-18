@@ -16,6 +16,16 @@ export const Disclosure: FC<DisclosureProps> = ({ modal, setModal }) => {
   return (
     <div className="w-screen h-screen fixed top-0 left-0 flex justify-center items-center z-50">
       <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        whileHover={{ scale: 1.3, rotateZ: '90deg' }}
+        onClick={toggleModal}
+        className="fixed top-0 right-0 m-4 md:m-5 cursor-pointer bg-white rounded-full p-[8px] z-20"
+      >
+        <CrossIcon />
+      </motion.div>
+      <motion.div
         className="absolute z-20 flex flex-col justify-center items-start md:items-center bg-white rounded-[14px] max-w-[90%] max-h-[80%] md:max-w-[786px] w-full h-auto p-[32px] md:p-[48px]"
         initial={{ opacity: 0, scale: 0.7 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -25,13 +35,13 @@ export const Disclosure: FC<DisclosureProps> = ({ modal, setModal }) => {
         }}
         exit={{ opacity: 0, scale: 0.7, transition: { duration: 0.2 } }}
       >
-        <motion.div
+        {/* <motion.div
           whileHover={{ scale: 1.3, rotateZ: '90deg' }}
           onClick={toggleModal}
           className="absolute z-20 top-0 right-0 m-5 cursor-pointer"
         >
           <CrossIcon />
-        </motion.div>
+        </motion.div> */}
         <h2 className="text-lg font-semibold pb-[48px]">Advertiser Disclosure</h2>
         <p className="text-base font-light overflow-y-auto">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas

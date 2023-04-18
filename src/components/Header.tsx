@@ -5,9 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { FilterContext } from 'contexts/FilterContext';
 import { IUseWindowSize, useWindowSize } from 'hooks/useWindowSize';
 
-import { CreditRatingSlugEnum, IssuersSlugEnum } from 'utils/constants';
-
-import { PageNavigation } from 'components';
+import { PageNavigation, ReviewsSlider } from 'components';
 
 //icons and imgs
 import Logo from '../assets/images/Logo.webp';
@@ -16,6 +14,7 @@ import { ReactComponent as BurgerOpenIcon } from '../assets/icons/Burger.svg';
 import { ReactComponent as BurgerCloseIcon } from '../assets/icons/BurgerCross.svg';
 import { HeaderFilters } from './index';
 import { getFiltersLink } from 'utils/getFiltersLink';
+import { homeRoutes } from 'utils/constants';
 
 interface IHeaderProps {
   queryParams?: URLSearchParams;
@@ -60,7 +59,10 @@ export const Header: FC<IHeaderProps> = ({ queryParams }) => {
     };
   }, [isMobileMenuOpen]);
 
-  const homeLink = useMemo(() => getFiltersLink(filter.activeCategory, filter.activeIssuer, filter.activeCreditRange), [filter])
+  const homeLink = useMemo(
+    () => getFiltersLink(filter.activeCategory, filter.activeIssuer, filter.activeCreditRange),
+    [filter]
+  );
 
   return (
     <>
@@ -77,11 +79,7 @@ export const Header: FC<IHeaderProps> = ({ queryParams }) => {
               )}
               {size.width > 976 && (
                 <div className="flex justify-center items-center lg:w-[335px] mr-[54px] cursor-pointer">
-                  <Link
-                    className="lg:w-full w-[200px]"
-                    to={homeLink}
-                    preventScrollReset={true}
-                  >
+                  <Link className="lg:w-full w-[200px]" to={homeLink} preventScrollReset={true}>
                     <img
                       src={Logo}
                       alt="logo"
@@ -114,7 +112,7 @@ export const Header: FC<IHeaderProps> = ({ queryParams }) => {
             {isMobileMenuOpen && (
               <motion.div
                 ref={mobileMenuRef}
-                className="fixed top-0 right-0 z-50 bg-white px-[20px] h-full w-full space-y-[32px]"
+                className="fixed top-0 right-0 z-50 bg-white px-[20px] h-full w-full"
                 initial={{ opacity: 0, x: '100%' }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ type: 'spring', stiffness: 500, damping: 50 }}
@@ -127,17 +125,32 @@ export const Header: FC<IHeaderProps> = ({ queryParams }) => {
                   <BurgerCloseIcon />
                 </button>
                 <Routes>
+                  {homeRoutes.map((path) => (
+                    <Route
+                      key={path}
+                      path={path}
+                      element={
+                        <HeaderFilters
+                          ref={dropdownRef}
+                          activeDropdown={activeDropdown}
+                          setActiveDropdown={setActiveDropdown}
+                        />
+                      }
+                    />
+                  ))}
                   <Route
-                    path="/"
+                    path="/cards/:id"
                     element={
-                      <HeaderFilters
-                        ref={dropdownRef}
-                        activeDropdown={activeDropdown}
-                        setActiveDropdown={setActiveDropdown}
-                      />
+                      <>
+                        <HeaderFilters
+                          ref={dropdownRef}
+                          activeDropdown={activeDropdown}
+                          setActiveDropdown={setActiveDropdown}
+                        />
+                        <ReviewsSlider />
+                      </>
                     }
                   />
-                  <Route path="/cards/:id" element={<PageNavigation />} />
                 </Routes>
               </motion.div>
             )}

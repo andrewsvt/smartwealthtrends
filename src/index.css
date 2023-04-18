@@ -157,3 +157,10 @@ img {
   background-color: #296bef;
   margin-right: 16px;
 }
+
+.cutLongVerticalText {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+}

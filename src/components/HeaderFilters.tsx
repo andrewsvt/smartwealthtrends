@@ -25,7 +25,7 @@ export const HeaderFilters = forwardRef<HTMLUListElement, HeaderFiltersProps>(
         className={
           size.width > 768
             ? 'flex flex-col w-full md:w-auto md:flex-row items-center md:space-x-[8px]'
-            : 'flex flex-col justify-start items-center h-full space-y-[20px]'
+            : 'flex flex-col justify-start items-center space-y-[8px]'
         }
       >
         <Dropdown
