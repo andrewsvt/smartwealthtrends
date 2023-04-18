@@ -49,9 +49,9 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
       {
         icon: PercentIcon,
         title: 'APR',
-        description: `<p class="mb-[8px]">${
+        description: `<p class="mb-[8px]">Intro APR: ${
           product.IntroAPRRate.length > 0 && product.IntroAPRRate !== 'N/A'
-            ? `Intro APR: ${product.IntroAPRRate}`
+            ? `${product.IntroAPRRate}`
             : 'N/A'
         }${
           product.IntroAPRDuration.length > 0 && product.IntroAPRDuration !== 'N/A'

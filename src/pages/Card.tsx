@@ -22,17 +22,16 @@ import { ReactComponent as LockIcon } from '../assets/icons/lock.svg';
 import { ITableItem } from 'interfaces';
 interface ICardpageProps {
   apiData: Listing[];
-  relatedApiData: Listing[];
 }
 
-export const Card: FC<ICardpageProps> = ({ apiData, relatedApiData }) => {
+export const Card: FC<ICardpageProps> = ({ apiData }) => {
   const apiUrl = process.env.REACT_APP_API_URL;
 
   const size: IUseWindowSize = useWindowSize();
   const { cardId } = useParams();
   const navigate = useNavigate();
 
-  const [allApiData, setAllApiData] = useState<Listing[]>(apiDataInitialState);
+  const [lastApiData, setLastApiData] = useState<Listing[]>(apiDataInitialState);
 
   const [scrolled, setScrolled] = useState(false);
   const [currentParams, setCurrentParams] = useState('');
@@ -67,7 +66,7 @@ export const Card: FC<ICardpageProps> = ({ apiData, relatedApiData }) => {
 
       const response = await fetch(lastRequestLink);
       const data = await response.json();
-      setAllApiData(data.ResultSet.Listings.Listing);
+      setLastApiData(data.ResultSet.Listings.Listing);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -109,11 +108,11 @@ export const Card: FC<ICardpageProps> = ({ apiData, relatedApiData }) => {
 
   //set context after reloading
   useEffect(() => {
-    const currentObject = allApiData.find((card: Listing) => card.ID === cardId);
+    const currentObject = lastApiData.find((card: Listing) => card.ID === cardId);
     if (currentObject) {
       updateSelectedCard(currentObject);
     }
-  }, [cardId, allApiData]);
+  }, [cardId, lastApiData]);
 
   //scroll up when open new card page
   useEffect(() => {
@@ -136,9 +135,9 @@ export const Card: FC<ICardpageProps> = ({ apiData, relatedApiData }) => {
       },
       {
         title: 'APR',
-        description: `<p class="mb-[8px]">${
+        description: `<p class="mb-[8px]">Intro APR: ${
           selectedCard.IntroAPRRate.length > 0 && selectedCard.IntroAPRRate !== 'N/A'
-            ? `Intro APR: ${selectedCard.IntroAPRRate}`
+            ? `${selectedCard.IntroAPRRate}`
             : 'N/A'
         }${
           selectedCard.IntroAPRDuration.length > 0 && selectedCard.IntroAPRDuration !== 'N/A'
@@ -517,14 +516,14 @@ export const Card: FC<ICardpageProps> = ({ apiData, relatedApiData }) => {
                 <div id="section4" className="space-y-[32px]">
                   <h2 className="text-lg font-semibold pl-[20px]">Related Card Offers</h2>
                   <div className="grid grid-cols-1 gap-4">
-                    {apiData.length >= 2
-                      ? apiData
+                    {!!lastApiData.length
+                      ? lastApiData
                           .filter((product) => product.ID !== cardId)
                           .slice(0, 2)
                           .map((product, index) => (
                             <CardBlock key={product.ID} product={product} index={index} />
                           ))
-                      : relatedApiData
+                      : apiData
                           .filter((product) => product.ID !== cardId)
                           .slice(0, 2)
                           .map((product, index) => (

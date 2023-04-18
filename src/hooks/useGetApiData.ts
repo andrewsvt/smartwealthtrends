@@ -62,6 +62,7 @@ export const useGetApiData = (): {
       setIsLoading(false);
 
       setLocalStorageItem('lastRequestLink', requestLink, 600000); //600.000 - 10 mins
+      setLocalStorageItem('lastRequestResult', apiData, 600000); //600.000 - 10 mins
     } catch (error) {
       console.error('Error fetching data:', error);
     }
