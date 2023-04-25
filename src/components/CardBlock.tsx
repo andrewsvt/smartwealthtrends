@@ -1,4 +1,4 @@
-import React, { FC, useState, useContext, useMemo, useCallback } from 'react';
+import React, { FC, useState, useContext, useMemo, useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
@@ -8,7 +8,7 @@ import { ComparisonContext } from 'contexts/ComparisonContext';
 import { IUseWindowSize, useWindowSize } from 'hooks/useWindowSize';
 
 import { CheckBox, ExpandButton, PrimaryButton, SecondaryButton } from './UI';
-import { Rating } from 'components';
+import { FeatureLabel, Rating } from 'components';
 
 import { ITableItem } from '../interfaces';
 import { Listing } from 'interfaces/Api';
@@ -18,13 +18,15 @@ import { ReactComponent as GiftIcon } from '../assets/icons/gift.svg';
 import { ReactComponent as StarIcon } from '../assets/icons/star.svg';
 import { ReactComponent as PercentIcon } from '../assets/icons/percent.svg';
 import { ReactComponent as LockIcon } from '../assets/icons/lock.svg';
+import { apiDataInitialState } from 'utils/constants';
 
 interface ICardBlockProps {
   product: Listing;
   index: number;
+  apiData: Listing[];
 }
 
-export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
+export const CardBlock: FC<ICardBlockProps> = ({ apiData, product, index }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
   const { updateSelectedCard } = useContext(selectedCardContext);
@@ -103,6 +105,16 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
     } else return false;
   };
 
+  const isFirstAmexCheck = () => {
+    const firstAmexCard = apiData.find((card) => card.DisplayName === 'American Express');
+
+    if (firstAmexCard) {
+      if (firstAmexCard.ID === product.ID) {
+        return true;
+      }
+    } else return false;
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -112,8 +124,8 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
       exit={{ opacity: 0, transition: { duration: 0.3 } }}
       className="p-[20px] bg-white rounded-[14px] space-y-[32px]"
     >
-      <div className="flex flex-col md:flex-row md:h-[180px] md:space-x-[20px]">
-        <div className="h-full flex flex-col justify-center items-center">
+      <div className="relative flex flex-col md:flex-row md:min-h-[180px] md:space-x-[20px]">
+        <div className="h-full md:h-[180px] flex flex-col justify-center items-center">
           <div className="relative h-full md:h-full md:min-h-[180px] md:max-h-[180px] w-[240px] md:min-w-[284px] md:max-w-[290px] md:w-full">
             <motion.div
               initial={{ opacity: 0 }}
@@ -133,16 +145,23 @@ export const CardBlock: FC<ICardBlockProps> = ({ product, index }) => {
         </div>
         <div className="flex flex-col w-full space-y-[20px] items-center md:items-start md:justify-between mt-[20px] md:mt-0">
           <div className="space-y-[12px] w-full flex flex-col items-center md:items-start">
-            <Link
-              target={'_blank'}
-              to={`/cards/${product.ID}`}
-              onClick={() => updateSelectedCard(product)}
-            >
-              <h2
-                className="text-lg text-center md:text-left w-full font-semibold hover:text-primary-dark customTransition"
-                dangerouslySetInnerHTML={{ __html: product.CardName }}
-              />
-            </Link>
+            <div className="flex flex-col-reverse md:flex-row w-full justify-between">
+              <Link
+                target={'_blank'}
+                to={`/cards/${product.ID}`}
+                onClick={() => updateSelectedCard(product)}
+              >
+                <h2
+                  className="text-lg text-center md:text-left w-full font-semibold hover:text-primary-dark customTransition"
+                  dangerouslySetInnerHTML={{ __html: product.CardName }}
+                />
+              </Link>
+              {isFirstAmexCheck() && (
+                <div className="mr-[-20px]">
+                  <FeatureLabel text={'American Express is a smartwealthtrends.com advertiser'} />
+                </div>
+              )}
+            </div>
             <div className="flex flex-row items-center">
               <span className="text-base font-medium mr-[14px]">
                 {Number(product.EditorRating).toFixed(1)}

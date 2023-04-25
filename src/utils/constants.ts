@@ -382,3 +382,9 @@ export const apiDataInitialState: Listing[] = [
 ];
 
 export const homeRoutes = ['/', '/:category', '/:category/:range'];
+
+export const advertiserDisclosure =
+  'SmartWealthTrends has partnered with CardRatings for our coverage of credit card products. SmartWealthTrends and CardRatings may receive a commission from card issuers. Some or all of the card offers that appear on SmartWealthTrends are from advertisers. Compensation may impact how and where card products appear, but does not affect our editors’ opinions or evaluations. SmartWealthTrends does not include all card companies or all available card offers.';
+
+export const editorialDisclosure =
+  'Opinions, reviews, analyses & recommendations are the author’s alone, and have not been reviewed, endorsed or approved by any of these entities.';

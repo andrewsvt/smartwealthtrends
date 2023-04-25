@@ -14,7 +14,7 @@ export const Disclosure: FC<DisclosureProps> = ({ modal, setModal }) => {
   };
 
   return (
-    <div className="w-screen h-screen fixed top-0 left-0 flex justify-center items-center z-50">
+    <div className="w-screen h-screen fixed top-0 left-0 flex justify-center items-center z-50 ">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -35,26 +35,26 @@ export const Disclosure: FC<DisclosureProps> = ({ modal, setModal }) => {
         }}
         exit={{ opacity: 0, scale: 0.7, transition: { duration: 0.2 } }}
       >
-        {/* <motion.div
-          whileHover={{ scale: 1.3, rotateZ: '90deg' }}
-          onClick={toggleModal}
-          className="absolute z-20 top-0 right-0 m-5 cursor-pointer"
-        >
-          <CrossIcon />
-        </motion.div> */}
-        <h2 className="text-lg font-semibold pb-[48px]">Advertiser Disclosure</h2>
-        <p className="text-base font-light overflow-y-auto">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas
-          vel sint commodi repudiandae consequuntur voluptatum laborum numquam blanditiis harum
-          quisquam eius sed odit fugiat iusto fuga praesentium optio, eaque rerum! Provident
-          similique accusantium nemo autem. <br />
-          <br />
-          Veritatis obcaecati tenetur iure eius earum ut molestias architecto voluptate aliquam
-          nihil, eveniet aliquid culpa officia aut! Impedit sit sunt quaerat, odit, tenetur error,
-          harum nesciunt ipsum debitis quas aliquid. Reprehenderit, quia. Quo neque error
-          repudiandae fuga? Ipsa laudantium molestias eos sapiente officiis modi at sunt excepturi
-          expedita sint? Sed quibusdam recusandae alias error harum maxime adipisci amet laborum.
-        </p>
+        <div className="w-full h-full overflow-y-scroll space-y-[48px]">
+          <div>
+            <h2 className="text-lg font-semibold pb-[24px]">Advertiser Disclosure</h2>
+            <p className="text-base font-light overflow-y-auto">
+              SmartWealthTrends has partnered with CardRatings for our coverage of credit card
+              products. SmartWealthTrends and CardRatings may receive a commission from card
+              issuers. Some or all of the card offers that appear on SmartWealthTrends are from
+              advertisers. Compensation may impact how and where card products appear, but does not
+              affect our editors’ opinions or evaluations. SmartWealthTrends does not include all
+              card companies or all available card offers.
+            </p>
+          </div>
+          <div>
+            <h2 className="text-lg font-semibold pb-[24px]">Editorial Disclousre</h2>
+            <p className="text-base font-light overflow-y-auto">
+              Opinions, reviews, analyses & recommendations are the author’s alone, and have not
+              been reviewed, endorsed or approved by any of these entities.
+            </p>
+          </div>
+        </div>
       </motion.div>
 
       {/* dark screen */}

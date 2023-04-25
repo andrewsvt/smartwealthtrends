@@ -6,7 +6,9 @@ import { useLocation } from 'react-router-dom';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
-export const useGetApiData = (): {
+export const useGetApiData = (
+  cardsAmount: number
+): {
   apiData: Listing[];
   totalRecords: number;
   isLoading: boolean;
@@ -52,7 +54,7 @@ export const useGetApiData = (): {
     controllerRef.current = controller;
     try {
       setIsLoading(true);
-      const requestLink = `${apiUrl}${filter.activeCategory.field}${filter.activeIssuer.field}${filter.activeCreditRange.field}&xml_version=2&max=10`;
+      const requestLink = `${apiUrl}${filter.activeCategory.field}${filter.activeIssuer.field}${filter.activeCreditRange.field}&xml_version=2&max=${cardsAmount}`;
       const response = await fetch(requestLink, { signal: controllerRef.current?.signal });
       const data = await response.json();
 

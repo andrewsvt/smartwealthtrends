@@ -10,7 +10,7 @@ import { FilterContext } from 'contexts/FilterContext';
 import { apiDataInitialState, issuers } from 'utils/constants';
 import { getFiltersLink } from 'utils/getFiltersLink';
 
-import { CardBlock, Rating, AdvertiserDisclosure } from 'components';
+import { CardBlock, Rating, AdvertiserDisclosure, FeatureLabel } from 'components';
 import { CheckBox, PrimaryButton, ProgressBar } from 'components/UI';
 
 import { Listing } from 'interfaces/Api';
@@ -20,6 +20,7 @@ import { ReactComponent as CheckIcon } from '../assets/icons/check.svg';
 import { ReactComponent as CrossIcon } from '../assets/icons/cross.svg';
 import { ReactComponent as LockIcon } from '../assets/icons/lock.svg';
 import { ITableItem } from 'interfaces';
+import { useGetApiData } from 'hooks/useGetApiData';
 interface ICardpageProps {
   apiData: Listing[];
 }
@@ -32,6 +33,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
   const navigate = useNavigate();
 
   const [lastApiData, setLastApiData] = useState<Listing[]>(apiDataInitialState);
+  const [allAmexCards, setAllAmexCards] = useState<Listing[]>(apiDataInitialState);
 
   const [scrolled, setScrolled] = useState(false);
   const [currentParams, setCurrentParams] = useState('');
@@ -75,7 +77,9 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
   //call fetch
   useEffect(() => {
     fetchData();
-  }, [fetchData]);
+  }, [fetchData, selectedCard]);
+
+  // const { apiData } = useGetApiData(3);
 
   //update header title
   useEffect(() => {
@@ -223,6 +227,22 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
     } else return false;
   };
 
+  const filterAmexCards = useCallback(() => {
+    const amexCards = lastApiData
+      .filter((product) => product.ID !== cardId)
+      .slice(0, 2)
+      .filter((card) => card.DisplayName === 'American Express');
+    setAllAmexCards(amexCards);
+  }, [lastApiData]);
+
+  useEffect(() => {
+    filterAmexCards();
+  }, [filterAmexCards]);
+
+  useEffect(() => {
+    console.log(apiData);
+  }, [apiData]);
+
   return (
     <>
       <motion.div
@@ -267,8 +287,8 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
             <div className="grid grid-cols-1 gap-4">
               {/* card details */}
               <div id="section1" className="p-[20px] bg-white rounded-[14px] space-y-[32px]">
-                <div className="flex flex-col items-center md:items-start md:flex-row md:h-[180px] md:space-x-[20px]">
-                  <div className="h-full flex flex-col justify-center items-center">
+                <div className="flex flex-col items-center md:items-start md:flex-row md:min-h-[180px] md:space-x-[20px]">
+                  <div className="h-full md:h-[180px] flex flex-col justify-center items-center">
                     <div className="relative h-full md:h-full md:min-h-[180px] md:max-h-[180px] w-[240px] md:min-w-[284px] md:max-w-[290px] md:w-full">
                       <motion.div
                         initial={{ opacity: 0 }}
@@ -286,18 +306,27 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                       />
                     </div>
                   </div>
-                  <div className="flex flex-col w-full h-full space-y-[20px] items-center md:items-start md:justify-between mt-[20px] md:mt-0">
-                    <div className="space-y-[12px] w-full flex flex-col items-center md:items-start">
-                      <Link
-                        target={'_blank'}
-                        to={`/cards/${selectedCard.ID}`}
-                        onClick={() => updateSelectedCard(selectedCard)}
-                      >
-                        <h2
-                          className="text-lg text-center md:text-left w-full font-semibold hover:text-primary-dark customTransition"
-                          dangerouslySetInnerHTML={{ __html: selectedCard.CardName }}
-                        />
-                      </Link>
+                  <div className="flex flex-col w-full h-full md:min-h-[180px] space-y-[20px] items-center md:items-start md:justify-between mt-[20px] md:mt-0">
+                    <div className="space-y-[12px] w-full h-full flex flex-col items-center md:items-start">
+                      <div className="flex flex-col-reverse md:flex-row w-full justify-between">
+                        <Link
+                          target={'_blank'}
+                          to={`/cards/${selectedCard.ID}`}
+                          onClick={() => updateSelectedCard(selectedCard)}
+                        >
+                          <h2
+                            className="text-lg text-center md:text-left w-full font-semibold hover:text-primary-dark customTransition"
+                            dangerouslySetInnerHTML={{ __html: selectedCard.CardName }}
+                          />
+                        </Link>
+                        {isAmericanExpress() && (
+                          <div className="mr-[-20px]">
+                            <FeatureLabel
+                              text={'American Express is a smartwealthtrends.com advertiser'}
+                            />
+                          </div>
+                        )}
+                      </div>
                       <div className="flex flex-row items-center">
                         <span className="text-base font-medium mr-[14px]">
                           {Number(selectedCard.EditorRating).toFixed(1)}
@@ -516,23 +545,72 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                 <div id="section4" className="space-y-[32px]">
                   <h2 className="text-lg font-semibold pl-[20px]">Related Card Offers</h2>
                   <div className="grid grid-cols-1 gap-4">
-                    {!!lastApiData.length
+                    {lastApiData.length > 2
                       ? lastApiData
                           .filter((product) => product.ID !== cardId)
                           .slice(0, 2)
                           .map((product, index) => (
-                            <CardBlock key={product.ID} product={product} index={index} />
+                            <CardBlock
+                              apiData={lastApiData}
+                              key={product.ID}
+                              product={product}
+                              index={index}
+                            />
                           ))
                       : apiData
-                          .filter((product) => product.ID !== cardId)
                           .slice(0, 2)
                           .map((product, index) => (
-                            <CardBlock key={product.ID} product={product} index={index} />
+                            <CardBlock
+                              apiData={apiData}
+                              key={product.ID}
+                              product={product}
+                              index={index}
+                            />
                           ))}
                   </div>
                 </div>
               </div>
             </div>
+            {(isAmericanExpress() || allAmexCards.length > 0) && (
+              <div className="text-xs font-light text-black pt-8">
+                <span>
+                  The following links will direct you to the rates and fees for mentioned American
+                  Express Cards. These include:{' '}
+                </span>
+                {/* current card */}
+                <span dangerouslySetInnerHTML={{ __html: selectedCard.CardName }} />
+                <span>
+                  {' '}
+                  (
+                  <Link
+                    target={'_blank'}
+                    to={selectedCard.TermsAndConditionsLink}
+                    className="text-primary"
+                  >
+                    Rates & Fees
+                  </Link>
+                  ).{' '}
+                </span>
+                {/* related cards */}
+                {allAmexCards.map((amexCard) => (
+                  <>
+                    <span dangerouslySetInnerHTML={{ __html: amexCard.CardName }} />
+                    <span>
+                      {' '}
+                      (
+                      <Link
+                        target={'_blank'}
+                        to={amexCard.TermsAndConditionsLink}
+                        className="text-primary"
+                      >
+                        Rates & Fees
+                      </Link>
+                      ).{' '}
+                    </span>
+                  </>
+                ))}
+              </div>
+            )}
           </>
         ) : (
           <span className="lg:h-[72px] py-[20px] lg:py-0 w-full flex flex-col lg:flex-row justify-between items-center">

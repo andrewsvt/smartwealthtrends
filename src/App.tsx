@@ -8,8 +8,7 @@ import { useGetApiData } from 'hooks/useGetApiData';
 import { homeRoutes } from './utils/constants';
 
 function App() {
-  const { apiData, totalRecords, isLoading } = useGetApiData();
-  // const relatedApiData = useGetRelatedCards();
+  const { apiData, totalRecords, isLoading } = useGetApiData(10);
 
   return (
     <div className="bg-bg scrollbar-hide">

@@ -26,4 +26,6 @@ export { HeaderFilters } from './HeaderFilters';
 
 export { AdvertiserDisclosure } from './AdvertiserDisclosure';
 
-export { NavMenuItems } from './NavMenuDropdown';
+export { NavMenuItems } from './NavMenuItems';
+
+export { FeatureLabel } from './FeatureLabel';

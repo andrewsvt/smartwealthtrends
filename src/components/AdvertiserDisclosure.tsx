@@ -27,7 +27,7 @@ export const AdvertiserDisclosure: FC = () => {
 
   return (
     <>
-      <div className="lg:absolute lg:right-0 lg:h-[40px] w-full lg:w-auto flex flex-row items-center justify-start lg:justify-end">
+      <div className="lg:absolute lg:right-0 lg:h-[40px] w-full lg:w-auto flex flex-row items-center justify-center lg:justify-end">
         <span
           onClick={toggleModal}
           className="text-xs underline font-medium cursor-pointer text-center"

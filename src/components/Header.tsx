@@ -138,7 +138,7 @@ export const Header: FC = () => {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0, transition: { duration: 0.2 } }}
-                  className="fixed top-0 left-0 h-screen w-screen bg-black bg-opacity-80 z-20"
+                  className="fixed top-0 left-0 h-screen w-screen bg-black bg-opacity-80 z-[49]"
                 ></motion.div>
               </>
             )}
