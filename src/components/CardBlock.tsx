@@ -104,7 +104,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ apiData, product, index }) => {
     } else return false;
   };
 
-  const isFirstAmexCheck = () => {
+  const isFirstAmex = () => {
     const firstAmexCard = apiData.find((card) => card.DisplayName === 'American Express');
 
     if (firstAmexCard) {
@@ -112,6 +112,12 @@ export const CardBlock: FC<ICardBlockProps> = ({ apiData, product, index }) => {
         return true;
       }
     } else return false;
+  };
+
+  const isNotChase = () => {
+    if (product.DisplayName === 'Chase') {
+      return false;
+    } else return true;
   };
 
   return (
@@ -123,82 +129,91 @@ export const CardBlock: FC<ICardBlockProps> = ({ apiData, product, index }) => {
       exit={{ opacity: 0, transition: { duration: 0.3 } }}
       className="p-[20px] bg-white rounded-[14px] space-y-[32px]"
     >
-      <div className="relative flex flex-col md:flex-row md:min-h-[180px] md:space-x-[20px]">
-        <div className="h-full md:h-[180px] flex flex-col justify-center items-center">
-          <div className="relative h-full md:h-full md:min-h-[180px] md:max-h-[180px] w-[240px] md:min-w-[284px] md:max-w-[290px] md:w-full">
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileHover={{ opacity: 1 }}
-              transition={{ duration: 0.2 }}
-              className="cursor-pointer absolute flex flex-col justify-center items-center space-y-[10px] bg-primary-dark bg-opacity-60 h-full w-full rounded-[10px]"
-            >
-              <LockIcon />
-              <span className="text-lg font-semibold text-white">Apply Now</span>
-            </motion.div>
-            <img
-              className="w-full h-full object-contain lg:object-cover rounded-[10px]"
-              src={product.Creative.RawLogoImageUrl}
-              alt="card"
-            />
+      <div className="space-y-[16px] w-full">
+        <div className="relative flex flex-col md:flex-row md:min-h-[180px] md:space-x-[20px]">
+          <div className="h-full md:h-[180px] flex flex-col justify-center items-center">
+            <div className="relative h-full md:h-full md:min-h-[180px] md:max-h-[180px] w-[240px] md:min-w-[284px] md:max-w-[290px] md:w-full">
+              {isNotChase() && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  whileHover={{ opacity: 1 }}
+                  transition={{ duration: 0.2 }}
+                  className="cursor-pointer absolute flex flex-col justify-center items-center space-y-[10px] bg-primary-dark bg-opacity-60 h-full w-full rounded-[10px]"
+                >
+                  <LockIcon />
+                  <span className="text-lg font-semibold text-white">Apply Now</span>
+                </motion.div>
+              )}
+              <img
+                className="w-full h-full object-contain lg:object-cover rounded-[10px]"
+                src={product.Creative.RawLogoImageUrl}
+                alt="card"
+              />
+            </div>
           </div>
-        </div>
-        <div className="flex flex-col w-full space-y-[20px] items-center md:items-start md:justify-between mt-[20px] md:mt-0">
-          <div className="space-y-[12px] w-full flex flex-col items-center md:items-start">
-            <div className="flex flex-col-reverse md:flex-row w-full justify-between">
-              <Link
-                target={'_blank'}
-                to={`/cards/${product.ID}`}
-                onClick={() => updateSelectedCard(product)}
-              >
-                <h2
-                  className="text-lg text-center md:text-left w-full font-semibold hover:text-primary-dark customTransition"
-                  dangerouslySetInnerHTML={{ __html: product.CardName }}
-                />
-              </Link>
-              {isFirstAmexCheck() && (
-                <div className="md:mr-[-20px]">
-                  <FeatureLabel text={'American Express is a smartwealthtrends.com advertiser'} />
+          <div className="flex flex-col w-full space-y-[20px] items-center md:items-start md:justify-between mt-[20px] md:mt-0">
+            <div className="space-y-[12px] w-full flex flex-col items-center md:items-start">
+              <div className="flex flex-col-reverse md:flex-row w-full justify-between">
+                <Link
+                  target={'_blank'}
+                  to={`/cards/${product.ID}`}
+                  onClick={() => updateSelectedCard(product)}
+                >
+                  <h2
+                    className="text-lg text-center md:text-left w-full font-semibold hover:text-primary-dark customTransition"
+                    dangerouslySetInnerHTML={{ __html: product.CardName }}
+                  />
+                </Link>
+              </div>
+              <div className="flex flex-row items-center">
+                <span className="text-base font-medium mr-[14px]">
+                  {Number(product.EditorRating).toFixed(1)}
+                </span>
+                <Rating value={Number(product.EditorRating)} />
+              </div>
+            </div>
+            <div className="flex flex-col md:flex-row items-center justify-between w-full space-y-[8px] md:space-y-0 md:space-x-[8px]">
+              <div className="flex flex-col md:flex-row items-center space-y-[8px] lg:space-y-0 md:space-x-[20px]">
+                {isNotChase() && (
+                  <div className="flex flex-row items-center space-x-[8px] w-full md:w-auto">
+                    <PrimaryButton text="Apply Now" />
+                  </div>
+                )}
+
+                {products.map((product) => product.ID).includes(product.ID) ? (
+                  <CheckBox
+                    onClick={handleRemoveFromComparison}
+                    text="Added to compare"
+                    state={true}
+                  />
+                ) : (
+                  <CheckBox onClick={handleAddToComparison} text="Add to compare" state={false} />
+                )}
+              </div>
+              {product.TermsAndConditionsLink.length > 1 && (
+                <div className="flex flex-col items-center space-y-[4px]">
+                  <Link target={'_blank'} to={product.TermsAndConditionsLink}>
+                    <div className="px-[10px] py-1 bg-light-gray rounded-lg text-primary font-medium text-xs text-center">
+                      Rates & Fees
+                    </div>
+                  </Link>
+                  {isAmericanExpress() && (
+                    <span className="text-secondary-text font-light text-[10px] leading-3 text-center">
+                      Terms Apply
+                    </span>
+                  )}
                 </div>
               )}
             </div>
-            <div className="flex flex-row items-center">
-              <span className="text-base font-medium mr-[14px]">
-                {Number(product.EditorRating).toFixed(1)}
-              </span>
-              <Rating value={Number(product.EditorRating)} />
-            </div>
-          </div>
-          <div className="flex flex-col md:flex-row items-center justify-between w-full space-y-[8px] md:space-y-0 md:space-x-[8px]">
-            <div className="flex flex-col md:flex-row items-center space-y-[8px] lg:space-y-0 md:space-x-[8px]">
-              <div className="flex flex-row items-center space-x-[8px] w-full md:w-auto">
-                <PrimaryButton text="Apply Now" />
-              </div>
-              {products.map((product) => product.ID).includes(product.ID) ? (
-                <CheckBox
-                  onClick={handleRemoveFromComparison}
-                  text="Added to compare"
-                  state={true}
-                />
-              ) : (
-                <CheckBox onClick={handleAddToComparison} text="Add to compare" state={false} />
-              )}
-            </div>
-            {product.TermsAndConditionsLink.length > 1 && (
-              <div className="flex flex-col items-center space-y-[4px]">
-                <Link target={'_blank'} to={product.TermsAndConditionsLink}>
-                  <div className="px-[10px] py-1 bg-light-gray rounded-lg text-primary font-medium text-xs text-center">
-                    Rates & Fees
-                  </div>
-                </Link>
-                {isAmericanExpress() && (
-                  <span className="text-secondary-text font-light text-[10px] leading-3 text-center">
-                    Terms Apply
-                  </span>
-                )}
-              </div>
-            )}
           </div>
         </div>
+        {isFirstAmex() && (
+          <div className="md:ml-[304px]">
+            <p className="text-xs font-light text-secondary-text text-center md:text-left w-full">
+              American Express is a smartwealthtrends.com advertiser
+            </p>
+          </div>
+        )}
       </div>
       <motion.div className="grid grid-cols-1 md:grid-cols-3 border-[1px] border-border rounded-[10px]">
         {tableItems.slice(0, 3).map((tableItem, index) => {
@@ -206,7 +221,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ apiData, product, index }) => {
           return (
             <div
               key={index}
-              className={`p-[20px] space-y-[20px] md:tableItem ${
+              className={`px-[20px] py-[12px] md:py-[20px] space-y-[12px] md:space-y-[20px] ${
                 size.width < 768 ? 'oddBgColor tableItemMobile' : 'tableItem'
               }`}
             >
@@ -214,7 +229,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ apiData, product, index }) => {
                 {/* @ts-ignore */}
                 <Icon style={{ width: '44px', height: '44px' }} className="tableIcon" />
               </div>
-              <div className="space-y-[8px]">
+              <div className="space-y-[4px]">
                 <h4
                   className="font-medium text-base"
                   dangerouslySetInnerHTML={{ __html: tableItem.title }}
@@ -234,7 +249,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ apiData, product, index }) => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ type: 'spring', stiffness: 400, damping: 50 }}
               exit={{ opacity: 0, y: -30 }}
-              className={`p-[20px] space-y-[8px] ${
+              className={`px-[20px] py-[12px] md:py-[20px] space-y-[4px] ${
                 size.width < 768 ? 'oddBgColor tableItemMobile' : 'tableItem tableItemExpanded'
               }`}
               key={index}
@@ -291,7 +306,11 @@ export const CardBlock: FC<ICardBlockProps> = ({ apiData, product, index }) => {
               to={`/cards/${product.ID}`}
               onClick={() => updateSelectedCard(product)}
             >
-              <SecondaryButton text="Learn More" />
+              {isNotChase() ? (
+                <SecondaryButton text="Learn More" />
+              ) : (
+                <p className="text-base font-medium underline">Learn More</p>
+              )}
             </Link>
           </motion.div>
         </>

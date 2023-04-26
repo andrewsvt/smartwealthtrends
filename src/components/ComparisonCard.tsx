@@ -38,8 +38,11 @@ export const ComparisonCard: FC<IComparisonCardProps> = ({ product }) => {
       </div>
       <div className="px-[16px] md:px-[20px]">
         <ul>
-          {compareFields.map((field) => (
-            <li className="space-y-[8px] h-[160px] lg:h-auto py-[30px] border-b-[1px] border-medium-gray">
+          {compareFields.map((field, index) => (
+            <li
+              key={index}
+              className="space-y-[8px] h-[160px] lg:h-auto py-[30px] border-b-[1px] border-medium-gray"
+            >
               <h3 className="text-base font-medium">{field.name}</h3>
               <p
                 className="text-sm font-light"

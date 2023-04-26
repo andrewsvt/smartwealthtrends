@@ -77,8 +77,8 @@ export const ReviewsSlider: FC = () => {
           loop
           ref={swiperRef}
         >
-          {reviews.map((review) => (
-            <SwiperSlide key={review.logo}>
+          {reviews.map((review, index) => (
+            <SwiperSlide key={index}>
               <div className="flex flex-col justify-center items-center w-full h-full space-y-[20px]">
                 <p className="text-center text-base text-black font-medium">{review.quote}</p>
                 <img className="h-[30px]" src={review.logo} alt="reviewer logo" />

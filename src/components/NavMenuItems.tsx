@@ -15,8 +15,9 @@ export const NavMenuItems: FC = () => {
           'bg-white space-y-[32px] flex flex-col p-[20px] border-[1px] border-light-gray rounded-[14px] mb-[20px]'
         }
       >
-        {linksTable.map((link) => (
+        {linksTable.map((link, index) => (
           <NavLink
+            key={index}
             to={link.to}
             className={({ isActive }) =>
               isActive

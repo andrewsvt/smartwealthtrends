@@ -37,10 +37,10 @@ export const Home: FC<IHomeProps> = ({ apiData, totalRecords, isLoading }) => {
 
   return (
     <>
-      <div className="relative w-full mt-[24px] lg:space-y-0">
+      <div className="relative w-full mt-[16px] md:mt-[24px]">
         <AdvertiserDisclosure />
-        <div className="flex flex-col items-center lg:items-start justify-center w-full py-[20px] lg:py-0 lg:pb-[20px]">
-          <h1 className="text-xl font-semibold text-center lg:text-left pb-[6px] lg:w-[70%]">{`${filter.activeCategory.text} from ${filter.activeIssuer.text}`}</h1>
+        <div className="flex flex-col items-center lg:items-start justify-center w-full py-[16px] md:py-[20px] lg:py-0 lg:pb-[20px]">
+          <h1 className="text-lg md:text-xl font-semibold text-center lg:text-left pb-[6px] lg:w-[70%]">{`${filter.activeCategory.text} from ${filter.activeIssuer.text}`}</h1>
           <p className="text-secondary-text text-center lg:text-left text-base lg:w-[50%]">
             Description of the page
           </p>
@@ -60,7 +60,7 @@ export const Home: FC<IHomeProps> = ({ apiData, totalRecords, isLoading }) => {
             {isLoading ? (
               Array(3)
                 .fill(null)
-                .map((element, idx) => {
+                .map((element, index) => {
                   return (
                     <motion.div
                       initial={{ opacity: 0 }}
@@ -68,13 +68,13 @@ export const Home: FC<IHomeProps> = ({ apiData, totalRecords, isLoading }) => {
                       viewport={{ once: true }}
                       exit={{ opacity: 0, transition: { duration: 0.3 } }}
                       className="bg-white rounded-[14px] w-full h-[490px]"
-                      key={idx}
+                      key={index}
                     ></motion.div>
                   );
                 })
             ) : totalRecords > 0 ? (
               apiData.map((product, index) => (
-                <CardBlock apiData={apiData} key={product.ID} product={product} index={index} />
+                <CardBlock key={product.ID} apiData={apiData} product={product} index={index} />
               ))
             ) : (
               <p className="w-full h-screen">Nothing matching was found.</p>
@@ -88,7 +88,7 @@ export const Home: FC<IHomeProps> = ({ apiData, totalRecords, isLoading }) => {
               Express Cards. These include:{' '}
             </span>
             {allAmexCards.map((amexCard) => (
-              <>
+              <div key={amexCard.ID}>
                 <span dangerouslySetInnerHTML={{ __html: amexCard.CardName }} />
                 <span>
                   {' '}
@@ -102,7 +102,7 @@ export const Home: FC<IHomeProps> = ({ apiData, totalRecords, isLoading }) => {
                   </Link>
                   ).{' '}
                 </span>
-              </>
+              </div>
             ))}
           </div>
         ) : (

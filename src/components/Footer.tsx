@@ -61,8 +61,8 @@ export const Footer: FC = () => {
           <div className="flex flex-col items-start space-y-[20px]">
             <h3 className="text-base font-medium">Polices</h3>
             <ul className="flex flex-col items-start space-y-[8px]">
-              {policesLinks.map((item) => (
-                <li className="text-xs text-secondary-text font-light">
+              {policesLinks.map((item, index) => (
+                <li key={index} className="text-xs text-secondary-text font-light">
                   <Link target={'_blank'} to={item.link}>
                     {item.text}
                   </Link>
@@ -74,8 +74,8 @@ export const Footer: FC = () => {
           <div className="flex flex-col items-start space-y-[20px]">
             <h3 className="text-base font-medium">Credit Card Rewards</h3>
             <ul className="flex flex-col items-start space-y-[8px]">
-              {creditCardRewardsLinks.map((item) => (
-                <li className="text-xs text-secondary-text font-light">
+              {creditCardRewardsLinks.map((item, index) => (
+                <li key={index} className="text-xs text-secondary-text font-light">
                   <Link target={'_blank'} to={item.link}>
                     {item.text}
                   </Link>
@@ -87,8 +87,8 @@ export const Footer: FC = () => {
           <div className="flex flex-col items-start space-y-[20px]">
             <h3 className="text-base font-medium">Credit Card Issuers</h3>
             <ul className="flex flex-col items-start space-y-[8px]">
-              {creditCardIssuersLinks.map((item) => (
-                <li className="text-xs text-secondary-text font-light">
+              {creditCardIssuersLinks.map((item, index) => (
+                <li key={index} className="text-xs text-secondary-text font-light">
                   <Link target={'_blank'} to={item.link}>
                     {item.text}
                   </Link>
@@ -100,8 +100,8 @@ export const Footer: FC = () => {
           <div className="flex flex-col items-start space-y-[20px]">
             <h3 className="text-base font-medium">Cards by Credit Score</h3>
             <ul className="flex flex-col items-start space-y-[8px]">
-              {creditScoreLinks.map((item) => (
-                <li className="text-xs text-secondary-text font-light">
+              {creditScoreLinks.map((item, index) => (
+                <li key={index} className="text-xs text-secondary-text font-light">
                   <Link target={'_blank'} to={item.link}>
                     {item.text}
                   </Link>

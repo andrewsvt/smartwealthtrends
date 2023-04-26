@@ -15,7 +15,7 @@ export const Rating: FC<RatingProps> = ({ value }) => {
       const filled = value >= index + 1;
       const half = value - index > 0.5;
       return (
-        <div key={index}>
+        <div key={index} className="mr-[2px]">
           {filled ? <RatingStarFull /> : half ? <RatingStarHalf /> : <RatingStarEmpty />}
         </div>
       );
