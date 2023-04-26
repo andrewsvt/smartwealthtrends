@@ -34,7 +34,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
 
   const [lastApiData, setLastApiData] = useState<Listing[]>(apiDataInitialState);
   const [allAmexCards, setAllAmexCards] = useState<Listing[]>(apiDataInitialState);
-
+  const [isChaseCard, setIsChaseCard] = useState<boolean>(false);
   const [scrolled, setScrolled] = useState(false);
   const [currentParams, setCurrentParams] = useState('');
 
@@ -208,6 +208,16 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
     };
   }, []);
 
+  const isChase = () => {
+    if (selectedCard.DisplayName === 'Chase') {
+      setIsChaseCard(true);
+    } else setIsChaseCard(false);
+  };
+
+  useEffect(() => {
+    isChase();
+  }, [selectedCard.ID]);
+
   const textToSlug = (text: string) => {
     return text.toLowerCase().replace(/ /g, '-');
   };
@@ -260,9 +270,11 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
           className="text-sm md:text-lg font-semibold cutLongVerticalText"
           dangerouslySetInnerHTML={{ __html: selectedCard.CardName }}
         />
-        <div className="max-w-[202px]">
-          <PrimaryButton text="Apply Now" />
-        </div>
+        {!isChaseCard && (
+          <div className="max-w-[202px]">
+            <PrimaryButton text="Apply Now" />
+          </div>
+        )}
       </motion.div>
       <div className="w-full">
         {selectedCard.ID.length ? (
@@ -291,15 +303,17 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                   <div className="flex flex-col items-center md:items-start md:flex-row md:min-h-[180px] md:space-x-[20px]">
                     <div className="h-full md:h-[180px] flex flex-col justify-center items-center">
                       <div className="relative h-full md:h-full md:min-h-[180px] md:max-h-[180px] w-[240px] md:min-w-[284px] md:max-w-[290px] md:w-full">
-                        <motion.div
-                          initial={{ opacity: 0 }}
-                          whileHover={{ opacity: 1 }}
-                          transition={{ duration: 0.2 }}
-                          className="cursor-pointer absolute flex flex-col justify-center items-center space-y-[10px] bg-primary-dark bg-opacity-60 h-full w-full rounded-[10px]"
-                        >
-                          <LockIcon />
-                          <span className="text-lg font-semibold text-white">Apply Now</span>
-                        </motion.div>
+                        {!isChaseCard && (
+                          <motion.div
+                            initial={{ opacity: 0 }}
+                            whileHover={{ opacity: 1 }}
+                            transition={{ duration: 0.2 }}
+                            className="cursor-pointer absolute flex flex-col justify-center items-center space-y-[10px] bg-primary-dark bg-opacity-60 h-full w-full rounded-[10px]"
+                          >
+                            <LockIcon />
+                            <span className="text-lg font-semibold text-white">Apply Now</span>
+                          </motion.div>
+                        )}
                         <img
                           className="w-full h-full object-contain lg:object-cover rounded-[10px]"
                           src={selectedCard.Creative.RawLogoImageUrl}
@@ -330,9 +344,11 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                       </div>
                       <div className="flex flex-col md:flex-row items-center justify-between w-full space-y-[8px] md:space-y-0 md:space-x-[8px]">
                         <div className="flex flex-col md:flex-row items-center space-y-[8px] lg:space-y-0 md:space-x-[20px]">
-                          <div className="flex flex-row items-center space-x-[8px] w-full md:w-auto">
-                            <PrimaryButton text="Apply Now" />
-                          </div>
+                          {!isChaseCard && (
+                            <div className="flex flex-row items-center space-x-[8px] w-full md:w-auto">
+                              <PrimaryButton text="Apply Now" />
+                            </div>
+                          )}
                           {products.map((product) => product.ID).includes(selectedCard.ID) ? (
                             <CheckBox
                               onClick={handleRemoveFromComparison}

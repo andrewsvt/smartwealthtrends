@@ -21,18 +21,24 @@ export const ComparisonCard: FC<IComparisonCardProps> = ({ product }) => {
     { name: 'Credit Score Needed', field: product.CreditScoreNeeded },
   ];
 
+  const isNotChase = () => {
+    if (product.DisplayName === 'Chase') {
+      return false;
+    } else return true;
+  };
+
   return (
     <div className="relative flex flex-col w-[325px] min-w-[230px]">
       <div className="flex flex-col justify-between bg-white w-full min-h-[305px] p-[16px] rounded-[14px]">
-        <div className="flex flex-col items-center space-y-[16px]">
+        <div className="flex flex-col items-center justify-center space-y-[16px]">
           <img className="w-[210px] h-auto" src={product.Creative.LogoImageUrl} alt="card" />
           <h2
-            className="text-basePlus font-semibold"
+            className="text-basePlus font-semibold text-center"
             dangerouslySetInnerHTML={{ __html: product.CardName }}
           />
         </div>
-        <div className="flex flex-row space-x-[8px]">
-          <PrimaryButton text="Apply Now" />
+        <div className="flex flex-row space-x-[8px] justify-center">
+          {isNotChase() && <PrimaryButton text="Apply Now" />}
           <TrashButton onClick={() => removeProduct(product)} />
         </div>
       </div>
