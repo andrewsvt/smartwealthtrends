@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState, useContext, useCallback, useMemo } from 'react';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { IUseWindowSize, useWindowSize } from 'hooks/useWindowSize';
 
@@ -14,13 +14,13 @@ import { CardBlock, Rating, AdvertiserDisclosure, FeatureLabel } from 'component
 import { CheckBox, PrimaryButton, ProgressBar } from 'components/UI';
 
 import { Listing } from 'interfaces/Api';
+import { ITableItem } from 'interfaces';
 
 import { ReactComponent as StarIcon } from '../assets/icons/RatingStarFull.svg';
 import { ReactComponent as CheckIcon } from '../assets/icons/check.svg';
 import { ReactComponent as CrossIcon } from '../assets/icons/cross.svg';
 import { ReactComponent as LockIcon } from '../assets/icons/lock.svg';
-import { ITableItem } from 'interfaces';
-import { useGetApiData } from 'hooks/useGetApiData';
+
 interface ICardpageProps {
   apiData: Listing[];
 }
@@ -320,7 +320,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                           />
                         </Link>
                         {isAmericanExpress() && (
-                          <div className="mr-[-20px]">
+                          <div className="md:mr-[-20px]">
                             <FeatureLabel
                               text={'American Express is a smartwealthtrends.com advertiser'}
                             />

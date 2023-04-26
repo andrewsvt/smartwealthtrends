@@ -1,4 +1,4 @@
-import React, { FC, useState, useContext, useMemo, useCallback, useEffect } from 'react';
+import React, { FC, useState, useContext, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
@@ -18,7 +18,6 @@ import { ReactComponent as GiftIcon } from '../assets/icons/gift.svg';
 import { ReactComponent as StarIcon } from '../assets/icons/star.svg';
 import { ReactComponent as PercentIcon } from '../assets/icons/percent.svg';
 import { ReactComponent as LockIcon } from '../assets/icons/lock.svg';
-import { apiDataInitialState } from 'utils/constants';
 
 interface ICardBlockProps {
   product: Listing;
@@ -157,7 +156,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ apiData, product, index }) => {
                 />
               </Link>
               {isFirstAmexCheck() && (
-                <div className="mr-[-20px]">
+                <div className="md:mr-[-20px]">
                   <FeatureLabel text={'American Express is a smartwealthtrends.com advertiser'} />
                 </div>
               )}

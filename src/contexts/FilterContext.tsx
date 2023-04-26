@@ -1,14 +1,6 @@
 import { createContext, useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import {
-  ISVGSelectValue,
-  categories,
-  creditRating,
-  issuers,
-  ISelectValue,
-  IssuersSlugEnum,
-  CreditRatingSlugEnum,
-} from 'utils/constants';
+import { ISVGSelectValue, categories, creditRating, issuers } from 'utils/constants';
 import { getFiltersLink } from 'utils/getFiltersLink';
 
 interface IFilterContext {
