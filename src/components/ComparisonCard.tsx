@@ -37,8 +37,12 @@ export const ComparisonCard: FC<IComparisonCardProps> = ({ product }) => {
             dangerouslySetInnerHTML={{ __html: product.CardName }}
           />
         </div>
-        <div className="flex flex-row space-x-[8px] justify-center">
-          {isNotChase() && <PrimaryButton text="Apply Now" />}
+        <div className="flex flex-row space-x-[8px] justify-center items-center">
+          {isNotChase() ? (
+            <PrimaryButton text="Apply Now" />
+          ) : (
+            <p className="text-base font-medium underline cursor-pointer px-5">Learn More</p>
+          )}
           <TrashButton onClick={() => removeProduct(product)} />
         </div>
       </div>

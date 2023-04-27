@@ -59,7 +59,7 @@ export const TrashButton: FC<IButton> = ({ onClick }) => {
       onClick={onClick}
       whileTap={{ scale: 0.9 }}
       transition={{ type: 'spring', stiffness: 500, damping: 50 }}
-      className="h-[48px] w-[48px] flex-1 bg-error justify-center items-center rounded-[10px] text-white hover:bg-rose-600"
+      className="h-[48px] w-[48px] bg-error justify-center items-center rounded-[10px] text-white hover:bg-rose-600"
     >
       <TrashIcon style={{ display: 'inline' }} />
     </motion.button>

@@ -270,10 +270,12 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
           className="text-sm md:text-lg font-semibold cutLongVerticalText"
           dangerouslySetInnerHTML={{ __html: selectedCard.CardName }}
         />
-        {!isChaseCard && (
+        {!isChaseCard ? (
           <div className="max-w-[202px]">
             <PrimaryButton text="Apply Now" />
           </div>
+        ) : (
+          <p className="text-base font-medium underline cursor-pointer">Learn More</p>
         )}
       </motion.div>
       <div className="w-full">
@@ -299,56 +301,55 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
             <div className="grid grid-cols-1 gap-4">
               {/* card details */}
               <div id="section1" className="p-[20px] bg-white rounded-[14px] space-y-[32px]">
-                <div className="space-y-[16px]">
-                  <div className="flex flex-col items-center md:items-start md:flex-row md:min-h-[180px] md:space-x-[20px]">
-                    <div className="h-full md:h-[180px] flex flex-col justify-center items-center">
-                      <div className="relative h-full md:h-full md:min-h-[180px] md:max-h-[180px] w-[240px] md:min-w-[284px] md:max-w-[290px] md:w-full">
-                        {!isChaseCard && (
-                          <motion.div
-                            initial={{ opacity: 0 }}
-                            whileHover={{ opacity: 1 }}
-                            transition={{ duration: 0.2 }}
-                            className="cursor-pointer absolute flex flex-col justify-center items-center space-y-[10px] bg-primary-dark bg-opacity-60 h-full w-full rounded-[10px]"
-                          >
-                            <LockIcon />
-                            <span className="text-lg font-semibold text-white">Apply Now</span>
-                          </motion.div>
-                        )}
-                        <img
-                          className="w-full h-full object-contain lg:object-cover rounded-[10px]"
-                          src={selectedCard.Creative.RawLogoImageUrl}
-                          alt="card"
+                <div className="relative flex flex-col md:flex-row md:min-h-[180px] md:space-x-[20px]">
+                  <div className="h-full md:h-[180px] flex flex-col justify-center items-center">
+                    <div className="relative h-full md:h-full md:min-h-[180px] md:max-h-[180px] w-[240px] md:min-w-[284px] md:max-w-[290px] md:w-full">
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        whileHover={{ opacity: 1 }}
+                        transition={{ duration: 0.2 }}
+                        className="cursor-pointer absolute flex flex-col justify-center items-center space-y-[10px] bg-primary-dark bg-opacity-60 h-full w-full rounded-[10px]"
+                      >
+                        <LockIcon />
+                        <span className="text-lg font-semibold text-white">
+                          {!isChaseCard ? 'Apply Now' : 'Learn More'}
+                        </span>
+                      </motion.div>
+                      <img
+                        className="w-full h-full object-contain lg:object-cover rounded-[10px]"
+                        src={selectedCard.Creative.RawLogoImageUrl}
+                        alt="card"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-col w-full space-y-[20px] items-center md:items-start md:justify-between mt-[20px] md:mt-0">
+                    <div className="space-y-[12px] w-full flex flex-col items-center md:items-start">
+                      <div className="flex flex-col-reverse md:flex-row w-full justify-between">
+                        <h2
+                          className="text-lg text-center md:text-left w-full font-semibold customTransition"
+                          dangerouslySetInnerHTML={{ __html: selectedCard.CardName }}
                         />
                       </div>
-                    </div>
-                    <div className="flex flex-col w-full h-full md:min-h-[180px] space-y-[20px] items-center md:items-start md:justify-between mt-[20px] md:mt-0">
-                      <div className="space-y-[12px] w-full h-full flex flex-col items-center md:items-start">
-                        <div className="flex flex-col-reverse md:flex-row w-full justify-between">
-                          <Link
-                            target={'_blank'}
-                            to={`/cards/${selectedCard.ID}`}
-                            onClick={() => updateSelectedCard(selectedCard)}
-                          >
-                            <h2
-                              className="text-lg text-center md:text-left w-full font-semibold hover:text-primary-dark customTransition"
-                              dangerouslySetInnerHTML={{ __html: selectedCard.CardName }}
-                            />
-                          </Link>
-                        </div>
-                        <div className="flex flex-row items-center">
-                          <span className="text-base font-medium mr-[14px]">
-                            {Number(selectedCard.EditorRating).toFixed(1)}
-                          </span>
-                          <Rating value={Number(selectedCard.EditorRating)} />
-                        </div>
+                      <div className="flex flex-row items-center">
+                        <span className="text-base font-medium mr-[14px]">
+                          {Number(selectedCard.EditorRating).toFixed(1)}
+                        </span>
+                        <Rating value={Number(selectedCard.EditorRating)} />
                       </div>
+                    </div>
+                    <div className="w-full">
                       <div className="flex flex-col md:flex-row items-center justify-between w-full space-y-[8px] md:space-y-0 md:space-x-[8px]">
                         <div className="flex flex-col md:flex-row items-center space-y-[8px] lg:space-y-0 md:space-x-[20px]">
-                          {!isChaseCard && (
+                          {!isChaseCard ? (
                             <div className="flex flex-row items-center space-x-[8px] w-full md:w-auto">
                               <PrimaryButton text="Apply Now" />
                             </div>
+                          ) : (
+                            <p className="text-base font-medium underline cursor-pointer">
+                              Learn More
+                            </p>
                           )}
+
                           {products.map((product) => product.ID).includes(selectedCard.ID) ? (
                             <CheckBox
                               onClick={handleRemoveFromComparison}
@@ -378,15 +379,15 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                           </div>
                         )}
                       </div>
+                      {isAmericanExpress() && (
+                        <div className="mt-4 md:mt-2">
+                          <p className="text-xs font-light text-secondary-text text-center md:text-left w-full">
+                            American Express is a smartwealthtrends.com advertiser
+                          </p>
+                        </div>
+                      )}
                     </div>
                   </div>
-                  {isAmericanExpress() && (
-                    <div className="md:ml-[304px] w-full">
-                      <p className="text-xs font-light text-secondary-text text-center md:text-left w-full">
-                        American Express is a smartwealthtrends.com advertiser
-                      </p>
-                    </div>
-                  )}
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 border-[1px] border-border rounded-[10px]">
                   {tableItems.slice(0, 3).map((tableItem, index) => {
