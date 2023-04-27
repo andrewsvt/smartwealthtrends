@@ -11,7 +11,7 @@ import { apiDataInitialState, issuers } from 'utils/constants';
 import { getFiltersLink } from 'utils/getFiltersLink';
 
 import { CardBlock, Rating, AdvertiserDisclosure, FeatureLabel } from 'components';
-import { CheckBox, PrimaryButton, ProgressBar } from 'components/UI';
+import { CheckBox, HyperLink, PrimaryButton, ProgressBar } from 'components/UI';
 
 import { Listing } from 'interfaces/Api';
 import { ITableItem } from 'interfaces';
@@ -249,9 +249,9 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
     filterAmexCards();
   }, [filterAmexCards]);
 
-  useEffect(() => {
-    console.log(apiData);
-  }, [apiData]);
+  // useEffect(() => {
+  //   console.log(apiData);
+  // }, [apiData]);
 
   return (
     <>
@@ -272,10 +272,10 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
         />
         {!isChaseCard ? (
           <div className="max-w-[202px]">
-            <PrimaryButton text="Apply Now" />
+            <PrimaryButton text="Learn More" />
           </div>
         ) : (
-          <p className="text-base font-medium underline cursor-pointer">Learn More</p>
+          <HyperLink text="Learn More" />
         )}
       </motion.div>
       <div className="w-full">
@@ -311,9 +311,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                         className="cursor-pointer absolute flex flex-col justify-center items-center space-y-[10px] bg-primary-dark bg-opacity-60 h-full w-full rounded-[10px]"
                       >
                         <LockIcon />
-                        <span className="text-lg font-semibold text-white">
-                          {!isChaseCard ? 'Apply Now' : 'Learn More'}
-                        </span>
+                        <span className="text-lg font-semibold text-white">Learn More</span>
                       </motion.div>
                       <img
                         className="w-full h-full object-contain lg:object-cover rounded-[10px]"
@@ -342,12 +340,10 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                         <div className="flex flex-col md:flex-row items-center space-y-[8px] lg:space-y-0 md:space-x-[20px]">
                           {!isChaseCard ? (
                             <div className="flex flex-row items-center space-x-[8px] w-full md:w-auto">
-                              <PrimaryButton text="Apply Now" />
+                              <PrimaryButton text="Learn More" />
                             </div>
                           ) : (
-                            <p className="text-base font-medium underline cursor-pointer">
-                              Learn More
-                            </p>
+                            <HyperLink text="Learn More" />
                           )}
 
                           {products.map((product) => product.ID).includes(selectedCard.ID) ? (

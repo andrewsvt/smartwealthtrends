@@ -74,7 +74,7 @@ export const FilterContextProvider = ({ children }: any) => {
       const newLink = getFiltersLink(activeCategory, activeIssuer, activeCreditRange);
       navigate(newLink);
     } else if (isCardPage) {
-      console.log('card page');
+      // console.log('card page');
     } else navigate('/top-cards');
   }, [activeCategory, activeIssuer, activeCreditRange]);
 

@@ -3,7 +3,7 @@ import { Listing } from 'interfaces/Api';
 
 import { ComparisonContext } from 'contexts/ComparisonContext';
 
-import { PrimaryButton, TrashButton } from './UI';
+import { HyperLink, PrimaryButton, TrashButton } from './UI';
 
 interface IComparisonCardProps {
   product: Listing;
@@ -38,11 +38,7 @@ export const ComparisonCard: FC<IComparisonCardProps> = ({ product }) => {
           />
         </div>
         <div className="flex flex-row space-x-[8px] justify-center items-center">
-          {isNotChase() ? (
-            <PrimaryButton text="Apply Now" />
-          ) : (
-            <p className="text-base font-medium underline cursor-pointer px-5">Learn More</p>
-          )}
+          {isNotChase() ? <PrimaryButton text="Learn More" /> : <HyperLink text="Learn More" />}
           <TrashButton onClick={() => removeProduct(product)} />
         </div>
       </div>

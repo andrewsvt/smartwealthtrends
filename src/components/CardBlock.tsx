@@ -7,7 +7,7 @@ import { ComparisonContext } from 'contexts/ComparisonContext';
 
 import { IUseWindowSize, useWindowSize } from 'hooks/useWindowSize';
 
-import { CheckBox, ExpandButton, PrimaryButton, SecondaryButton } from './UI';
+import { CheckBox, ExpandButton, HyperLink, PrimaryButton, SecondaryButton } from './UI';
 import { FeatureLabel, Rating } from 'components';
 
 import { ITableItem } from '../interfaces';
@@ -139,9 +139,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ apiData, product, index }) => {
               className="cursor-pointer absolute flex flex-col justify-center items-center space-y-[10px] bg-primary-dark bg-opacity-60 h-full w-full rounded-[10px]"
             >
               <LockIcon />
-              <span className="text-lg font-semibold text-white">
-                {isNotChase() ? 'Apply Now' : 'Learn More'}
-              </span>
+              <span className="text-lg font-semibold text-white">Learn More</span>
             </motion.div>
             <img
               className="w-full h-full object-contain lg:object-cover rounded-[10px]"
@@ -176,10 +174,10 @@ export const CardBlock: FC<ICardBlockProps> = ({ apiData, product, index }) => {
               <div className="flex flex-col md:flex-row items-center space-y-[8px] lg:space-y-0 md:space-x-[20px]">
                 {isNotChase() ? (
                   <div className="flex flex-row items-center space-x-[8px] w-full md:w-auto">
-                    <PrimaryButton text="Apply Now" />
+                    <PrimaryButton text="Learn More" />
                   </div>
                 ) : (
-                  <p className="text-base font-medium underline cursor-pointer">Learn More</p>
+                  <HyperLink text="Learn More" />
                 )}
 
                 {products.map((product) => product.ID).includes(product.ID) ? (
@@ -309,9 +307,9 @@ export const CardBlock: FC<ICardBlockProps> = ({ apiData, product, index }) => {
               onClick={() => updateSelectedCard(product)}
             >
               {isNotChase() ? (
-                <SecondaryButton text="Learn More" />
+                <SecondaryButton text="Read Review" />
               ) : (
-                <p className="text-base font-medium underline cursor-pointer">Learn More</p>
+                <HyperLink text="Read Review" state={true} />
               )}
             </Link>
           </motion.div>

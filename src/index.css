@@ -110,12 +110,6 @@ img {
   stroke: #1b1b1f;
 }
 
-/* rating.tsx */
-.ratingStar > path,
-.ratingStar {
-  fill: black;
-}
-
 /* card.tsx */
 .consIcon > path {
   stroke: #ff4539;

@@ -37,7 +37,7 @@ export const SecondaryButton: FC<IButton> = ({ text }) => {
   );
 };
 
-export const ExpandButton: FC<IButton> = ({ text, icon, onClick, state }) => {
+export const ExpandButton: FC<IButton> = ({ text, onClick, state }) => {
   return (
     <motion.button
       whileTap={{ scale: 0.9 }}
@@ -62,6 +62,19 @@ export const TrashButton: FC<IButton> = ({ onClick }) => {
       className="h-[48px] w-[48px] bg-error justify-center items-center rounded-[10px] text-white hover:bg-rose-600"
     >
       <TrashIcon style={{ display: 'inline' }} />
+    </motion.button>
+  );
+};
+
+export const HyperLink: FC<IButton> = ({ text, state }) => {
+  return (
+    <motion.button
+      whileTap={{ scale: 0.9 }}
+      transition={{ type: 'spring', stiffness: 500, damping: 50 }}
+      className="customTransition py-[12px] px-[16px] w-full md:w-auto space-x-[8px] font-semibold text-sm md:text-base flex flex-1 md:flex-auto justify-center items-center"
+    >
+      <span className="text-current">{text}</span>
+      {!state && <SmallLockIcon className="tableIcon" />}
     </motion.button>
   );
 };
