@@ -73,7 +73,7 @@ export const HyperLink: FC<IButton> = ({ text, state }) => {
       transition={{ type: 'spring', stiffness: 500, damping: 50 }}
       className="customTransition py-[12px] px-[16px] w-full md:w-auto space-x-[8px] font-semibold text-sm md:text-base flex flex-1 md:flex-auto justify-center items-center"
     >
-      <span className="text-current">{text}</span>
+      <span className="text-current underline">{text}</span>
       {!state && <SmallLockIcon className="tableIcon" />}
     </motion.button>
   );
