@@ -275,7 +275,9 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
             <PrimaryButton text="Learn More" />
           </div>
         ) : (
-          <HyperLink text="Learn More" />
+          <div className="max-w-[202px]">
+            <HyperLink text="Learn More" />
+          </div>
         )}
       </motion.div>
       <div className="w-full">
