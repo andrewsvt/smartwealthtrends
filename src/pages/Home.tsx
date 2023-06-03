@@ -3,23 +3,26 @@ import React, { FC, useCallback, useContext, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { CardBlock, CategoryDropdown } from '../components';
-import { Listing } from 'interfaces/Api';
+import { IAPIData, IAPIMeta } from 'interfaces/Api';
 import { AdvertiserDisclosure } from 'components/AdvertiserDisclosure';
 import { apiDataInitialState, categories } from 'utils/constants';
 import { IUseWindowSize, useWindowSize } from 'hooks/useWindowSize';
 import { Link } from 'react-router-dom';
+import { useGetAllCards } from 'hooks/useGetAllCards';
 
 interface IHomeProps {
-  apiData: Listing[];
-  totalRecords: number;
-  isLoading: boolean;
+  // allCards: IAPIData[];
+  // allCardsMeta: IAPIMeta;
+  // isLoading: boolean;
 }
 
-export const Home: FC<IHomeProps> = ({ apiData, totalRecords, isLoading }) => {
+export const Home: FC<IHomeProps> = () => {
+  const { allCards, allCardsMeta, isAllLoading } = useGetAllCards();
+
   const filter = useContext(FilterContext);
   const size: IUseWindowSize = useWindowSize();
 
-  const [allAmexCards, setAllAmexCards] = useState<Listing[]>(apiDataInitialState);
+  const [allAmexCards, setAllAmexCards] = useState<IAPIData[]>([apiDataInitialState]);
 
   //update header title
   useEffect(() => {
@@ -27,9 +30,9 @@ export const Home: FC<IHomeProps> = ({ apiData, totalRecords, isLoading }) => {
   }, []);
 
   const filterAmexCards = useCallback(() => {
-    const amexCards = apiData.filter((card) => card.DisplayName === 'American Express');
+    const amexCards = allCards.filter((card) => card.displayName === 'American Express');
     setAllAmexCards(amexCards);
-  }, [apiData]);
+  }, [allCards]);
 
   useEffect(() => {
     filterAmexCards();
@@ -57,7 +60,7 @@ export const Home: FC<IHomeProps> = ({ apiData, totalRecords, isLoading }) => {
         )}
         <AnimatePresence>
           <motion.div className="grid grid-cols-1 gap-4">
-            {isLoading ? (
+            {isAllLoading ? (
               Array(3)
                 .fill(null)
                 .map((element, index) => {
@@ -72,9 +75,9 @@ export const Home: FC<IHomeProps> = ({ apiData, totalRecords, isLoading }) => {
                     ></motion.div>
                   );
                 })
-            ) : totalRecords > 0 ? (
-              apiData.map((product, index) => (
-                <CardBlock key={product.ID} apiData={apiData} product={product} index={index} />
+            ) : allCardsMeta.total > 0 ? (
+              allCards.map((card, index) => (
+                <CardBlock key={card.id} card={card} allCards={allCards} index={index} />
               ))
             ) : (
               <p className="w-full h-screen">Nothing matching was found.</p>
@@ -88,14 +91,14 @@ export const Home: FC<IHomeProps> = ({ apiData, totalRecords, isLoading }) => {
               Express Cards. These include:{' '}
             </span>
             {allAmexCards.map((amexCard) => (
-              <div key={amexCard.ID}>
-                <span dangerouslySetInnerHTML={{ __html: amexCard.CardName }} />
+              <div key={amexCard.id}>
+                <span dangerouslySetInnerHTML={{ __html: amexCard.cardName }} />
                 <span>
                   {' '}
                   (
                   <Link
                     target={'_blank'}
-                    to={amexCard.TermsAndConditionsLink}
+                    to={amexCard.termsAndConditionsLink}
                     className="text-primary"
                   >
                     Rates & Fees

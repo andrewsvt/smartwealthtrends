@@ -4,12 +4,10 @@ import { Route, Routes } from 'react-router-dom';
 import { CompareButton, Footer, Header, Sidebar } from './components';
 import { Home, Card } from './pages';
 
-import { useGetApiData } from 'hooks/useGetApiData';
+import { useGetAllCards } from 'hooks/useGetAllCards';
 import { homeRoutes } from './utils/constants';
 
 function App() {
-  const { apiData, totalRecords, isLoading } = useGetApiData(10);
-
   return (
     <div className="bg-bg scrollbar-hide">
       <div className="relative w-full h-full pt-0">
@@ -19,15 +17,9 @@ function App() {
           <CompareButton />
           <Routes>
             {homeRoutes.map((path) => (
-              <Route
-                key={path}
-                path={path}
-                element={
-                  <Home apiData={apiData} totalRecords={totalRecords} isLoading={isLoading} />
-                }
-              />
+              <Route key={path} path={path} element={<Home />} />
             ))}
-            <Route path="/cards/:cardId" element={<Card apiData={apiData} />} />
+            <Route path="/cards/:cardId" element={<Card />} />
           </Routes>
         </div>
         <Footer />

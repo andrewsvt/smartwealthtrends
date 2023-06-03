@@ -1,22 +1,22 @@
 import React, { FC, createContext, useState } from 'react';
-import { Listing } from '../interfaces/Api';
+import { IAPIData } from '../interfaces/Api';
 
 interface IComparisonContext {
-  products: Listing[];
-  addProduct: (product: Listing) => void;
-  removeProduct: (product: Listing) => void;
+  products: IAPIData[];
+  addProduct: (product: IAPIData) => void;
+  removeProduct: (product: IAPIData) => void;
 }
 
 export const ComparisonContext = createContext<IComparisonContext>({
   products: [],
-  addProduct: (product: Listing) => {},
-  removeProduct: (product: Listing) => {},
+  addProduct: (product: IAPIData) => {},
+  removeProduct: (product: IAPIData) => {},
 });
 
 export const ComparisonProvider: FC = ({ children }: any) => {
-  const [products, setProducts] = useState<Listing[]>([]);
+  const [products, setProducts] = useState<IAPIData[]>([]);
 
-  const addProduct = (product: Listing) => {
+  const addProduct = (product: IAPIData) => {
     if (products.length < 4) {
       setProducts([...products, product]);
     } else {
@@ -25,8 +25,8 @@ export const ComparisonProvider: FC = ({ children }: any) => {
     }
   };
 
-  const removeProduct = (product: Listing) => {
-    setProducts((prevProducts) => prevProducts.filter((p) => p.ID !== product.ID));
+  const removeProduct = (product: IAPIData) => {
+    setProducts((prevProducts) => prevProducts.filter((p) => p.id !== product.id));
   };
 
   return (

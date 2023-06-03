@@ -1,23 +1,23 @@
 import { createContext, useState, useCallback } from 'react';
-import { Listing } from '../interfaces/Api';
+import { IAPIData } from '../interfaces/Api';
 import { apiDataInitialState } from 'utils/constants';
 
 interface ISelectedCardContext {
-  selectedCard: Listing;
-  updateSelectedCard: (newSelectedCard: Listing) => void;
+  selectedCard: IAPIData;
+  updateSelectedCard: (newSelectedCard: IAPIData) => void;
 }
 
 const defaultSelectedCardContext: ISelectedCardContext = {
-  selectedCard: apiDataInitialState[0],
+  selectedCard: apiDataInitialState,
   updateSelectedCard: () => {},
 };
 
 export const selectedCardContext = createContext<ISelectedCardContext>(defaultSelectedCardContext);
 
 export const SelectedCardContextProvider = ({ children }: any) => {
-  const [selectedCard, setSelectedCard] = useState<Listing>(apiDataInitialState[0]);
+  const [selectedCard, setSelectedCard] = useState<IAPIData>(apiDataInitialState);
 
-  const updateSelectedCard = useCallback((newSelectedCard: Listing) => {
+  const updateSelectedCard = useCallback((newSelectedCard: IAPIData) => {
     setSelectedCard(newSelectedCard);
   }, []);
 

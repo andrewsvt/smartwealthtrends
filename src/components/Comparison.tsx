@@ -53,7 +53,7 @@ export const Comparison: FC<ComparisonProps> = ({ modal, setModal }) => {
         exit={{ opacity: 0, scale: 0.7, transition: { duration: 0.2 } }}
       >
         {products.length ? (
-          products.map((product) => <ComparisonCard key={product.ID} product={product} />)
+          products.map((product) => <ComparisonCard key={product.id} product={product} />)
         ) : (
           <span className="w-full h-full flex justify-center items-center text-secondary-text">
             Compare is empty

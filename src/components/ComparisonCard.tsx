@@ -1,28 +1,28 @@
 import React, { FC, useContext } from 'react';
-import { Listing } from 'interfaces/Api';
+import { IAPIData } from 'interfaces/Api';
 
 import { ComparisonContext } from 'contexts/ComparisonContext';
 
 import { HyperLink, PrimaryButton, TrashButton } from './UI';
 
 interface IComparisonCardProps {
-  product: Listing;
+  product: IAPIData;
 }
 
 export const ComparisonCard: FC<IComparisonCardProps> = ({ product }) => {
   const { removeProduct } = useContext(ComparisonContext);
 
   const compareFields = [
-    { name: 'Balance Transfer Intro APR', field: product.BalanceTransferIntroAPR },
-    { name: 'Intro APR Duration', field: product.IntroAPRDuration },
-    { name: 'Intro APR Rate', field: product.IntroAPRRate },
-    { name: 'Annual Fees', field: product.AnnualFees },
-    { name: 'Card Brand', field: product.CardProcessorTypeName },
-    { name: 'Credit Score Needed', field: product.CreditScoreNeeded },
+    // { name: 'Balance Transfer Intro APR', field: product.BalanceTransferIntroAPR },
+    { name: 'Intro APR Duration', field: product.introAprDuration },
+    { name: 'Intro APR Rate', field: product.introAprRate },
+    { name: 'Annual Fees', field: product.annualFees },
+    { name: 'Card Brand', field: product.cardProcessorTypeName },
+    { name: 'Credit Score Needed', field: product.creditScoreNeeded },
   ];
 
   const isNotChase = () => {
-    if (product.DisplayName === 'Chase') {
+    if (product.displayName === 'Chase') {
       return false;
     } else return true;
   };
@@ -31,10 +31,10 @@ export const ComparisonCard: FC<IComparisonCardProps> = ({ product }) => {
     <div className="relative flex flex-col w-[325px] min-w-[230px]">
       <div className="flex flex-col justify-between bg-white w-full min-h-[305px] p-[16px] rounded-[14px]">
         <div className="flex flex-col items-center justify-center space-y-[16px]">
-          <img className="w-[210px] h-auto" src={product.Creative.LogoImageUrl} alt="card" />
+          <img className="w-[210px] h-auto" src={product.rawLogoImageUrl} alt="card" />
           <h2
             className="text-basePlus font-semibold text-center"
-            dangerouslySetInnerHTML={{ __html: product.CardName }}
+            dangerouslySetInnerHTML={{ __html: product.cardName }}
           />
         </div>
         <div className="flex flex-row space-x-[8px] justify-center items-center">

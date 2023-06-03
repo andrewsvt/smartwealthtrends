@@ -13,27 +13,31 @@ import { getFiltersLink } from 'utils/getFiltersLink';
 import { CardBlock, Rating, AdvertiserDisclosure, FeatureLabel } from 'components';
 import { CheckBox, HyperLink, PrimaryButton, ProgressBar } from 'components/UI';
 
-import { Listing } from 'interfaces/Api';
+import { IAPIData } from 'interfaces/Api';
 import { ITableItem } from 'interfaces';
 
 import { ReactComponent as StarIcon } from '../assets/icons/RatingStarFull.svg';
 import { ReactComponent as CheckIcon } from '../assets/icons/check.svg';
 import { ReactComponent as CrossIcon } from '../assets/icons/cross.svg';
 import { ReactComponent as LockIcon } from '../assets/icons/lock.svg';
+import { useGetSingleCard } from 'hooks/useGetSingleCard';
+import { useGetAllCards } from 'hooks/useGetAllCards';
 
-interface ICardpageProps {
-  apiData: Listing[];
-}
+interface ICardpageProps {}
 
-export const Card: FC<ICardpageProps> = ({ apiData }) => {
-  const apiUrl = process.env.REACT_APP_API_URL;
-
+export const Card: FC<ICardpageProps> = () => {
   const size: IUseWindowSize = useWindowSize();
   const { cardId } = useParams();
   const navigate = useNavigate();
 
-  const [lastApiData, setLastApiData] = useState<Listing[]>(apiDataInitialState);
-  const [allAmexCards, setAllAmexCards] = useState<Listing[]>(apiDataInitialState);
+  const { singleCard, isSingleLoading } = useGetSingleCard('3449');
+  console.log(singleCard);
+
+  // const { allCards, allCardsMeta, isAllLoading } = useGetAllCards();
+  // console.log('all cards - ' + allCards);
+
+  const [lastApiData, setLastApiData] = useState<IAPIData[]>([apiDataInitialState]);
+  const [allAmexCards, setAllAmexCards] = useState<IAPIData[]>([apiDataInitialState]);
   const [isChaseCard, setIsChaseCard] = useState<boolean>(false);
   const [scrolled, setScrolled] = useState(false);
   const [currentParams, setCurrentParams] = useState('');
@@ -43,48 +47,10 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
   const { products, addProduct, removeProduct } = useContext(ComparisonContext);
   const filter = useContext(FilterContext);
 
-  const getLocalStorageItem = (key: string) => {
-    const itemStr = localStorage.getItem(key);
-    if (!itemStr) {
-      return null;
-    }
-    const item = JSON.parse(itemStr);
-    if (item.expiration && new Date().getTime() > item.expiration) {
-      localStorage.removeItem(key);
-      return null;
-    }
-    return item.value;
-  };
-
-  //fetch all cards
-  const fetchData = useCallback(async () => {
-    try {
-      // Get the item from local storage
-      let lastRequestLink: string = getLocalStorageItem('lastRequestLink');
-
-      if (lastRequestLink === null || lastRequestLink === '') {
-        lastRequestLink = `${apiUrl}&crd=25&xml_version=2&max=999`;
-      }
-
-      const response = await fetch(lastRequestLink);
-      const data = await response.json();
-      setLastApiData(data.ResultSet.Listings.Listing);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  }, [apiUrl]);
-
-  //call fetch
-  useEffect(() => {
-    fetchData();
-  }, [fetchData, selectedCard]);
-
-  // const { apiData } = useGetApiData(3);
-
   //update header title
   useEffect(() => {
-    if (selectedCard) {
-      const cardName = selectedCard.CardName;
+    if (singleCard) {
+      const cardName = singleCard.cardName;
       const parser = new DOMParser();
       const decodedCardName = parser.parseFromString(
         `<!doctype html><body>${cardName}`,
@@ -93,7 +59,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
       //@ts-ignore
       document.title = decodedCardName;
     }
-  }, [selectedCard]);
+  }, [singleCard]);
 
   //get params
   useEffect(() => {
@@ -110,51 +76,36 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
     setCurrentParams(newLink);
   }, [filter.activeCategory, filter.activeIssuer, filter.activeCreditRange]);
 
-  //set context after reloading
-  useEffect(() => {
-    const currentObject = lastApiData.find((card: Listing) => card.ID === cardId);
-    if (currentObject) {
-      updateSelectedCard(currentObject);
-    }
-  }, [cardId, lastApiData]);
-
   //scroll up when open new card page
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [selectedCard.ID]);
+  }, []);
 
   const tableItems = useMemo<ITableItem[]>(
     () => [
       {
-        // title: `Welcome Offer ${product.SignupReward.length ? '- ' + product.SignupReward : ''}`,
-        title: 'Welcome Offer',
-        description: selectedCard.BonusMilesFull.length > 0 ? selectedCard.BonusMilesFull : 'N/A',
-      },
-      {
         title: 'Rewards Rate',
         description:
-          selectedCard.RewardsDescriptionLong.length > 0
-            ? selectedCard.RewardsDescriptionLong
-            : 'N/A',
+          singleCard.rewardsDescriptionLong.length > 0 ? singleCard.rewardsDescriptionLong : 'N/A',
       },
       {
         title: 'APR',
         description: `<p class="mb-[8px]">Intro APR: ${
-          selectedCard.IntroAPRRate.length > 0 && selectedCard.IntroAPRRate !== 'N/A'
-            ? `${selectedCard.IntroAPRRate}`
+          singleCard.introAprRate.length > 0 && singleCard.introAprRate !== 'N/A'
+            ? `${singleCard.introAprRate}`
             : 'N/A'
         }${
-          selectedCard.IntroAPRDuration.length > 0 && selectedCard.IntroAPRDuration !== 'N/A'
-            ? ` for ${selectedCard.IntroAPRDuration}</p>`
+          singleCard.introAprDuration.length > 0 && singleCard.introAprDuration !== 'N/A'
+            ? ` for ${singleCard.introAprDuration}</p>`
             : ''
         }${`<p>Regular APR: ${
-          selectedCard.RegAPR.length > 0 && selectedCard.RegAPR !== 'N/A'
-            ? `${selectedCard.RegAPR} ${
-                selectedCard.RegAPRType.length > 0
-                  ? selectedCard.RegAPRType.includes('(')
-                    ? selectedCard.RegAPRType
-                    : `(${selectedCard.RegAPRType})`
-                  : '' // good api btw
+          singleCard.regApr.length > 0 && singleCard.regApr !== 'N/A'
+            ? `${singleCard.regApr} ${
+                singleCard.regAprType.length > 0
+                  ? singleCard.regAprType.includes('(')
+                    ? singleCard.regAprType
+                    : `(${singleCard.regAprType})`
+                  : ''
               }`
             : 'N/A'
         }</p>`}`,
@@ -162,34 +113,31 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
       {
         icon: '',
         title: 'Annual Fees',
-        description: selectedCard.AnnualFees.length > 0 ? selectedCard.AnnualFees : 'N/A',
+        description: singleCard.annualFees.length > 0 ? singleCard.annualFees : 'N/A',
       },
       {
         icon: '',
         title: 'Credit Score Needed',
-        description:
-          selectedCard.CreditScoreNeeded.length > 0 ? selectedCard.CreditScoreNeeded : 'N/A',
+        description: singleCard.creditScoreNeeded.length > 0 ? singleCard.creditScoreNeeded : 'N/A',
       },
       {
         icon: '',
         title: 'Card Brand',
         description:
-          selectedCard.CardProcessorTypeName.length > 0
-            ? selectedCard.CardProcessorTypeName
-            : 'N/A',
+          singleCard.cardProcessorTypeName.length > 0 ? singleCard.cardProcessorTypeName : 'N/A',
       },
     ],
-    [selectedCard]
+    [singleCard]
   );
 
   //add/remove compare function
   const handleAddToComparison = useCallback(() => {
-    addProduct(selectedCard);
-  }, [addProduct, selectedCard, products]);
+    addProduct(singleCard);
+  }, [addProduct, singleCard, products]);
 
   const handleRemoveFromComparison = useCallback(() => {
-    removeProduct(selectedCard);
-  }, [removeProduct, selectedCard]);
+    removeProduct(singleCard);
+  }, [removeProduct, singleCard]);
 
   //check user scroll
   useEffect(() => {
@@ -209,21 +157,21 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
   }, []);
 
   const isChase = () => {
-    if (selectedCard.DisplayName === 'Chase') {
+    if (singleCard.displayName === 'Chase') {
       setIsChaseCard(true);
     } else setIsChaseCard(false);
   };
 
   useEffect(() => {
     isChase();
-  }, [selectedCard.ID]);
+  }, [singleCard.id]);
 
   const textToSlug = (text: string) => {
     return text.toLowerCase().replace(/ /g, '-');
   };
 
   const handleIssuerClick = () => {
-    const slug = textToSlug(selectedCard.DisplayName);
+    const slug = textToSlug(singleCard.displayName);
 
     if (issuers.some((obj) => obj.slug === slug)) {
       filter.updateIssuer(slug);
@@ -232,26 +180,22 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
   };
 
   const isAmericanExpress = () => {
-    if (selectedCard.DisplayName === 'American Express') {
+    if (singleCard.displayName === 'American Express') {
       return true;
     } else return false;
   };
 
-  const filterAmexCards = useCallback(() => {
-    const amexCards = lastApiData
-      .filter((product) => product.ID !== cardId)
-      .slice(0, 2)
-      .filter((card) => card.DisplayName === 'American Express');
-    setAllAmexCards(amexCards);
-  }, [lastApiData]);
-
-  useEffect(() => {
-    filterAmexCards();
-  }, [filterAmexCards]);
+  // const filterAmexCards = useCallback(() => {
+  //   const amexCards = lastApiData
+  //     .filter((product) => String(product.id) !== cardId)
+  //     .slice(0, 2)
+  //     .filter((card) => card.displayName === 'American Express');
+  //   setAllAmexCards(amexCards);
+  // }, [lastApiData]);
 
   // useEffect(() => {
-  //   console.log(apiData);
-  // }, [apiData]);
+  //   filterAmexCards();
+  // }, [filterAmexCards]);
 
   return (
     <>
@@ -262,13 +206,13 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
         className="fixed top-0 left-0 w-full h-[100px] bg-light-gray flex items-center justify-center z-30 p-[16px] space-x-[16px] md:space-x-[32px]"
       >
         <img
-          src={selectedCard.Creative.LogoImageUrl}
+          src={singleCard.rawLogoImageUrl} //LogoImageUrl
           alt="logo"
           className="h-full w-auto rounded-[10px]"
         />
         <p
           className="text-sm md:text-lg font-semibold cutLongVerticalText"
-          dangerouslySetInnerHTML={{ __html: selectedCard.CardName }}
+          dangerouslySetInnerHTML={{ __html: singleCard.cardName }}
         />
         {!isChaseCard ? (
           <div className="max-w-[202px]">
@@ -281,7 +225,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
         )}
       </motion.div>
       <div className="w-full">
-        {selectedCard.ID.length ? (
+        {!isSingleLoading ? (
           <>
             <div className="lg:h-[72px] pb-[20px] lg:pb-0 w-full flex flex-col lg:flex-row justify-between items-center">
               <div className="flex flex-row items-center py-[24px] lg:py-0 space-x-[8px] w-full lg:w-[75%] truncate">
@@ -290,12 +234,12 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                 </Link>
                 <div className="text-medium-gray">/</div>
                 <div onClick={handleIssuerClick} className="text-secondary-text cursor-pointer">
-                  {selectedCard.DisplayName}
+                  {singleCard.displayName}
                 </div>
                 <div className="text-medium-gray">/</div>
                 <div
                   className="text-secondary-text cursor-default"
-                  dangerouslySetInnerHTML={{ __html: selectedCard.CardName }}
+                  dangerouslySetInnerHTML={{ __html: singleCard.cardName }}
                 />
               </div>
               <AdvertiserDisclosure />
@@ -317,7 +261,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                       </motion.div>
                       <img
                         className="w-full h-full object-contain lg:object-cover rounded-[10px]"
-                        src={selectedCard.Creative.RawLogoImageUrl}
+                        src={singleCard.rawLogoImageUrl}
                         alt="card"
                       />
                     </div>
@@ -327,14 +271,14 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                       <div className="flex flex-col-reverse md:flex-row w-full justify-between">
                         <h2
                           className="text-lg text-center md:text-left w-full font-semibold customTransition"
-                          dangerouslySetInnerHTML={{ __html: selectedCard.CardName }}
+                          dangerouslySetInnerHTML={{ __html: singleCard.cardName }}
                         />
                       </div>
                       <div className="flex flex-row items-center">
                         <span className="text-base font-medium mr-[14px]">
-                          {Number(selectedCard.EditorRating).toFixed(1)}
+                          {Number(singleCard.editorRating).toFixed(1)}
                         </span>
-                        <Rating value={Number(selectedCard.EditorRating)} />
+                        <Rating value={Number(singleCard.editorRating)} />
                       </div>
                     </div>
                     <div className="w-full">
@@ -348,7 +292,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                             <HyperLink text="Learn More" />
                           )}
 
-                          {products.map((product) => product.ID).includes(selectedCard.ID) ? (
+                          {products.map((product) => product.id).includes(singleCard.id) ? (
                             <CheckBox
                               onClick={handleRemoveFromComparison}
                               text="Added to compare"
@@ -362,9 +306,9 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                             />
                           )}
                         </div>
-                        {selectedCard.TermsAndConditionsLink.length > 1 && (
+                        {singleCard.termsAndConditionsLink.length > 1 && (
                           <div className="flex flex-col items-center space-y-[4px]">
-                            <Link target={'_blank'} to={selectedCard.TermsAndConditionsLink}>
+                            <Link target={'_blank'} to={singleCard.termsAndConditionsLink}>
                               <div className="px-[10px] py-1 bg-light-gray rounded-lg text-primary font-medium text-xs text-center">
                                 Rates & Fees
                               </div>
@@ -433,7 +377,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                   <h3 className="text-basePlus font-semibold px-[20px]">Quick Facts</h3>
                   <div
                     className="PPCDescription"
-                    dangerouslySetInnerHTML={{ __html: selectedCard.Creative.PPCDescription }}
+                    dangerouslySetInnerHTML={{ __html: singleCard.ppcDescription }}
                   ></div>
                 </div>
               </div>
@@ -447,12 +391,12 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                     <div className="flex flex-row items-center space-x-[16px]">
                       <div className="w-[64px] h-[64px] rounded-[12px] bg-bg flex items-center justify-center">
                         <span className="text-[28px] leading-[36px] font-semibold text-secondary">
-                          {Number(selectedCard.EditorRating).toFixed(1)}
+                          {Number(singleCard.editorRating).toFixed(1)}
                         </span>
                       </div>
                       <div className="flex flex-col space-y-[2px]">
                         <div className="flex flex-row items-center">
-                          <Rating value={Number(selectedCard.EditorRating)} />
+                          <Rating value={Number(singleCard.editorRating)} />
                         </div>
                         <p className="text-base font-medium">Expert Rating</p>
                       </div>
@@ -495,11 +439,12 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                       <h2
                         className="text-lg font-semibold"
                         dangerouslySetInnerHTML={{
-                          __html: selectedCard.CardName + ' Card Expert Review',
+                          __html: singleCard.cardName + ' Card Expert Review',
                         }}
                       />
                       <p className="text-sm font-light text-secondary-text">
-                        {selectedCard.LastUpdated}
+                        Last Updated
+                        {/* {singleCard.LastUpdated} */}
                       </p>
                     </div>
                     <p className="text-base font-light">
@@ -522,7 +467,7 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                   <h2
                     className="text-lg font-semibold"
                     dangerouslySetInnerHTML={{
-                      __html: 'Pros and Cons of ' + selectedCard.CardName,
+                      __html: 'Pros and Cons of ' + singleCard.cardName,
                     }}
                   />
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-[28px] md:gap-[74px] ">
@@ -559,33 +504,24 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                   </div>
                 </div>
                 {/* Related offers */}
-                <div id="section4" className="space-y-[32px]">
+                {/* <div id="section4" className="space-y-[32px]">
                   <h2 className="text-lg font-semibold pl-[20px]">Related Card Offers</h2>
                   <div className="grid grid-cols-1 gap-4">
-                    {lastApiData.length > 2
-                      ? lastApiData
-                          .filter((product) => product.ID !== cardId)
+                    {allCards.length > 2
+                      ? allCards
+                          .filter((product) => String(product.id) !== cardId)
                           .slice(0, 2)
-                          .map((product, index) => (
+                          .map((card, index) => (
                             <CardBlock
-                              apiData={lastApiData}
-                              key={product.ID}
-                              product={product}
+                              key={card.id}
+                              card={card}
+                              allCards={allCards}
                               index={index}
                             />
                           ))
-                      : apiData
-                          .slice(0, 2)
-                          .map((product, index) => (
-                            <CardBlock
-                              apiData={apiData}
-                              key={product.ID}
-                              product={product}
-                              index={index}
-                            />
-                          ))}
+                      : 'No Related Items'}
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
             {(isAmericanExpress() || allAmexCards.length > 0) && (
@@ -595,13 +531,13 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                   Express Cards. These include:{' '}
                 </span>
                 {/* current card */}
-                <span dangerouslySetInnerHTML={{ __html: selectedCard.CardName }} />
+                <span dangerouslySetInnerHTML={{ __html: singleCard.cardName }} />
                 <span>
                   {' '}
                   (
                   <Link
                     target={'_blank'}
-                    to={selectedCard.TermsAndConditionsLink}
+                    to={singleCard.termsAndConditionsLink}
                     className="text-primary"
                   >
                     Rates & Fees
@@ -610,14 +546,14 @@ export const Card: FC<ICardpageProps> = ({ apiData }) => {
                 </span>
                 {/* related cards */}
                 {allAmexCards.map((amexCard) => (
-                  <div key={amexCard.ID}>
-                    <span dangerouslySetInnerHTML={{ __html: amexCard.CardName }} />
+                  <div key={amexCard.id}>
+                    <span dangerouslySetInnerHTML={{ __html: amexCard.cardName }} />
                     <span>
                       {' '}
                       (
                       <Link
                         target={'_blank'}
-                        to={amexCard.TermsAndConditionsLink}
+                        to={amexCard.termsAndConditionsLink}
                         className="text-primary"
                       >
                         Rates & Fees

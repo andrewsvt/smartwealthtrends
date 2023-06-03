@@ -11,7 +11,7 @@ import { CheckBox, ExpandButton, HyperLink, PrimaryButton, SecondaryButton } fro
 import { FeatureLabel, Rating } from 'components';
 
 import { ITableItem } from '../interfaces';
-import { Listing } from 'interfaces/Api';
+import { IAPIData } from 'interfaces/Api';
 
 //icons
 import { ReactComponent as GiftIcon } from '../assets/icons/gift.svg';
@@ -20,12 +20,12 @@ import { ReactComponent as PercentIcon } from '../assets/icons/percent.svg';
 import { ReactComponent as LockIcon } from '../assets/icons/lock.svg';
 
 interface ICardBlockProps {
-  product: Listing;
+  card: IAPIData;
+  allCards: IAPIData[];
   index: number;
-  apiData: Listing[];
 }
 
-export const CardBlock: FC<ICardBlockProps> = ({ apiData, product, index }) => {
+export const CardBlock: FC<ICardBlockProps> = ({ card, allCards, index }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
   const { updateSelectedCard } = useContext(selectedCardContext);
@@ -37,35 +37,33 @@ export const CardBlock: FC<ICardBlockProps> = ({ apiData, product, index }) => {
     () => [
       {
         icon: GiftIcon,
-        // title: `Welcome Offer ${product.SignupReward.length ? '- ' + product.SignupReward : ''}`,
         title: 'Welcome Offer',
-        description: product.BonusMilesFull.length > 0 ? product.BonusMilesFull : 'N/A',
+        description: card.bonusMilesFull.length > 0 ? card.bonusMilesFull : 'N/A',
       },
       {
         icon: StarIcon,
         title: 'Rewards Rate',
-        description:
-          product.RewardsDescriptionLong.length > 0 ? product.RewardsDescriptionLong : 'N/A',
+        description: card.rewardsDescriptionLong.length > 0 ? card.rewardsDescriptionLong : 'N/A',
       },
       {
         icon: PercentIcon,
         title: 'APR',
         description: `<p class="mb-[8px]">Intro APR: ${
-          product.IntroAPRRate.length > 0 && product.IntroAPRRate !== 'N/A'
-            ? `${product.IntroAPRRate}`
+          card.introAprRate.length > 0 && card.introAprRate !== 'N/A'
+            ? `${card.introAprRate}`
             : 'N/A'
         }${
-          product.IntroAPRDuration.length > 0 && product.IntroAPRDuration !== 'N/A'
-            ? ` for ${product.IntroAPRDuration}</p>`
+          card.introAprDuration.length > 0 && card.introAprDuration !== 'N/A'
+            ? ` for ${card.introAprDuration}</p>`
             : ''
         }${`<p>Regular APR: ${
-          product.RegAPR.length > 0 && product.RegAPR !== 'N/A'
-            ? `${product.RegAPR} ${
-                product.RegAPRType.length > 0
-                  ? product.RegAPRType.includes('(')
-                    ? product.RegAPRType
-                    : `(${product.RegAPRType})`
-                  : '' // good api btw
+          card.regApr.length > 0 && card.regApr !== 'N/A'
+            ? `${card.regApr} ${
+                card.regAprType.length > 0
+                  ? card.regAprType.includes('(')
+                    ? card.regAprType
+                    : `(${card.regAprType})`
+                  : ''
               }`
             : 'N/A'
         }</p>`}`,
@@ -73,49 +71,48 @@ export const CardBlock: FC<ICardBlockProps> = ({ apiData, product, index }) => {
       {
         icon: '',
         title: 'Annual Fees',
-        description: product.AnnualFees.length > 0 ? product.AnnualFees : 'N/A',
+        description: card.annualFees.length > 0 ? card.annualFees : 'N/A',
       },
       {
         icon: '',
         title: 'Credit Score Needed',
-        description: product.CreditScoreNeeded.length > 0 ? product.CreditScoreNeeded : 'N/A',
+        description: card.creditScoreNeeded.length > 0 ? card.creditScoreNeeded : 'N/A',
       },
       {
         icon: '',
         title: 'Card Brand',
-        description:
-          product.CardProcessorTypeName.length > 0 ? product.CardProcessorTypeName : 'N/A',
+        description: card.cardProcessorTypeName.length > 0 ? card.cardProcessorTypeName : 'N/A',
       },
     ],
-    [product]
+    [card]
   );
 
   const handleAddToComparison = useCallback(() => {
-    addProduct(product);
-  }, [addProduct, product]);
+    addProduct(card);
+  }, [addProduct, card]);
 
   const handleRemoveFromComparison = useCallback(() => {
-    removeProduct(product);
-  }, [removeProduct, product]);
+    removeProduct(card);
+  }, [removeProduct, card]);
 
   const isAmericanExpress = () => {
-    if (product.DisplayName === 'American Express') {
+    if (card.displayName === 'American Express') {
       return true;
     } else return false;
   };
 
-  const isFirstAmex = () => {
-    const firstAmexCard = apiData.find((card) => card.DisplayName === 'American Express');
+  // const isFirstAmex = () => {
+  //   const firstAmexCard = apiData.find((card) => card.DisplayName === 'American Express');
 
-    if (firstAmexCard) {
-      if (firstAmexCard.ID === product.ID) {
-        return true;
-      }
-    } else return false;
-  };
+  //   if (firstAmexCard) {
+  //     if (firstAmexCard.ID === card.ID) {
+  //       return true;
+  //     }
+  //   } else return false;
+  // };
 
   const isNotChase = () => {
-    if (product.DisplayName === 'Chase') {
+    if (card.displayName === 'Chase') {
       return false;
     } else return true;
   };
@@ -143,7 +140,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ apiData, product, index }) => {
             </motion.div>
             <img
               className="w-full h-full object-contain lg:object-cover rounded-[10px]"
-              src={product.Creative.RawLogoImageUrl}
+              src={card.rawLogoImageUrl}
               alt="card"
             />
           </div>
@@ -153,20 +150,20 @@ export const CardBlock: FC<ICardBlockProps> = ({ apiData, product, index }) => {
             <div className="flex flex-col-reverse md:flex-row w-full justify-between">
               <Link
                 target={'_blank'}
-                to={`/cards/${product.ID}`}
-                onClick={() => updateSelectedCard(product)}
+                to={`/cards/${card.id}`}
+                onClick={() => updateSelectedCard(card)}
               >
                 <h2
                   className="text-lg text-center md:text-left w-full font-semibold hover:text-primary-dark customTransition"
-                  dangerouslySetInnerHTML={{ __html: product.CardName }}
+                  dangerouslySetInnerHTML={{ __html: card.cardName }}
                 />
               </Link>
             </div>
             <div className="flex flex-row items-center">
               <span className="text-base font-medium mr-[14px]">
-                {Number(product.EditorRating).toFixed(1)}
+                {Number(card.editorRating).toFixed(1)}
               </span>
-              <Rating value={Number(product.EditorRating)} />
+              <Rating value={Number(card.editorRating)} />
             </div>
           </div>
           <div className="w-full">
@@ -180,7 +177,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ apiData, product, index }) => {
                   <HyperLink text="Learn More" />
                 )}
 
-                {products.map((product) => product.ID).includes(product.ID) ? (
+                {products.map((card) => card.id).includes(card.id) ? (
                   <CheckBox
                     onClick={handleRemoveFromComparison}
                     text="Added to compare"
@@ -190,9 +187,9 @@ export const CardBlock: FC<ICardBlockProps> = ({ apiData, product, index }) => {
                   <CheckBox onClick={handleAddToComparison} text="Add to compare" state={false} />
                 )}
               </div>
-              {product.TermsAndConditionsLink.length > 1 && (
+              {card.termsAndConditionsLink.length > 1 && (
                 <div className="flex flex-col items-center space-y-[4px]">
-                  <Link target={'_blank'} to={product.TermsAndConditionsLink}>
+                  <Link target={'_blank'} to={card.termsAndConditionsLink}>
                     <div className="px-[10px] py-1 bg-light-gray rounded-lg text-primary font-medium text-xs text-center">
                       Rates & Fees
                     </div>
@@ -205,13 +202,13 @@ export const CardBlock: FC<ICardBlockProps> = ({ apiData, product, index }) => {
                 </div>
               )}
             </div>
-            {isFirstAmex() && (
+            {/* {isFirstAmex() && (
               <div className="mt-4 md:mt-2">
                 <p className="text-xs font-light text-secondary-text text-center md:text-left w-full">
                   American Express is a smartwealthtrends.com advertiser
                 </p>
               </div>
-            )}
+            )} */}
           </div>
         </div>
       </div>
@@ -275,13 +272,17 @@ export const CardBlock: FC<ICardBlockProps> = ({ apiData, product, index }) => {
             exit={{ opacity: 0, y: -30 }}
           >
             <h3 className="text-basePlus font-semibold px-[20px]">Quick Facts</h3>
-            <div className="PPCDescription">
+            {/* <div className="PPCDescription">
               <ul>
-                {product.Creative.PPCDescriptionLines.slice(0, 5).map((item, index) => (
+                {card.Creative.PPCDescriptionLines.slice(0, 5).map((item, index) => (
                   <li key={index} dangerouslySetInnerHTML={{ __html: item }}></li>
                 ))}
               </ul>
-            </div>
+            </div> */}
+            <div
+              className="PPCDescription"
+              dangerouslySetInnerHTML={{ __html: card.ppcDescription }}
+            ></div>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: -30 }}
@@ -294,17 +295,17 @@ export const CardBlock: FC<ICardBlockProps> = ({ apiData, product, index }) => {
               Review additional details for{' '}
               <Link
                 target={'_blank'}
-                to={`/cards/${product.ID}`}
-                onClick={() => updateSelectedCard(product)}
+                to={`/cards/${card.id}`}
+                onClick={() => updateSelectedCard(card)}
                 className="text-primary font-semibold"
-                dangerouslySetInnerHTML={{ __html: product.CardName }}
+                dangerouslySetInnerHTML={{ __html: card.cardName }}
               ></Link>
             </p>
             <Link
               target={'_blank'}
               className="min-w-[202px]"
-              to={`/cards/${product.ID}`}
-              onClick={() => updateSelectedCard(product)}
+              to={`/cards/${card.id}`}
+              onClick={() => updateSelectedCard(card)}
             >
               {isNotChase() ? (
                 <SecondaryButton text="Read Review" />

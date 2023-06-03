@@ -32,22 +32,22 @@ import { ReactComponent as RangeFair } from '../assets/icons/rangeFair.svg';
 import { ReactComponent as RangeGood } from '../assets/icons/rangeGood.svg';
 import { ReactComponent as RangeExcellent } from '../assets/icons/rangeExcellent.svg';
 
-import { Listing } from 'interfaces/Api';
+import { IAPIData, IAPIMeta } from 'interfaces/Api';
 import { ReactElement, SVGProps } from 'react';
 
 export enum CategoriesEnum {
-  topCards = '&crd=25',
-  balanceTransfer = '&crd=6',
-  lowOngoingRate = '&crd=2',
-  noAnnualFee = '&crd=11',
-  cashBack = '&crd=3',
-  rewards = '&crd=5',
-  noForeignFees = '&crd=16',
-  gas = '&crd=7',
-  zeroApr = '&crd=10',
-  travel = '&crd=4',
-  student = '&crd=8',
-  business = '&crd=9',
+  topCards = '',
+  balanceTransfer = '&category=Balance%20Transfer&sort=id',
+  lowOngoingRate = '&category=Low%20Ongoing%20Rate&sort=id',
+  noAnnualFee = '&category=No%20Annual%20Fee&sort=id',
+  cashBack = '&category=Cash%20Back&sort=id',
+  rewards = '&category=Rewards&sort=id',
+  noForeignFees = '&category=No%20Foreign%20Transaction%20Fee&sort=id',
+  gas = '&category=Gas&sort=id',
+  zeroApr = '&category=0%25%20Intro%20APR&sort=id',
+  travel = '&category=Travel%20Rewards&sort=id',
+  student = '&category=Student&sort=id',
+  business = '&category=Small%20Business&sort=id',
 }
 export enum CategoriesSlugEnum {
   topCards = 'top-cards',
@@ -66,15 +66,15 @@ export enum CategoriesSlugEnum {
 
 export enum IssuersEnum {
   allIssuers = '',
-  citi = '&ccis=188934',
-  capitalOne = '&ccis=637902',
-  chase = '&ccis=188933',
-  bankOfAmerica = '&ccis=574429',
-  wellsFargo = '&ccis=636744',
-  americanExpress = '&ccis=640029',
-  discover = '&ccis=662750',
-  visa = '&ccntwk=1',
-  mastercard = '&ccntwk=2',
+  citi = '&issuer=Citi&sort=id',
+  capitalOne = '&issuer=Capital%20One&sort=id',
+  chase = '&issuer=Chase&sort=id',
+  bankOfAmerica = '&issuer=Bank%20of%20America&sort=id',
+  wellsFargo = '&issuer=Wells%20Fargo&sort=id',
+  americanExpress = '&issuer=American%20Express&sort=id',
+  discover = '&issuer=Discover&sort=id',
+  visa = '&category=Visa&sort=id',
+  mastercard = '&category=Mastercard&sort=id',
 }
 export enum IssuersSlugEnum {
   allIssuers = 'all-issuers',
@@ -91,11 +91,11 @@ export enum IssuersSlugEnum {
 
 export enum CreditRatingEnum {
   allCreditRating = '',
-  excellent = '&cccrate=1',
-  good = '&cccrate=2',
-  averageFair = '&cccrate=3',
-  poor = '&cccrate=4',
-  noneLimitedHistory = '&cccrate=5',
+  excellent = '&creditRange=Excellent',
+  good = '&creditRange=Good',
+  averageFair = '&creditRange=Average%2FFair',
+  poor = '&creditRange=Poor',
+  noneLimitedHistory = '&creditRange=None%2FLimited%20History',
 }
 export enum CreditRatingSlugEnum {
   allCreditRating = 'all-credit-rating',
@@ -292,94 +292,32 @@ export const creditRating: ISVGSelectValue[] = [
   },
 ];
 
-export const apiDataInitialState: Listing[] = [
-  {
-    ID: '',
-    AccountID: '',
-    ActiveCreditCardTypes: '',
-    HasAnnualFee: '',
-    AnnualFeeDisclaimer: '',
-    AnnualFees: '',
-    AnnualFeesAmount: '',
-    BalanceTransferDurationMonths: '',
-    BalanceTransferFees: '',
-    BalanceTransferGracePeriod: '',
-    BalanceTransferIntroAPR: '',
-    BalanceTransferIntroDuration: '',
-    BalanceTransferMin: '',
-    BalanceTransferRate: '',
-    BonusMiles: '',
-    BonusMilesDisclaimer: '',
-    BonusMilesFull: '',
-    BuyerID: '',
-    CardDetailsLink: '',
-    CardName: '',
-    CardProcessorTypeName: '',
-    CardRatingsID: '',
-    CardUse: '',
-    CashAdvanceAPR: '',
-    CashAdvanceFee: '',
-    CashAdvanceGracePeriod: '',
-    CashBackOnAllOther: '',
-    CashBackOnGas: '',
-    CashBackOnGroceries: '',
-    OverallCashBack: '',
-    AirlineRewards: '',
-    HotelRewards: '',
-    DiningRewards: '',
-    Company: '',
-    CreditCardID: '',
-    CreditCardIssuerID: '',
-    CreditCardType: '',
-    CreditRatingGroup: 5,
-    CreditScoreNeeded: '',
-    DefaultCreditCardTypeName: '',
-    DisplayName: '',
-    EditorRating: '',
-    ForeignTransactionFee: '',
-    ImpressionID: '',
-    IntroAPRDuration: '',
-    IntroAPRRate: '',
-    LastUpdated: '',
-    LatePaymentFee: '',
-    MaxRegAPR: '',
-    MilesPerDollar: '',
-    MinRegAPR: '',
-    PenaltyAPR: '',
-    PointsPerDollar: '',
-    Rank: '',
-    RegAPR: '',
-    RegAPRType: '',
-    RewardsDescriptionLong: '',
-    RewardsInfo: [
-      {
-        value: '',
-        description: '',
-      },
-    ],
-    RewardsProgramLogoImage: '',
-    RewardsProgramName: '',
-    SignupFeatured: '',
-    SignupRequirement: '',
-    SignupReward: '',
-    SpecialOffer: '',
-    SpecialOfferDisclaimer: '',
-    TermsAndConditionsLink: '',
-    Creative: {
-      ID: '',
-      LogoImageUrl:
-        'https://cdn.nextinsure.com/imaging/opt/7dc4432f-019f-4848-a2da-ed81b74156f9.png?w=210',
-      RawLogoImageUrl:
-        'https://cdn.nextinsure.com/imaging/opt/7dc4432f-019f-4848-a2da-ed81b74156f9.png',
-      LogoWidth: '',
-      LogoHeight: '',
-      Description: '',
-      DescriptionLines: ['', '', ''],
-      PPCDescription: '',
-      PPCDescriptionLines: [''],
-    },
-  },
-];
+export const apiDataInitialState: IAPIData = {
+  id: 3449,
+  displayName: 'Prosper',
+  cardName: 'Prosper&#174; Card',
+  rawLogoImageUrl: 'https://cdn.nextinsure.com/imaging/opt/11536849.png',
+  editorRating: '5',
+  termsAndConditionsLink:
+    'https://www.prosper.com/credit-card/prosper-card-cardholder-agreement.pdf',
+  bonusMilesFull: 'N/A',
+  rewardsDescriptionLong: 'N/A',
+  regApr: '23.99% - 34.99%',
+  regAprType: 'variable',
+  annualFees:
+    '$39 (waived for the first year if you sign up for AutoPay before your first statement)',
+  creditScoreNeeded: 'Excellent, Good, Bad, Fair, Limited',
+  cardProcessorTypeName: 'Mastercard',
+  introAprRate: 'N/A',
+  introAprDuration: 'N/A',
+  serviceCardId: 56605535,
+  ppcDescription:
+    '<ul><li>No security deposit required</li><li>$0 first year annual fee with AutoPay</li><li>Instantly access 50% of your credit while your card ships to you</li><li>$0 ATM cash withdrawal fee</li><li>You\'ll be reviewed for regular credit line increases</li><li>Zero fraud liability (which offers protection against unauthorized purchases)</li><li>Annual Percentage Rate (APR) for purchases: 23.99% - 34.99% variable based on Prime Rate</li><li>APR for cash advances: 34.99% variable based on Prime Rate</li><li>Annual Fee: $39 (waived for the first year if you sign up for AutoPay before your first statement)</li><li>Minimum interest charge: no less than $1.00 (ME residents no more than $0.50)</li><li>Foreign transaction fee: 1% of the transaction amount</li><li>Issued by Coastal Community Bank, Member FDIC pursuant to a license by Mastercard&#174; International</li><li><a href="https://www.prosper.com/credit-card/prosper-card-cardholder-agreement.pdf"> See full terms and conditions here</a></li></ul>',
+  prosAndCons: null,
+  reviewSectionText: null,
+};
+
+export const apiMetaInitialState: IAPIMeta = { total: 0, limit: 0, offset: 0 };
 
 export const homeRoutes = ['/', '/:category', '/:category/:range'];
 
