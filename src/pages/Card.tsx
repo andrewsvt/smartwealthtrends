@@ -30,7 +30,7 @@ export const Card: FC<ICardpageProps> = () => {
   const { cardId } = useParams();
   const navigate = useNavigate();
 
-  const { singleCard, isSingleLoading } = useGetSingleCard('3449');
+  const { singleCard, isSingleLoading } = useGetSingleCard(cardId!);
   console.log(singleCard);
 
   const { allCards, allCardsMeta, isAllLoading } = useGetAllCards();
