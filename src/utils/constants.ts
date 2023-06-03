@@ -293,7 +293,7 @@ export const creditRating: ISVGSelectValue[] = [
 ];
 
 export const apiDataInitialState: IAPIData = {
-  id: 3449,
+  id: 0,
   displayName: 'Prosper',
   cardName: 'Prosper&#174; Card',
   rawLogoImageUrl: 'https://cdn.nextinsure.com/imaging/opt/11536849.png',

@@ -21,7 +21,7 @@ import { ReactComponent as LockIcon } from '../assets/icons/lock.svg';
 
 interface ICardBlockProps {
   card: IAPIData;
-  allCards: IAPIData[];
+  allCards?: IAPIData[];
   index: number;
 }
 
@@ -150,7 +150,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ card, allCards, index }) => {
             <div className="flex flex-col-reverse md:flex-row w-full justify-between">
               <Link
                 target={'_blank'}
-                to={`/cards/${card.id}`}
+                to={`/cards/${card.displayName.toLowerCase()}/${card.id}`}
                 onClick={() => updateSelectedCard(card)}
               >
                 <h2
@@ -295,7 +295,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ card, allCards, index }) => {
               Review additional details for{' '}
               <Link
                 target={'_blank'}
-                to={`/cards/${card.id}`}
+                to={`/cards/${card.displayName.toLowerCase()}/${card.id}`}
                 onClick={() => updateSelectedCard(card)}
                 className="text-primary font-semibold"
                 dangerouslySetInnerHTML={{ __html: card.cardName }}
@@ -304,7 +304,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ card, allCards, index }) => {
             <Link
               target={'_blank'}
               className="min-w-[202px]"
-              to={`/cards/${card.id}`}
+              to={`/cards/${card.displayName.toLowerCase()}/${card.id}`}
               onClick={() => updateSelectedCard(card)}
             >
               {isNotChase() ? (

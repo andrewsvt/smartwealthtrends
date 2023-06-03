@@ -25,11 +25,12 @@ export const PrimaryButton: FC<IButton> = ({ text }) => {
   );
 };
 
-export const SecondaryButton: FC<IButton> = ({ text }) => {
+export const SecondaryButton: FC<IButton> = ({ text, onClick }) => {
   return (
     <motion.button
       whileTap={{ scale: 0.9 }}
       transition={{ type: 'spring', stiffness: 500, damping: 50 }}
+      onClick={onClick}
       className="customTransition py-[12px] w-full md:max-w-[202px] space-x-[8px] font-semibold text-sm md:text-base rounded-[10px] flex flex-1 md:flex-auto justify-center items-center text-primary bg-primary-light hover:bg-transparent border-[2px] border-transparent hover:border-primary"
     >
       <span className="text-current">{text}</span>

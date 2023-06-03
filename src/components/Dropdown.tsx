@@ -90,7 +90,7 @@ export const Dropdown: FC<IDropdownProps> = ({
                     }}
                     className={`text-sm font-medium flex flex-row items-center space-x-[20px] ${
                       item.text === contextState.text
-                        ? 'cursor-default text-primary'
+                        ? 'cursor-pointer text-primary'
                         : 'cursor-pointer text-secondary-text hover:text-black customTransition'
                     }`}
                   >

@@ -9,6 +9,7 @@ import { apiDataInitialState, categories } from 'utils/constants';
 import { IUseWindowSize, useWindowSize } from 'hooks/useWindowSize';
 import { Link } from 'react-router-dom';
 import { useGetAllCards } from 'hooks/useGetAllCards';
+import { SecondaryButton } from 'components/UI';
 
 interface IHomeProps {
   // allCards: IAPIData[];
@@ -17,7 +18,7 @@ interface IHomeProps {
 }
 
 export const Home: FC<IHomeProps> = () => {
-  const { allCards, allCardsMeta, isAllLoading } = useGetAllCards();
+  const { allCards, allCardsMeta, isAllLoading, increaseLimit } = useGetAllCards();
 
   const filter = useContext(FilterContext);
   const size: IUseWindowSize = useWindowSize();
@@ -76,9 +77,14 @@ export const Home: FC<IHomeProps> = () => {
                   );
                 })
             ) : allCardsMeta.total > 0 ? (
-              allCards.map((card, index) => (
-                <CardBlock key={card.id} card={card} allCards={allCards} index={index} />
-              ))
+              <>
+                {allCards.map((card, index) => (
+                  <CardBlock key={card.id} card={card} allCards={allCards} index={index} />
+                ))}
+                <div className="flex justify-center">
+                  <SecondaryButton text="Load More" onClick={increaseLimit} />
+                </div>
+              </>
             ) : (
               <p className="w-full h-screen">Nothing matching was found.</p>
             )}

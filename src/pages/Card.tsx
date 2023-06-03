@@ -31,11 +31,9 @@ export const Card: FC<ICardpageProps> = () => {
   const navigate = useNavigate();
 
   const { singleCard, isSingleLoading } = useGetSingleCard(cardId!);
-  console.log(singleCard);
 
   const { allCards, allCardsMeta, isAllLoading } = useGetAllCards();
 
-  const [lastApiData, setLastApiData] = useState<IAPIData[]>([apiDataInitialState]);
   const [allAmexCards, setAllAmexCards] = useState<IAPIData[]>([apiDataInitialState]);
   const [isChaseCard, setIsChaseCard] = useState<boolean>(false);
   const [scrolled, setScrolled] = useState(false);
@@ -82,6 +80,10 @@ export const Card: FC<ICardpageProps> = () => {
 
   const tableItems = useMemo<ITableItem[]>(
     () => [
+      {
+        title: 'Welcome Offer',
+        description: singleCard.bonusMilesFull.length > 0 ? singleCard.bonusMilesFull : 'N/A',
+      },
       {
         title: 'Rewards Rate',
         description:
@@ -184,17 +186,17 @@ export const Card: FC<ICardpageProps> = () => {
     } else return false;
   };
 
-  // const filterAmexCards = useCallback(() => {
-  //   const amexCards = lastApiData
-  //     .filter((product) => String(product.id) !== cardId)
-  //     .slice(0, 2)
-  //     .filter((card) => card.displayName === 'American Express');
-  //   setAllAmexCards(amexCards);
-  // }, [lastApiData]);
+  const filterAmexCards = useCallback(() => {
+    const amexCards = allCards
+      .filter((card) => card.id !== singleCard.id)
+      .slice(0, 3)
+      .filter((card) => card.displayName === 'American Express');
+    setAllAmexCards(amexCards);
+  }, [allCards]);
 
-  // useEffect(() => {
-  //   filterAmexCards();
-  // }, [filterAmexCards]);
+  useEffect(() => {
+    filterAmexCards();
+  }, [filterAmexCards]);
 
   return (
     <>
@@ -503,24 +505,19 @@ export const Card: FC<ICardpageProps> = () => {
                   </div>
                 </div>
                 {/* Related offers */}
-                {/* <div id="section4" className="space-y-[32px]">
+                <div id="section4" className="space-y-[32px]">
                   <h2 className="text-lg font-semibold pl-[20px]">Related Card Offers</h2>
                   <div className="grid grid-cols-1 gap-4">
-                    {allCards.length > 2
+                    {allCardsMeta.total > 1
                       ? allCards
-                          .filter((product) => String(product.id) !== cardId)
-                          .slice(0, 2)
+                          .filter((card) => card.id !== singleCard.id)
+                          .slice(0, 3)
                           .map((card, index) => (
-                            <CardBlock
-                              key={card.id}
-                              card={card}
-                              allCards={allCards}
-                              index={index}
-                            />
+                            <CardBlock key={card.id} card={card} index={index} />
                           ))
                       : 'No Related Items'}
                   </div>
-                </div> */}
+                </div>
               </div>
             </div>
             {(isAmericanExpress() || allAmexCards.length > 0) && (
@@ -529,7 +526,7 @@ export const Card: FC<ICardpageProps> = () => {
                   The following links will direct you to the rates and fees for mentioned American
                   Express Cards. These include:{' '}
                 </span>
-                {/* current card */}
+                {/* current card mention */}
                 <span dangerouslySetInnerHTML={{ __html: singleCard.cardName }} />
                 <span>
                   {' '}
@@ -543,7 +540,7 @@ export const Card: FC<ICardpageProps> = () => {
                   </Link>
                   ).{' '}
                 </span>
-                {/* related cards */}
+                {/* related cards mention */}
                 {allAmexCards.map((amexCard) => (
                   <div key={amexCard.id}>
                     <span dangerouslySetInnerHTML={{ __html: amexCard.cardName }} />

@@ -3,8 +3,6 @@ import { Route, Routes } from 'react-router-dom';
 
 import { CompareButton, Footer, Header, Sidebar } from './components';
 import { Home, Card } from './pages';
-
-import { useGetAllCards } from 'hooks/useGetAllCards';
 import { homeRoutes } from './utils/constants';
 
 function App() {
@@ -19,7 +17,7 @@ function App() {
             {homeRoutes.map((path) => (
               <Route key={path} path={path} element={<Home />} />
             ))}
-            <Route path="/cards/:cardId" element={<Card />} />
+            <Route path="/cards/:issuer/:cardId" element={<Card />} />
           </Routes>
         </div>
         <Footer />

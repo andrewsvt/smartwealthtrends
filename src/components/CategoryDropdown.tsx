@@ -59,7 +59,7 @@ export const CategoryDropdown: FC<IDropdownProps> = ({
         <SelectedIcon className="filterIconHeaderSelected" />
         <span className="text-sm font-bold text-primary truncate">{contextState.text}</span>
         {activeDropdown === filterName ? <ShortArrowUpIcon /> : <ShortArrowDownIcon />}
-        <span className="absolute top-[-24px] left-[50%] translateHorizontal cursor-default text-[12px] uppercase font-semibold text-medium-gray px-[8px]">
+        <span className="absolute top-[-24px] left-[50%] translateHorizontal text-[12px] uppercase font-semibold text-medium-gray px-[8px]">
           {filterName}
         </span>
       </div>
