@@ -33,8 +33,7 @@ export const Card: FC<ICardpageProps> = () => {
   const { singleCard, isSingleLoading } = useGetSingleCard('3449');
   console.log(singleCard);
 
-  // const { allCards, allCardsMeta, isAllLoading } = useGetAllCards();
-  // console.log('all cards - ' + allCards);
+  const { allCards, allCardsMeta, isAllLoading } = useGetAllCards();
 
   const [lastApiData, setLastApiData] = useState<IAPIData[]>([apiDataInitialState]);
   const [allAmexCards, setAllAmexCards] = useState<IAPIData[]>([apiDataInitialState]);

@@ -17,7 +17,7 @@ export const useGetAllCards = (): {
   const fetchData = useCallback(async () => {
     try {
       setIsAllLoading(true);
-      const requestURL = `http://dev-api-moneyatlas.us-east-1.elasticbeanstalk.com/cards?limit=10&offset=0${filter.activeCategory.field}${filter.activeIssuer.field}${filter.activeCreditRange.field}`;
+      const requestURL = `https://dev-api.moneyatlas.link/cards?limit=10&offset=0${filter.activeCategory.field}${filter.activeIssuer.field}${filter.activeCreditRange.field}`;
       const response = await fetch(requestURL);
       const data = await response.json();
 

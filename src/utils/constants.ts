@@ -37,17 +37,17 @@ import { ReactElement, SVGProps } from 'react';
 
 export enum CategoriesEnum {
   topCards = '',
-  balanceTransfer = '&category=Balance%20Transfer&sort=id',
-  lowOngoingRate = '&category=Low%20Ongoing%20Rate&sort=id',
-  noAnnualFee = '&category=No%20Annual%20Fee&sort=id',
-  cashBack = '&category=Cash%20Back&sort=id',
-  rewards = '&category=Rewards&sort=id',
-  noForeignFees = '&category=No%20Foreign%20Transaction%20Fee&sort=id',
-  gas = '&category=Gas&sort=id',
-  zeroApr = '&category=0%25%20Intro%20APR&sort=id',
-  travel = '&category=Travel%20Rewards&sort=id',
-  student = '&category=Student&sort=id',
-  business = '&category=Small%20Business&sort=id',
+  balanceTransfer = '&category=Balance%20Transfer&sort=rank',
+  lowOngoingRate = '&category=Low%20Ongoing%20Rate&sort=rank',
+  noAnnualFee = '&category=No%20Annual%20Fee&sort=rank',
+  cashBack = '&category=Cash%20Back&sort=rank',
+  rewards = '&category=Rewards&sort=rank',
+  noForeignFees = '&category=No%20Foreign%20Transaction%20Fee&sort=rank',
+  gas = '&category=Gas&sort=rank',
+  zeroApr = '&category=0%25%20Intro%20APR&sort=rank',
+  travel = '&category=Travel%20Rewards&sort=rank',
+  student = '&category=Student&sort=rank',
+  business = '&category=Small%20Business&sort=rank',
 }
 export enum CategoriesSlugEnum {
   topCards = 'top-cards',
@@ -66,15 +66,15 @@ export enum CategoriesSlugEnum {
 
 export enum IssuersEnum {
   allIssuers = '',
-  citi = '&issuer=Citi&sort=id',
-  capitalOne = '&issuer=Capital%20One&sort=id',
-  chase = '&issuer=Chase&sort=id',
-  bankOfAmerica = '&issuer=Bank%20of%20America&sort=id',
-  wellsFargo = '&issuer=Wells%20Fargo&sort=id',
-  americanExpress = '&issuer=American%20Express&sort=id',
-  discover = '&issuer=Discover&sort=id',
-  visa = '&category=Visa&sort=id',
-  mastercard = '&category=Mastercard&sort=id',
+  citi = '&issuer=Citi&sort=rank',
+  capitalOne = '&issuer=Capital%20One&sort=rank',
+  chase = '&issuer=Chase&sort=rank',
+  bankOfAmerica = '&issuer=Bank%20of%20America&sort=rank',
+  wellsFargo = '&issuer=Wells%20Fargo&sort=rank',
+  americanExpress = '&issuer=American%20Express&sort=rank',
+  discover = '&issuer=Discover&sort=rank',
+  visa = '&cardProcessor=Visa&sort=rank',
+  mastercard = '&cardProcessor=Mastercard&sort=rank',
 }
 export enum IssuersSlugEnum {
   allIssuers = 'all-issuers',

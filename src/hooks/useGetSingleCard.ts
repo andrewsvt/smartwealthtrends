@@ -14,7 +14,7 @@ export const useGetSingleCard = (
   const fetchData = useCallback(async () => {
     try {
       setIsSingleLoading(true);
-      const requestURL = `http://dev-api-moneyatlas.us-east-1.elasticbeanstalk.com/cards/${id}`;
+      const requestURL = `https://dev-api.moneyatlas.link/cards/${id}`;
       const response = await fetch(requestURL);
       const data = await response.json();
 
