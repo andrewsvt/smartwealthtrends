@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { IAPIData, IAPIMeta } from 'interfaces/Api';
 import { apiDataInitialState, apiMetaInitialState } from 'utils/constants';
 
-export const useGetSingleCard = (id: string) => {
+export const useGetSingleCard = (cardSlug: string) => {
   const [singleCard, setSingleCard] = useState<IAPIData>(apiDataInitialState);
   const [isSingleLoading, setIsSingleLoading] = useState<boolean>(false);
 
@@ -12,9 +12,13 @@ export const useGetSingleCard = (id: string) => {
   // const [isSingleFetchCompleted, setIsSingleFetchCompleted] = useState<boolean>(false);
 
   const fetchSingleData = useCallback(async () => {
+    console.log(encodeURIComponent(cardSlug));
+
     try {
       setIsSingleLoading(true);
-      const requestURL = `https://dev-api.moneyatlas.link/cards/${id}`;
+      const requestURL = `https://dev-api.moneyatlas.link/cards/slug/${encodeURIComponent(
+        encodeURIComponent(cardSlug)
+      )}`;
       const response = await fetch(requestURL);
       const data = await response.json();
 
@@ -25,7 +29,7 @@ export const useGetSingleCard = (id: string) => {
       console.error('Error fetching single card data:', error);
       setIsSingleLoading(false);
     }
-  }, [id]);
+  }, [cardSlug]);
 
   // const fetchIssuerData = useCallback(async () => {
   //   try {

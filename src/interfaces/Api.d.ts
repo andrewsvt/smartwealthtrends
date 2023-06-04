@@ -27,6 +27,10 @@ export interface IAPIData {
   introAprRate: string;
   introAprDuration: string;
   ppcDescription: string;
-  prosAndCons?: null;
-  reviewSectionText?: null;
+  pros?: string | null;
+  cons?: string | null;
+  reviewSectionText?: string | null;
+  lastUpdated: string;
+  slug: string;
+  serviceCardId: number;
 }

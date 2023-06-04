@@ -27,10 +27,10 @@ interface ICardpageProps {}
 
 export const Card: FC<ICardpageProps> = () => {
   const size: IUseWindowSize = useWindowSize();
-  const { cardId } = useParams();
+  const { cardSlug } = useParams();
   const navigate = useNavigate();
 
-  const { singleCard, isSingleLoading } = useGetSingleCard(cardId!);
+  const { singleCard, isSingleLoading } = useGetSingleCard(cardSlug!);
 
   const { allCards, allCardsMeta, isAllLoading } = useGetAllCards();
 

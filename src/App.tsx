@@ -17,7 +17,7 @@ function App() {
             {homeRoutes.map((path) => (
               <Route key={path} path={path} element={<Home />} />
             ))}
-            <Route path="/cards/:issuer/:cardId" element={<Card />} />
+            <Route path="/cards/:issuer/:cardSlug" element={<Card />} />
           </Routes>
         </div>
         <Footer />

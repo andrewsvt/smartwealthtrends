@@ -294,6 +294,7 @@ export const creditRating: ISVGSelectValue[] = [
 
 export const apiDataInitialState: IAPIData = {
   id: 0,
+  serviceCardId: 56605535,
   displayName: 'Prosper',
   cardName: 'Prosper&#174; Card',
   rawLogoImageUrl: 'https://cdn.nextinsure.com/imaging/opt/11536849.png',
@@ -310,11 +311,13 @@ export const apiDataInitialState: IAPIData = {
   cardProcessorTypeName: 'Mastercard',
   introAprRate: 'N/A',
   introAprDuration: 'N/A',
-  serviceCardId: 56605535,
   ppcDescription:
     '<ul><li>No security deposit required</li><li>$0 first year annual fee with AutoPay</li><li>Instantly access 50% of your credit while your card ships to you</li><li>$0 ATM cash withdrawal fee</li><li>You\'ll be reviewed for regular credit line increases</li><li>Zero fraud liability (which offers protection against unauthorized purchases)</li><li>Annual Percentage Rate (APR) for purchases: 23.99% - 34.99% variable based on Prime Rate</li><li>APR for cash advances: 34.99% variable based on Prime Rate</li><li>Annual Fee: $39 (waived for the first year if you sign up for AutoPay before your first statement)</li><li>Minimum interest charge: no less than $1.00 (ME residents no more than $0.50)</li><li>Foreign transaction fee: 1% of the transaction amount</li><li>Issued by Coastal Community Bank, Member FDIC pursuant to a license by Mastercard&#174; International</li><li><a href="https://www.prosper.com/credit-card/prosper-card-cardholder-agreement.pdf"> See full terms and conditions here</a></li></ul>',
-  prosAndCons: null,
+  pros: null,
+  cons: null,
   reviewSectionText: null,
+  lastUpdated: '4/11/2023 11:42:01 AM',
+  slug: 'prosper-slug',
 };
 
 export const apiMetaInitialState: IAPIMeta = { total: 0, limit: 0, offset: 0 };

@@ -87,6 +87,21 @@ export const CardBlock: FC<ICardBlockProps> = ({ card, allCards, index }) => {
     [card]
   );
 
+  const trimmedPPCDescription = (string: string) => {
+    const regex = /<li>.*?<\/li>/g;
+    let match;
+    let trimmedString = '';
+
+    for (let i = 0; i < 5; i++) {
+      match = regex.exec(string);
+      if (match) {
+        trimmedString += match[0];
+      }
+    }
+
+    return `<ul>${trimmedString}</ul>`;
+  };
+
   const handleAddToComparison = useCallback(() => {
     addProduct(card);
   }, [addProduct, card]);
@@ -150,7 +165,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ card, allCards, index }) => {
             <div className="flex flex-col-reverse md:flex-row w-full justify-between">
               <Link
                 target={'_blank'}
-                to={`/cards/${card.displayName.toLowerCase()}/${card.id}`}
+                to={`/cards/${card.displayName.toLowerCase().split(' ').join('-')}/${card.slug}`}
                 onClick={() => updateSelectedCard(card)}
               >
                 <h2
@@ -281,7 +296,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ card, allCards, index }) => {
             </div> */}
             <div
               className="PPCDescription"
-              dangerouslySetInnerHTML={{ __html: card.ppcDescription }}
+              dangerouslySetInnerHTML={{ __html: trimmedPPCDescription(card.ppcDescription) }}
             ></div>
           </motion.div>
           <motion.div
@@ -295,7 +310,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ card, allCards, index }) => {
               Review additional details for{' '}
               <Link
                 target={'_blank'}
-                to={`/cards/${card.displayName.toLowerCase()}/${card.id}`}
+                to={`/cards/${card.displayName.toLowerCase()}/${card.slug}`}
                 onClick={() => updateSelectedCard(card)}
                 className="text-primary font-semibold"
                 dangerouslySetInnerHTML={{ __html: card.cardName }}
@@ -304,7 +319,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ card, allCards, index }) => {
             <Link
               target={'_blank'}
               className="min-w-[202px]"
-              to={`/cards/${card.displayName.toLowerCase()}/${card.id}`}
+              to={`/cards/${card.displayName.toLowerCase()}/${card.slug}`}
               onClick={() => updateSelectedCard(card)}
             >
               {isNotChase() ? (

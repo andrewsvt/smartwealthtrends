@@ -81,9 +81,13 @@ export const Home: FC<IHomeProps> = () => {
                 {allCards.map((card, index) => (
                   <CardBlock key={card.id} card={card} allCards={allCards} index={index} />
                 ))}
-                <div className="flex justify-center">
-                  <SecondaryButton text="Load More" onClick={increaseLimit} />
-                </div>
+                {allCardsMeta.total > allCards.length ? (
+                  <div className="flex justify-center">
+                    <SecondaryButton text="Load More" onClick={increaseLimit} />
+                  </div>
+                ) : (
+                  ''
+                )}
               </>
             ) : (
               <p className="w-full h-screen">Nothing matching was found.</p>
