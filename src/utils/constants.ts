@@ -318,6 +318,8 @@ export const apiDataInitialState: IAPIData = {
   reviewSectionText: null,
   lastUpdated: '4/11/2023 11:42:01 AM',
   slug: 'prosper-slug',
+  badgeText: null,
+  link: null,
 };
 
 export const apiMetaInitialState: IAPIMeta = { total: 0, limit: 0, offset: 0 };

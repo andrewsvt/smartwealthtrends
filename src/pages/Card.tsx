@@ -271,9 +271,17 @@ export const Card: FC<ICardpageProps> = () => {
                     <div className="space-y-[12px] w-full flex flex-col items-center md:items-start">
                       <div className="flex flex-col-reverse md:flex-row w-full justify-between">
                         <h2
-                          className="text-lg text-center md:text-left w-full font-semibold customTransition"
+                          className="text-lg flex-1 text-center md:text-left w-full font-semibold customTransition"
                           dangerouslySetInnerHTML={{ __html: singleCard.cardName }}
                         />
+
+                        {singleCard.badgeText !== null ? (
+                          <div className="md:mr-[-20px]">
+                            <FeatureLabel text={singleCard.badgeText} />
+                          </div>
+                        ) : (
+                          ''
+                        )}
                       </div>
                       <div className="flex flex-row items-center">
                         <span className="text-base font-medium mr-[14px]">
@@ -448,19 +456,16 @@ export const Card: FC<ICardpageProps> = () => {
                         {/* {singleCard.LastUpdated} */}
                       </p>
                     </div>
-                    <p className="text-base font-light">
-                      The Citi Custom Cash℠ Card has come to the market with one of the more
-                      interesting rewards programs we’ve seen in a while. Earn 5% cash back on
-                      purchases in your top eligible spend category each billing cycle, up to the
-                      first $500 spent, 1% cash back thereafter. Also, earn unlimited 1% cash back
-                      on all other purchases. What this means is that unlike some other rewards
-                      cards on the market that require you to manually opt-in to special categories
-                      each month, this card will automatically apply the highest rate of cash back
-                      to your most-used category. That makes the Citi Custom Cash℠ Card a great pick
-                      for anyone looking for a low-maintenance card that still offers an incredibly
-                      competitive cash back offer. And the sign-up bonus just sweetens the deal with
-                      a low spend threshold and a solid return in the form of ThankYou® Points.
-                    </p>
+                    <p
+                      className="text-base font-light"
+                      dangerouslySetInnerHTML={{
+                        __html:
+                          singleCard.reviewSectionText !== null &&
+                          singleCard.reviewSectionText !== undefined
+                            ? singleCard.reviewSectionText
+                            : 'Here is no review yet',
+                      }}
+                    />
                   </div>
                 </div>
                 {/* Pros and cons */}

@@ -31,6 +31,8 @@ export interface IAPIData {
   cons?: string | null;
   reviewSectionText?: string | null;
   lastUpdated: string;
+  badgeText: string | null;
+  link: strin | null;
   slug: string;
   serviceCardId: number;
 }

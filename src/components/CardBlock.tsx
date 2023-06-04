@@ -169,10 +169,17 @@ export const CardBlock: FC<ICardBlockProps> = ({ card, allCards, index }) => {
                 onClick={() => updateSelectedCard(card)}
               >
                 <h2
-                  className="text-lg text-center md:text-left w-full font-semibold hover:text-primary-dark customTransition"
+                  className="text-lg flex-1 text-center md:text-left w-full font-semibold hover:text-primary-dark customTransition"
                   dangerouslySetInnerHTML={{ __html: card.cardName }}
                 />
               </Link>
+              {card.badgeText !== null ? (
+                <div className="md:mr-[-20px]">
+                  <FeatureLabel text={card.badgeText} />
+                </div>
+              ) : (
+                ''
+              )}
             </div>
             <div className="flex flex-row items-center">
               <span className="text-base font-medium mr-[14px]">
