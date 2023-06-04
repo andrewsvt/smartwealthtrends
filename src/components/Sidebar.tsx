@@ -14,7 +14,7 @@ export const Sidebar: FC = () => {
             <Route key={path} path={path} element={<Filter />} />
           ))}
 
-          <Route path="/cards/:issuer/:id" element={<PageNavigation />} />
+          <Route path="/cards/:issuer/:cardSlug" element={<PageNavigation />} />
         </Routes>
       </div>
     </aside>

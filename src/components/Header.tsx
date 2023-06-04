@@ -194,7 +194,7 @@ export const Header: FC = () => {
                     />
                   ))}
                   <Route
-                    path="/cards/:id"
+                    path="/cards/:issuer/:cardSlug"
                     element={
                       <>
                         <HeaderFilters
