@@ -321,6 +321,12 @@ export const apiDataInitialState: IAPIData = {
   badgeText: null,
   link: null,
   defaultCreditCardTypeName: '',
+  balanceTransferIntroApr: 'N/A',
+  cashAdvanceApr: 'N/A',
+  cashAdvanceFee: 'N/A',
+  foreignTransactionFee: 'N/A',
+  balanceTransferFees: 'N/A',
+  ctaButtonText: 'Learn More',
 };
 
 export const apiMetaInitialState: IAPIMeta = { total: 0, limit: 0, offset: 0 };

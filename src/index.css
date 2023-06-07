@@ -138,6 +138,20 @@ img {
   margin-right: 12px;
 }
 
+/* .PPCDescription-compare > ul > li {
+  height: 90px;
+  padding-bottom: 20px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  box-sizing: border-box;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 300;
+} */
+
 .oddBgColor:nth-child(odd) {
   background-color: #f7f7f7;
 }

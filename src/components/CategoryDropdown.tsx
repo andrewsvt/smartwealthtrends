@@ -55,7 +55,7 @@ export const CategoryDropdown: FC<IDropdownProps> = ({
       onClick={handleMouseEnter}
       className="w-full py-3"
     >
-      <div className="relative flex flex-row items-center cursor-pointer w-full h-[56px] justify-between bg-light-gray rounded-[14px] border-[2px] border-primary py-[10px] px-[20px]">
+      <div className="relative flex flex-row items-center cursor-pointer w-full h-[56px] justify-between bg-primary-light rounded-[14px] border-[2px] border-primary py-[10px] px-[20px]">
         <SelectedIcon className="filterIconHeaderSelected" />
         <span className="text-sm font-bold text-primary truncate">{contextState.text}</span>
         {activeDropdown === filterName ? <ShortArrowUpIcon /> : <ShortArrowDownIcon />}

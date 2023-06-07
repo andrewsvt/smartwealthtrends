@@ -94,7 +94,7 @@ export const Home: FC<IHomeProps> = () => {
             )}
           </motion.div>
         </AnimatePresence>
-        {allAmexCards.length > 0 ? (
+        {!!allAmexCards ? (
           <div className="text-xs font-light text-black pt-8">
             <span>
               The following links will direct you to the rates and fees for mentioned American

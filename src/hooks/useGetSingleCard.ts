@@ -12,8 +12,6 @@ export const useGetSingleCard = (cardSlug: string) => {
   const [isSingleFetchCompleted, setIsSingleFetchCompleted] = useState<boolean>(false);
 
   const fetchSingleData = useCallback(async () => {
-    console.log(encodeURIComponent(cardSlug));
-
     try {
       setIsSingleLoading(true);
       const requestURL = `https://dev-api.moneyatlas.link/cards/slug/${encodeURIComponent(

@@ -8,6 +8,7 @@ import Portal from '../utils/Portal';
 import { Comparison } from 'components';
 
 import { ReactComponent as ComparisonIcon } from '../assets/icons/comparison.svg';
+import { useLocation } from 'react-router-dom';
 
 export const CompareButton: FC = () => {
   const [modal, setModal] = useState<boolean>(false);
@@ -16,6 +17,12 @@ export const CompareButton: FC = () => {
   const toggleModal = () => {
     setModal(!modal);
   };
+
+  const location = useLocation();
+
+  useEffect(() => {
+    setModal(false);
+  }, [location.pathname]);
 
   //disable scroll
   useEffect(() => {

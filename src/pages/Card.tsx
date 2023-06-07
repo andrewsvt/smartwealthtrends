@@ -21,7 +21,6 @@ import { ReactComponent as CheckIcon } from '../assets/icons/check.svg';
 import { ReactComponent as CrossIcon } from '../assets/icons/cross.svg';
 import { ReactComponent as LockIcon } from '../assets/icons/lock.svg';
 import { useGetSingleCard } from 'hooks/useGetSingleCard';
-import { useGetAllCards } from 'hooks/useGetAllCards';
 
 interface ICardpageProps {}
 
@@ -216,11 +215,11 @@ export const Card: FC<ICardpageProps> = () => {
         />
         {!isChaseCard ? (
           <div className="max-w-[202px]">
-            <PrimaryButton text="Learn More" />
+            <PrimaryButton text="Learn More" isActive={!!singleCard.link} link={singleCard.link} />
           </div>
         ) : (
           <div className="max-w-[202px]">
-            <HyperLink text="Learn More" />
+            <HyperLink text="Learn More" isActive={!!singleCard.link} link={singleCard.link} />
           </div>
         )}
       </motion.div>
@@ -250,15 +249,22 @@ export const Card: FC<ICardpageProps> = () => {
                 <div className="relative flex flex-col md:flex-row md:min-h-[180px] md:space-x-[20px]">
                   <div className="h-full md:h-[180px] flex flex-col justify-center items-center">
                     <div className="relative h-full md:h-full md:min-h-[180px] md:max-h-[180px] w-[240px] md:min-w-[284px] md:max-w-[290px] md:w-full">
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        whileHover={{ opacity: 1 }}
-                        transition={{ duration: 0.2 }}
-                        className="cursor-pointer absolute flex flex-col justify-center items-center space-y-[10px] bg-primary-dark bg-opacity-60 h-full w-full rounded-[10px]"
-                      >
-                        <LockIcon />
-                        <span className="text-lg font-semibold text-white">Learn More</span>
-                      </motion.div>
+                      {singleCard.link ? (
+                        <Link to={singleCard.link}>
+                          <motion.div
+                            initial={{ opacity: 0 }}
+                            whileHover={{ opacity: 1 }}
+                            transition={{ duration: 0.2 }}
+                            className="cursor-pointer absolute flex flex-col justify-center items-center space-y-[10px] bg-primary-dark bg-opacity-60 h-full w-full rounded-[10px]"
+                          >
+                            <LockIcon />
+                            <span className="text-lg font-semibold text-white">Learn More</span>
+                          </motion.div>
+                        </Link>
+                      ) : (
+                        ''
+                      )}
+
                       <img
                         className="w-full h-full object-contain lg:object-cover rounded-[10px]"
                         src={singleCard.rawLogoImageUrl}
@@ -294,10 +300,18 @@ export const Card: FC<ICardpageProps> = () => {
                         <div className="flex flex-col md:flex-row items-center space-y-[8px] lg:space-y-0 md:space-x-[20px]">
                           {!isChaseCard ? (
                             <div className="flex flex-row items-center space-x-[8px] w-full md:w-auto">
-                              <PrimaryButton text="Learn More" />
+                              <PrimaryButton
+                                text="Learn More"
+                                isActive={!!singleCard.link}
+                                link={singleCard.link}
+                              />
                             </div>
                           ) : (
-                            <HyperLink text="Learn More" />
+                            <HyperLink
+                              text="Learn More"
+                              isActive={!!singleCard.link}
+                              link={singleCard.link}
+                            />
                           )}
 
                           {products.map((product) => product.id).includes(singleCard.id) ? (
@@ -451,8 +465,7 @@ export const Card: FC<ICardpageProps> = () => {
                         }}
                       />
                       <p className="text-sm font-light text-secondary-text">
-                        Last Updated
-                        {/* {singleCard.LastUpdated} */}
+                        Last Updated on {singleCard.lastUpdated}
                       </p>
                     </div>
                     <p

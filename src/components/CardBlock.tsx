@@ -144,15 +144,22 @@ export const CardBlock: FC<ICardBlockProps> = ({ card, allCards, index }) => {
       <div className="relative flex flex-col md:flex-row md:min-h-[180px] md:space-x-[20px]">
         <div className="h-full md:h-[180px] flex flex-col justify-center items-center">
           <div className="relative h-full md:h-full md:min-h-[180px] md:max-h-[180px] w-[240px] md:min-w-[284px] md:max-w-[290px] md:w-full">
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileHover={{ opacity: 1 }}
-              transition={{ duration: 0.2 }}
-              className="cursor-pointer absolute flex flex-col justify-center items-center space-y-[10px] bg-primary-dark bg-opacity-60 h-full w-full rounded-[10px]"
-            >
-              <LockIcon />
-              <span className="text-lg font-semibold text-white">Learn More</span>
-            </motion.div>
+            {card.link ? (
+              <Link to={card.link}>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  whileHover={{ opacity: 1 }}
+                  transition={{ duration: 0.2 }}
+                  className="cursor-pointer absolute flex flex-col justify-center items-center space-y-[10px] bg-primary-dark bg-opacity-60 h-full w-full rounded-[10px]"
+                >
+                  <LockIcon />
+                  <span className="text-lg font-semibold text-white">Learn More</span>
+                </motion.div>
+              </Link>
+            ) : (
+              ''
+            )}
+
             <img
               className="w-full h-full object-contain lg:object-cover rounded-[10px]"
               src={card.rawLogoImageUrl}
@@ -193,10 +200,10 @@ export const CardBlock: FC<ICardBlockProps> = ({ card, allCards, index }) => {
               <div className="flex flex-col md:flex-row items-center space-y-[8px] lg:space-y-0 md:space-x-[20px]">
                 {isNotChase() ? (
                   <div className="flex flex-row items-center space-x-[8px] w-full md:w-auto">
-                    <PrimaryButton text="Learn More" />
+                    <PrimaryButton text="Learn More" isActive={!!card.link} link={card.link} />
                   </div>
                 ) : (
-                  <HyperLink text="Learn More" />
+                  <HyperLink text="Learn More" isActive={!!card.link} link={card.link} />
                 )}
 
                 {products.map((card) => card.id).includes(card.id) ? (
@@ -321,7 +328,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ card, allCards, index }) => {
                 onClick={() => updateSelectedCard(card)}
                 className="text-primary font-semibold"
                 dangerouslySetInnerHTML={{ __html: card.cardName }}
-              ></Link>
+              />
             </p>
             <Link
               target={'_blank'}

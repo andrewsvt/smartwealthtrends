@@ -36,4 +36,10 @@ export interface IAPIData {
   slug: string;
   serviceCardId: number;
   defaultCreditCardTypeName: string;
+  balanceTransferIntroApr: string;
+  cashAdvanceApr: string;
+  cashAdvanceFee: string;
+  foreignTransactionFee: string;
+  balanceTransferFees: string;
+  ctaButtonText: string;
 }

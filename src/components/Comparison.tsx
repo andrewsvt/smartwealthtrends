@@ -6,6 +6,7 @@ import { ComparisonContext } from 'contexts/ComparisonContext';
 import { ComparisonCard } from './ComparisonCard';
 
 import { ReactComponent as CrossIcon } from '../assets/icons/cross.svg';
+import { useLocation } from 'react-router-dom';
 
 interface ComparisonProps {
   modal: boolean;
