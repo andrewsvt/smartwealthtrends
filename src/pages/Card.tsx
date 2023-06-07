@@ -215,11 +215,19 @@ export const Card: FC<ICardpageProps> = () => {
         />
         {!isChaseCard ? (
           <div className="max-w-[202px]">
-            <PrimaryButton text="Learn More" isActive={!!singleCard.link} link={singleCard.link} />
+            <PrimaryButton
+              text={singleCard.ctaButtonText}
+              isActive={!!singleCard.link}
+              link={singleCard.link}
+            />
           </div>
         ) : (
           <div className="max-w-[202px]">
-            <HyperLink text="Learn More" isActive={!!singleCard.link} link={singleCard.link} />
+            <HyperLink
+              text={singleCard.ctaButtonText}
+              isActive={!!singleCard.link}
+              link={singleCard.link}
+            />
           </div>
         )}
       </motion.div>
@@ -301,14 +309,14 @@ export const Card: FC<ICardpageProps> = () => {
                           {!isChaseCard ? (
                             <div className="flex flex-row items-center space-x-[8px] w-full md:w-auto">
                               <PrimaryButton
-                                text="Learn More"
+                                text={singleCard.ctaButtonText}
                                 isActive={!!singleCard.link}
                                 link={singleCard.link}
                               />
                             </div>
                           ) : (
                             <HyperLink
-                              text="Learn More"
+                              text={singleCard.ctaButtonText}
                               isActive={!!singleCard.link}
                               link={singleCard.link}
                             />

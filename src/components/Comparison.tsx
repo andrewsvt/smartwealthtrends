@@ -32,7 +32,7 @@ export const Comparison: FC<ComparisonProps> = ({ modal, setModal }) => {
   }, [products, closing, setModal]);
 
   return (
-    <div className="w-screen h-screen fixed top-0 left-0 flex justify-center items-center z-50">
+    <div className="w-screen h-screen fixed bottom-0 left-0 flex justify-center items-end z-50">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -44,7 +44,7 @@ export const Comparison: FC<ComparisonProps> = ({ modal, setModal }) => {
         <CrossIcon />
       </motion.div>
       <motion.div
-        className="fixed bottom-[16px] lg:bottom-auto z-20 flex flex-row justify-start lg:justify-center bg-bg rounded-[18px] lg:rounded-t-[18px] max-w-[1400px] w-full h-[776px] max-h-[86%] p-[20px] space-x-[20px] overflow-x-scroll lg:overflow-x-hidden overflow-y-scroll popupScrollbar"
+        className="fixed bottom-0 z-20 flex flex-row justify-start lg:justify-center bg-bg rounded-t-[18px] lg:rounded-t-[18px] max-w-[1400px] w-full h-[90%] p-[20px] space-x-[20px] overflow-x-scroll lg:overflow-x-hidden overflow-y-scroll popupScrollbar"
         initial={{ opacity: 0, scale: 0.7 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{

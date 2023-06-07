@@ -153,7 +153,7 @@ export const CardBlock: FC<ICardBlockProps> = ({ card, allCards, index }) => {
                   className="cursor-pointer absolute flex flex-col justify-center items-center space-y-[10px] bg-primary-dark bg-opacity-60 h-full w-full rounded-[10px]"
                 >
                   <LockIcon />
-                  <span className="text-lg font-semibold text-white">Learn More</span>
+                  <span className="text-lg font-semibold text-white">{card.ctaButtonText}</span>
                 </motion.div>
               </Link>
             ) : (
@@ -200,10 +200,14 @@ export const CardBlock: FC<ICardBlockProps> = ({ card, allCards, index }) => {
               <div className="flex flex-col md:flex-row items-center space-y-[8px] lg:space-y-0 md:space-x-[20px]">
                 {isNotChase() ? (
                   <div className="flex flex-row items-center space-x-[8px] w-full md:w-auto">
-                    <PrimaryButton text="Learn More" isActive={!!card.link} link={card.link} />
+                    <PrimaryButton
+                      text={card.ctaButtonText}
+                      isActive={!!card.link}
+                      link={card.link}
+                    />
                   </div>
                 ) : (
-                  <HyperLink text="Learn More" isActive={!!card.link} link={card.link} />
+                  <HyperLink text={card.ctaButtonText} isActive={!!card.link} link={card.link} />
                 )}
 
                 {products.map((card) => card.id).includes(card.id) ? (

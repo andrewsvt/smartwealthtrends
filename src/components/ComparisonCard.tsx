@@ -47,7 +47,7 @@ export const ComparisonCard: FC<IComparisonCardProps> = ({ product }) => {
   };
 
   return (
-    <div className="relative flex flex-col flex-1 min-w-[230px] max-w-[670px]">
+    <div className="relative flex flex-col flex-1 min-w-[290px] max-w-[670px]">
       <div className="flex flex-col justify-between items-center bg-white w-full min-h-[305px] p-[16px] rounded-[14px]">
         <div className="flex flex-col items-center justify-center space-y-[16px]">
           <img className="w-[210px] h-auto" src={product.rawLogoImageUrl} alt="card" />
@@ -63,9 +63,13 @@ export const ComparisonCard: FC<IComparisonCardProps> = ({ product }) => {
         </div>
         <div className="flex flex-row space-x-[8px] justify-center items-center w-[262px]">
           {isNotChase() ? (
-            <PrimaryButton text="Learn More" isActive={!!product.link} link={product.link} />
+            <PrimaryButton
+              text={product.ctaButtonText}
+              isActive={!!product.link}
+              link={product.link}
+            />
           ) : (
-            <HyperLink text="Learn More" isActive={!!product.link} link={product.link} />
+            <HyperLink text={product.ctaButtonText} isActive={!!product.link} link={product.link} />
           )}
           <TrashButton onClick={() => removeProduct(product)} />
         </div>
