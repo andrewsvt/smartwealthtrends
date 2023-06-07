@@ -30,9 +30,8 @@ export const Card: FC<ICardpageProps> = () => {
   const { cardSlug } = useParams();
   const navigate = useNavigate();
 
-  const { singleCard, isSingleLoading } = useGetSingleCard(cardSlug!);
-
-  const { allCards, allCardsMeta, isAllLoading } = useGetAllCards();
+  const { singleCard, isSingleLoading, relatedCards, relatedCardsMeta, isRelatedLoading } =
+    useGetSingleCard(cardSlug!);
 
   const [allAmexCards, setAllAmexCards] = useState<IAPIData[]>([apiDataInitialState]);
   const [isChaseCard, setIsChaseCard] = useState<boolean>(false);
@@ -187,12 +186,12 @@ export const Card: FC<ICardpageProps> = () => {
   };
 
   const filterAmexCards = useCallback(() => {
-    const amexCards = allCards
+    const amexCards = relatedCards
       .filter((card) => card.id !== singleCard.id)
       .slice(0, 3)
       .filter((card) => card.displayName === 'American Express');
     setAllAmexCards(amexCards);
-  }, [allCards]);
+  }, [relatedCards]);
 
   useEffect(() => {
     filterAmexCards();
@@ -513,8 +512,8 @@ export const Card: FC<ICardpageProps> = () => {
                 <div id="section4" className="space-y-[32px]">
                   <h2 className="text-lg font-semibold pl-[20px]">Related Card Offers</h2>
                   <div className="grid grid-cols-1 gap-4">
-                    {allCardsMeta.total > 1
-                      ? allCards
+                    {relatedCardsMeta.total > 1
+                      ? relatedCards
                           .filter((card) => card.id !== singleCard.id)
                           .slice(0, 3)
                           .map((card, index) => (

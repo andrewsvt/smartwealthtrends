@@ -320,6 +320,7 @@ export const apiDataInitialState: IAPIData = {
   slug: 'prosper-slug',
   badgeText: null,
   link: null,
+  defaultCreditCardTypeName: '',
 };
 
 export const apiMetaInitialState: IAPIMeta = { total: 0, limit: 0, offset: 0 };

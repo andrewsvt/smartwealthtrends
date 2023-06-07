@@ -6,10 +6,10 @@ export const useGetSingleCard = (cardSlug: string) => {
   const [singleCard, setSingleCard] = useState<IAPIData>(apiDataInitialState);
   const [isSingleLoading, setIsSingleLoading] = useState<boolean>(false);
 
-  // const [allIssuerCards, setAllIssuerCards] = useState<IAPIData[]>([apiDataInitialState]);
-  // const [allIssuerCardsMeta, setAllIssuerCardsMeta] = useState<IAPIMeta>(apiMetaInitialState);
-  // const [isIssuerLoading, setIsIssuerLoading] = useState<boolean>(false);
-  // const [isSingleFetchCompleted, setIsSingleFetchCompleted] = useState<boolean>(false);
+  const [relatedCards, setRelatedCards] = useState<IAPIData[]>([apiDataInitialState]);
+  const [relatedCardsMeta, setRelatedCardsMeta] = useState<IAPIMeta>(apiMetaInitialState);
+  const [isRelatedLoading, setIsRelatedLoading] = useState<boolean>(false);
+  const [isSingleFetchCompleted, setIsSingleFetchCompleted] = useState<boolean>(false);
 
   const fetchSingleData = useCallback(async () => {
     console.log(encodeURIComponent(cardSlug));
@@ -24,45 +24,45 @@ export const useGetSingleCard = (cardSlug: string) => {
 
       setSingleCard(data);
       setIsSingleLoading(false);
-      // setIsSingleFetchCompleted(true);
+      setIsSingleFetchCompleted(true);
     } catch (error) {
       console.error('Error fetching single card data:', error);
       setIsSingleLoading(false);
     }
   }, [cardSlug]);
 
-  // const fetchIssuerData = useCallback(async () => {
-  //   try {
-  //     setIsIssuerLoading(true);
-  //     const issuerQuery = `&issuer=${encodeURIComponent(singleCard.displayName)}`;
-  //     const requestURL = `https://dev-api.moneyatlas.link/cards?limit=10&offset=0${issuerQuery}`;
-  //     const response = await fetch(requestURL);
-  //     const data = await response.json();
+  const fetchRelatedData = useCallback(async () => {
+    try {
+      setIsRelatedLoading(true);
+      const issuerQuery = `&category=${encodeURIComponent(singleCard.defaultCreditCardTypeName)}`;
+      const requestURL = `https://dev-api.moneyatlas.link/cards?limit=10&offset=0${issuerQuery}`;
+      const response = await fetch(requestURL);
+      const data = await response.json();
 
-  //     setAllIssuerCards(data.data);
-  //     setAllIssuerCardsMeta(data.meta);
-  //     setIsIssuerLoading(false);
-  //   } catch (error) {
-  //     console.error('Error fetching issuer card data:', error);
-  //     setIsIssuerLoading(false);
-  //   }
-  // }, [singleCard.displayName]);
+      setRelatedCards(data.data);
+      setRelatedCardsMeta(data.meta);
+      setIsRelatedLoading(false);
+    } catch (error) {
+      console.error('Error fetching issuer card data:', error);
+      setIsRelatedLoading(false);
+    }
+  }, [singleCard.displayName]);
 
   useEffect(() => {
     fetchSingleData();
   }, [fetchSingleData]);
 
-  // useEffect(() => {
-  //   if (isSingleFetchCompleted) {
-  //     fetchIssuerData();
-  //   }
-  // }, [isSingleFetchCompleted, fetchIssuerData]);
+  useEffect(() => {
+    if (isSingleFetchCompleted) {
+      fetchRelatedData();
+    }
+  }, [isSingleFetchCompleted, fetchRelatedData]);
 
   return {
     singleCard,
     isSingleLoading,
-    // allIssuerCards,
-    // allIssuerCardsMeta,
-    // isIssuerLoading,
+    relatedCards,
+    relatedCardsMeta,
+    isRelatedLoading,
   };
 };

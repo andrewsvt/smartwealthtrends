@@ -35,4 +35,5 @@ export interface IAPIData {
   link: strin | null;
   slug: string;
   serviceCardId: number;
+  defaultCreditCardTypeName: string;
 }
